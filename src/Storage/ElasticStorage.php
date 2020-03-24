@@ -82,6 +82,7 @@ class ElasticStorage implements Storage
         try {
             $this->client->delete([
                 'index' => $elasticEntity->getElasticSearchDocumentType(),
+                'type' => $elasticEntity->getElasticSearchDocumentType(),
                 'id' => $elasticEntity->getElasticSearchDocumentId(),
             ]);
         } catch (Throwable $e) {
@@ -99,6 +100,7 @@ class ElasticStorage implements Storage
         try {
             $this->client->index([
                 'index' => $elasticEntity->getElasticSearchDocumentType(),
+                'type' => $elasticEntity->getElasticSearchDocumentType(),
                 'id' => $elasticEntity->getElasticSearchDocumentId(),
                 'body' => $elasticEntity->getElasticSearchDocumentData(),
             ]);
@@ -183,12 +185,7 @@ class ElasticStorage implements Storage
                     '_id' => $item->getElasticSearchDocumentId(),
                 ],
             ];
-            $dataForQuery[] = [
-                'index' => $item->getElasticSearchDocumentType(),
-                'type' => $item->getElasticSearchDocumentType(),
-                'id' => $item->getElasticSearchDocumentId(),
-                'body' => $item->getElasticSearchDocumentData(),
-            ];
+            $dataForQuery[] = $item->getElasticSearchDocumentData();
         }
 
         if (!empty($dataForQuery)) {
