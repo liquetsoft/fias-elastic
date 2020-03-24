@@ -127,24 +127,6 @@ abstract class AbstractGenerator
      */
     protected function unifyColumnName(string $name): string
     {
-        return trim(strtolower($name));
-    }
-
-    /**
-     * Преобразует имя класса в имя таблицы в БД.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    protected function convertClassnameToTableName(string $name): string
-    {
-        $tableName = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $name));
-
-        if (strpos($tableName, 'fias_laravel_') !== 0) {
-            $tableName = 'fias_laravel_' . $tableName;
-        }
-
-        return $tableName;
+        return str_replace('_', '', trim(strtolower($name)));
     }
 }
