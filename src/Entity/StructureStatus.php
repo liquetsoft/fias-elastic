@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Перечень видов строений.
  */
-class StructureStatus
+class StructureStatus implements EntityInterface
 {
     /** @var int */
     private $strstatid = 0;
@@ -52,5 +54,33 @@ class StructureStatus
     public function getShortname(): ?string
     {
         return $this->shortname;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'StructureStatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->strstatid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'strstatid' => $this->strstatid,
+            'name' => $this->name,
+            'shortname' => $this->shortname,
+        ];
     }
 }

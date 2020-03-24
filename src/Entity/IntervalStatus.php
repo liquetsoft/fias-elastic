@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Перечень возможных значений интервалов домов (обычный, четный, нечетный).
  */
-class IntervalStatus
+class IntervalStatus implements EntityInterface
 {
     /** @var int */
     private $intvstatid = 0;
@@ -37,5 +39,32 @@ class IntervalStatus
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'IntervalStatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->intvstatid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'intvstatid' => $this->intvstatid,
+            'name' => $this->name,
+        ];
     }
 }

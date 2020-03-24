@@ -12,6 +12,37 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class FlatTypeTest extends EntityCase
 {
+    public function testGetElasticSearchDocumentType()
+    {
+        $this->assertSame('FlatType', $this->createEntity()->getElasticSearchDocumentType());
+    }
+
+    public function testGetElasticSearchDocumentId()
+    {
+        $value = $this->createFakeData()->numberBetween(1, 1000000);
+
+        $entity = $this->createEntity();
+        $entity->setFltypeid($value);
+
+        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+    }
+
+    public function testGetElasticSearchDocumentData()
+    {
+        $entity = $this->createEntity();
+        $entity->setFltypeid($this->createFakeData()->numberBetween(1, 1000000));
+        $entity->setName($this->createFakeData()->word);
+        $entity->setShortname($this->createFakeData()->word);
+
+        $arrayToTest = [
+            'fltypeid' => $entity->getFltypeid(),
+            'name' => $entity->getName(),
+            'shortname' => $entity->getShortname(),
+        ];
+
+        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+    }
+
     /**
      * @inheritdoc
      */

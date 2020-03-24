@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Перечень типов комнат.
  */
-class RoomType
+class RoomType implements EntityInterface
 {
     /** @var int */
     private $rmtypeid = 0;
@@ -52,5 +54,33 @@ class RoomType
     public function getShortname(): string
     {
         return $this->shortname;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'RoomType';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->rmtypeid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'rmtypeid' => $this->rmtypeid,
+            'name' => $this->name,
+            'shortname' => $this->shortname,
+        ];
     }
 }

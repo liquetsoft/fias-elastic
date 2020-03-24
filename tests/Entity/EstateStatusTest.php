@@ -12,6 +12,35 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class EstateStatusTest extends EntityCase
 {
+    public function testGetElasticSearchDocumentType()
+    {
+        $this->assertSame('EstateStatus', $this->createEntity()->getElasticSearchDocumentType());
+    }
+
+    public function testGetElasticSearchDocumentId()
+    {
+        $value = $this->createFakeData()->numberBetween(1, 1000000);
+
+        $entity = $this->createEntity();
+        $entity->setEststatid($value);
+
+        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+    }
+
+    public function testGetElasticSearchDocumentData()
+    {
+        $entity = $this->createEntity();
+        $entity->setEststatid($this->createFakeData()->numberBetween(1, 1000000));
+        $entity->setName($this->createFakeData()->word);
+
+        $arrayToTest = [
+            'eststatid' => $entity->getEststatid(),
+            'name' => $entity->getName(),
+        ];
+
+        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+    }
+
     /**
      * @inheritdoc
      */

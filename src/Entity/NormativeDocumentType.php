@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Типы нормативных документов.
  */
-class NormativeDocumentType
+class NormativeDocumentType implements EntityInterface
 {
     /** @var int */
     private $ndtypeid = 0;
@@ -37,5 +39,32 @@ class NormativeDocumentType
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'NormativeDocumentType';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->ndtypeid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'ndtypeid' => $this->ndtypeid,
+            'name' => $this->name,
+        ];
     }
 }

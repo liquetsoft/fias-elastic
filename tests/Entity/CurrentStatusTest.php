@@ -12,6 +12,35 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class CurrentStatusTest extends EntityCase
 {
+    public function testGetElasticSearchDocumentType()
+    {
+        $this->assertSame('CurrentStatus', $this->createEntity()->getElasticSearchDocumentType());
+    }
+
+    public function testGetElasticSearchDocumentId()
+    {
+        $value = $this->createFakeData()->numberBetween(1, 1000000);
+
+        $entity = $this->createEntity();
+        $entity->setCurentstid($value);
+
+        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+    }
+
+    public function testGetElasticSearchDocumentData()
+    {
+        $entity = $this->createEntity();
+        $entity->setCurentstid($this->createFakeData()->numberBetween(1, 1000000));
+        $entity->setName($this->createFakeData()->word);
+
+        $arrayToTest = [
+            'curentstid' => $entity->getCurentstid(),
+            'name' => $entity->getName(),
+        ];
+
+        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+    }
+
     /**
      * @inheritdoc
      */

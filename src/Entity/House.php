@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 use DateTimeInterface;
+use Liquetsoft\Fias\Elastic\EntityInterface;
 
 /**
  * Элементы адреса, идентифицирующие адресуемые объекты.
  */
-class House
+class House implements EntityInterface
 {
     /** @var string */
     private $houseid = '';
@@ -264,5 +265,47 @@ class House
     public function getDivtype(): int
     {
         return $this->divtype;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'House';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return $this->houseid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'houseid' => $this->houseid,
+            'houseguid' => $this->houseguid,
+            'aoguid' => $this->aoguid,
+            'housenum' => $this->housenum,
+            'strstatus' => $this->strstatus,
+            'eststatus' => $this->eststatus,
+            'statstatus' => $this->statstatus,
+            'ifnsfl' => $this->ifnsfl,
+            'ifnsul' => $this->ifnsul,
+            'okato' => $this->okato,
+            'oktmo' => $this->oktmo,
+            'postalcode' => $this->postalcode,
+            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
+            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
+            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'counter' => $this->counter,
+            'divtype' => $this->divtype,
+        ];
     }
 }

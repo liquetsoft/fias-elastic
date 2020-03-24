@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 use DateTimeInterface;
+use Liquetsoft\Fias\Elastic\EntityInterface;
 
 /**
  * Сведения о земельных участках.
  */
-class Stead
+class Stead implements EntityInterface
 {
     /** @var string */
     private $steadguid = '';
@@ -264,5 +265,47 @@ class Stead
     public function getNormdoc(): ?string
     {
         return $this->normdoc;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'Stead';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return $this->steadguid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'steadguid' => $this->steadguid,
+            'number' => $this->number,
+            'regioncode' => $this->regioncode,
+            'postalcode' => $this->postalcode,
+            'ifnsfl' => $this->ifnsfl,
+            'ifnsul' => $this->ifnsul,
+            'okato' => $this->okato,
+            'oktmo' => $this->oktmo,
+            'parentguid' => $this->parentguid,
+            'steadid' => $this->steadid,
+            'operstatus' => $this->operstatus,
+            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
+            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
+            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'livestatus' => $this->livestatus,
+            'divtype' => $this->divtype,
+            'normdoc' => $this->normdoc,
+        ];
     }
 }

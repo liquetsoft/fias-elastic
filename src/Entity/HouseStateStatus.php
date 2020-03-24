@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Перечень возможных состояний объектов недвижимости.
  */
-class HouseStateStatus
+class HouseStateStatus implements EntityInterface
 {
     /** @var int */
     private $housestid = 0;
@@ -37,5 +39,32 @@ class HouseStateStatus
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'HouseStateStatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->housestid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'housestid' => $this->housestid,
+            'name' => $this->name,
+        ];
     }
 }

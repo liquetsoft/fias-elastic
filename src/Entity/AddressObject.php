@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 use DateTimeInterface;
+use Liquetsoft\Fias\Elastic\EntityInterface;
 
 /**
  * Реестр адресообразующих элементов.
  */
-class AddressObject
+class AddressObject implements EntityInterface
 {
     /**
      * Уникальный идентификатор записи. Ключевое поле.
@@ -712,5 +713,67 @@ class AddressObject
     public function getDivtype(): int
     {
         return $this->divtype;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'AddressObject';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return $this->aoid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'aoid' => $this->aoid,
+            'aoguid' => $this->aoguid,
+            'parentguid' => $this->parentguid,
+            'previd' => $this->previd,
+            'nextid' => $this->nextid,
+            'code' => $this->code,
+            'formalname' => $this->formalname,
+            'offname' => $this->offname,
+            'shortname' => $this->shortname,
+            'aolevel' => $this->aolevel,
+            'regioncode' => $this->regioncode,
+            'areacode' => $this->areacode,
+            'autocode' => $this->autocode,
+            'citycode' => $this->citycode,
+            'ctarcode' => $this->ctarcode,
+            'placecode' => $this->placecode,
+            'plancode' => $this->plancode,
+            'streetcode' => $this->streetcode,
+            'extrcode' => $this->extrcode,
+            'sextcode' => $this->sextcode,
+            'plaincode' => $this->plaincode,
+            'currstatus' => $this->currstatus,
+            'actstatus' => $this->actstatus,
+            'livestatus' => $this->livestatus,
+            'centstatus' => $this->centstatus,
+            'operstatus' => $this->operstatus,
+            'ifnsfl' => $this->ifnsfl,
+            'ifnsul' => $this->ifnsul,
+            'terrifnsfl' => $this->terrifnsfl,
+            'terrifnsul' => $this->terrifnsul,
+            'okato' => $this->okato,
+            'oktmo' => $this->oktmo,
+            'postalcode' => $this->postalcode,
+            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
+            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
+            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'divtype' => $this->divtype,
+        ];
     }
 }

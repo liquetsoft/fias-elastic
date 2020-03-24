@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
+use Liquetsoft\Fias\Elastic\EntityInterface;
+
 /**
  * Перечень кодов операций над адресными объектами.
  */
-class OperationStatus
+class OperationStatus implements EntityInterface
 {
     /** @var int */
     private $operstatid = 0;
@@ -37,5 +39,32 @@ class OperationStatus
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentType(): string
+    {
+        return 'OperationStatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentId(): string
+    {
+        return (string) $this->operstatid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getElasticSearchDocumentData(): array
+    {
+        return [
+            'operstatid' => $this->operstatid,
+            'name' => $this->name,
+        ];
     }
 }
