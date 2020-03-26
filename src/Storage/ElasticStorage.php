@@ -64,6 +64,22 @@ class ElasticStorage implements Storage
     /**
      * @inheritDoc
      */
+    public function supports(object $entity): bool
+    {
+        return $this->supportsClass(get_class($entity));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsClass(string $class): bool
+    {
+        return is_subclass_of($class, EntityInterface::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function insert(object $entity): void
     {
         $this->insertData[] = $this->checkEntity($entity);

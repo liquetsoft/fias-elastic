@@ -18,6 +18,34 @@ use Throwable;
 class ElasticStorageTest extends BaseCase
 {
     /**
+     * Проверяет, что хранилище верно определяет, что может обрабатывать сущность.
+     *
+     * @throws Throwable
+     */
+    public function testSupports()
+    {
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $storage = new ElasticStorage($client);
+
+        $this->assertTrue($storage->supports(new ElasticStorageTestEntity()));
+        $this->assertFalse($storage->supports($this));
+    }
+
+    /**
+     * Проверяет, что хранилище верно определяет, что может обрабатывать тип сущности.
+     *
+     * @throws Throwable
+     */
+    public function testSupportsClass()
+    {
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $storage = new ElasticStorage($client);
+
+        $this->assertTrue($storage->supportsClass(ElasticStorageTestEntity::class));
+        $this->assertFalse($storage->supportsClass(get_class($this)));
+    }
+
+    /**
      * Проверяет, что хранилище добавляет сущность.
      *
      * @throws Throwable
