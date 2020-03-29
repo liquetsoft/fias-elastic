@@ -193,6 +193,7 @@ class ElasticStorage implements Storage
     private function flushInsert(): void
     {
         $dataForQuery = [];
+
         foreach ($this->insertData as $item) {
             $dataForQuery[] = [
                 'index' => [
@@ -204,14 +205,16 @@ class ElasticStorage implements Storage
             $dataForQuery[] = $item->getElasticSearchDocumentData();
         }
 
-        if (!empty($dataForQuery)) {
-            try {
-                $this->client->bulk(['body' => $dataForQuery]);
-            } catch (Throwable $e) {
-                throw new StorageException($e->getMessage(), 0, $e);
-            }
+        $this->insertData = [];
+
+        if (empty($dataForQuery)) {
+            return;
         }
 
-        $this->insertData = [];
+        try {
+            $this->client->bulk(['body' => $dataForQuery]);
+        } catch (Throwable $e) {
+            throw new StorageException($e->getMessage(), 0, $e);
+        }
     }
 }
