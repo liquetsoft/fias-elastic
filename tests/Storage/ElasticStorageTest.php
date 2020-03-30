@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\Storage;
 
 use Elasticsearch\Client;
 use Liquetsoft\Fias\Component\Exception\StorageException;
+use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\EntityInterface;
 use Liquetsoft\Fias\Elastic\Storage\ElasticStorage;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -24,8 +25,8 @@ class ElasticStorageTest extends BaseCase
      */
     public function testSupports()
     {
-        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $storage = new ElasticStorage($provider);
 
         $this->assertTrue($storage->supports(new ElasticStorageTestEntity()));
         $this->assertFalse($storage->supports($this));
@@ -38,8 +39,8 @@ class ElasticStorageTest extends BaseCase
      */
     public function testSupportsClass()
     {
-        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $storage = new ElasticStorage($provider);
 
         $this->assertTrue($storage->supportsClass(ElasticStorageTestEntity::class));
         $this->assertFalse($storage->supportsClass(get_class($this)));
@@ -72,7 +73,10 @@ class ElasticStorageTest extends BaseCase
             ],
         ]));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
         $storage->start();
         $storage->insert($entity);
         $storage->insert($entity1);
@@ -110,7 +114,10 @@ class ElasticStorageTest extends BaseCase
             ],
         ]));
 
-        $storage = new ElasticStorage($client, 1);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider, 1);
         $storage->start();
         $storage->insert($entity);
         $storage->insert($entity1);
@@ -127,7 +134,10 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->method('bulk')->will($this->throwException(new RuntimeException));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -152,7 +162,10 @@ class ElasticStorageTest extends BaseCase
             'id' => $entity->id,
         ]));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
         $storage->start();
         $storage->delete($entity);
         $storage->stop();
@@ -168,7 +181,10 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->method('delete')->will($this->throwException(new RuntimeException));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -194,7 +210,10 @@ class ElasticStorageTest extends BaseCase
             'body' => $entity->data,
         ]));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
         $storage->start();
         $storage->upsert($entity);
         $storage->stop();
@@ -210,7 +229,10 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->method('index')->will($this->throwException(new RuntimeException));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -229,7 +251,10 @@ class ElasticStorageTest extends BaseCase
             $this->equalTo(['index' => 'ElasticStorageTestEntity', 'type' => 'ElasticStorageTestEntity', 'body' => []])
         );
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
         $storage->start();
         $storage->truncate(ElasticStorageTestEntity::class);
         $storage->stop();
@@ -245,7 +270,10 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->method('deleteByQuery')->will($this->throwException(new RuntimeException));
 
-        $storage = new ElasticStorage($client);
+        $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
+        $provider->method('provide')->will($this->returnValue($client));
+
+        $storage = new ElasticStorage($provider);
 
         $this->expectException(StorageException::class);
         $storage->start();
