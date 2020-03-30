@@ -7,6 +7,7 @@ namespace Liquetsoft\Fias\Elastic\Storage;
 use Elasticsearch\Client;
 use Liquetsoft\Fias\Component\Exception\StorageException;
 use Liquetsoft\Fias\Component\Storage\Storage;
+use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\EntityInterface;
 use Throwable;
 
@@ -18,9 +19,9 @@ class ElasticStorage implements Storage
     /**
      * Клиент для отправки запросов в elastic search.
      *
-     * @var Client
+     * @var ClientProvider
      */
-    private $client;
+    private $clientProvider;
 
     /**
      * Количество элементов для множественной вставки.
@@ -37,12 +38,12 @@ class ElasticStorage implements Storage
     private $insertData = [];
 
     /**
-     * @param Client $client
-     * @param int    $insertBatch
+     * @param ClientProvider $clientProvider
+     * @param int            $insertBatch
      */
-    public function __construct(Client $client, int $insertBatch = 1000)
+    public function __construct(ClientProvider $clientProvider, int $insertBatch = 1000)
     {
-        $this->client = $client;
+        $this->clientProvider = $clientProvider;
         $this->insertBatch = $insertBatch;
     }
 
@@ -96,7 +97,7 @@ class ElasticStorage implements Storage
         $elasticEntity = $this->checkEntity($entity);
 
         try {
-            $this->client->delete([
+            $this->getClient()->delete([
                 'index' => $elasticEntity->getElasticSearchDocumentType(),
                 'type' => $elasticEntity->getElasticSearchDocumentType(),
                 'id' => $elasticEntity->getElasticSearchDocumentId(),
@@ -114,7 +115,7 @@ class ElasticStorage implements Storage
         $elasticEntity = $this->checkEntity($entity);
 
         try {
-            $this->client->index([
+            $this->getClient()->index([
                 'index' => $elasticEntity->getElasticSearchDocumentType(),
                 'type' => $elasticEntity->getElasticSearchDocumentType(),
                 'id' => $elasticEntity->getElasticSearchDocumentId(),
@@ -133,7 +134,7 @@ class ElasticStorage implements Storage
         $entity = $this->createEntityFromString($entityClassName);
 
         try {
-            $this->client->deleteByQuery([
+            $this->getClient()->deleteByQuery([
                 'index' => $entity->getElasticSearchDocumentType(),
                 'type' => $entity->getElasticSearchDocumentType(),
                 'body' => [],
@@ -141,6 +142,16 @@ class ElasticStorage implements Storage
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
+    }
+
+    /**
+     * Возвращает клиента из текущего провайдера клиента elasticsearch.
+     *
+     * @return Client
+     */
+    private function getClient(): Client
+    {
+        return $this->clientProvider->provide();
     }
 
     /**
@@ -193,6 +204,7 @@ class ElasticStorage implements Storage
     private function flushInsert(): void
     {
         $dataForQuery = [];
+
         foreach ($this->insertData as $item) {
             $dataForQuery[] = [
                 'index' => [
@@ -204,14 +216,16 @@ class ElasticStorage implements Storage
             $dataForQuery[] = $item->getElasticSearchDocumentData();
         }
 
-        if (!empty($dataForQuery)) {
-            try {
-                $this->client->bulk(['body' => $dataForQuery]);
-            } catch (Throwable $e) {
-                throw new StorageException($e->getMessage(), 0, $e);
-            }
+        $this->insertData = [];
+
+        if (empty($dataForQuery)) {
+            return;
         }
 
-        $this->insertData = [];
+        try {
+            $this->getClient()->bulk(['body' => $dataForQuery]);
+        } catch (Throwable $e) {
+            throw new StorageException($e->getMessage(), 0, $e);
+        }
     }
 }
