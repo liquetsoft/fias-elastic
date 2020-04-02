@@ -56,4 +56,12 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
 
         return $this->indexMappers[$entity->getElasticSearchIndex()];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllMappers(): array
+    {
+        return array_values($this->indexMappers);
+    }
 }

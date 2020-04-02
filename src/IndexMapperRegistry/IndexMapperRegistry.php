@@ -32,4 +32,11 @@ interface IndexMapperRegistry
      * @throws InvalidArgumentException
      */
     public function getMapperFor(EntityInterface $entity): IndexMapperInterface;
+
+    /**
+     * Возвращает список всех описаний индексов.
+     *
+     * @return IndexMapperInterface[]
+     */
+    public function getAllMappers(): array;
 }

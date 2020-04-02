@@ -105,4 +105,23 @@ class ArrayIndexMapperRegistryTest extends BaseCase
         $this->expectException(InvalidArgumentException::class);
         $registry->getMapperFor($entity);
     }
+
+    /**
+     * Проверяет, что объект вернет список всех опианий.
+     *
+     * @throws Throwable
+     */
+    public function testGetAllMappers()
+    {
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue('mapper'));
+
+        $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper1->method('getName')->will($this->returnValue('mapper1'));
+
+        $registry = new ArrayIndexMapperRegistry([$mapper, $mapper1]);
+        $allMappers = $registry->getAllMappers();
+
+        $this->assertSame([$mapper, $mapper1], $allMappers);
+    }
 }
