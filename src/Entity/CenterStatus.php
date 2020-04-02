@@ -44,15 +44,15 @@ class CenterStatus implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'CenterStatus';
+        return 'centerstatus';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return (string) $this->centerstid;
     }
@@ -60,7 +60,7 @@ class CenterStatus implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'centerstid' => $this->centerstid,

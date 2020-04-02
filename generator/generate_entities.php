@@ -2,6 +2,8 @@
 
 use Liquetsoft\Fias\Component\EntityRegistry\ArrayEntityRegistry;
 use Liquetsoft\Fias\Component\EntityRegistry\YamlEntityRegistry;
+use Liquetsoft\Fias\Elastic\Generator\MapperGenerator;
+use Liquetsoft\Fias\Elastic\Generator\MapperTestGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelTestGenerator;
 
@@ -29,4 +31,22 @@ if (!is_dir($dir)) {
 $dirObject = new SplFileInfo($dir);
 $namespace = 'Liquetsoft\\Fias\\Elastic\\Tests\\Entity';
 $generator = new ModelTestGenerator($registry);
+$generator->run($dirObject, $namespace);
+
+$dir = $root . '/src/IndexMapper';
+if (!is_dir($dir)) {
+    mkdir($dir, 0777, true);
+}
+$dirObject = new SplFileInfo($dir);
+$namespace = 'Liquetsoft\\Fias\\Elastic\\IndexMapper';
+$generator = new MapperGenerator($registry);
+$generator->run($dirObject, $namespace);
+
+$dir = $root . '/tests/IndexMapper';
+if (!is_dir($dir)) {
+    mkdir($dir, 0777, true);
+}
+$dirObject = new SplFileInfo($dir);
+$namespace = 'Liquetsoft\\Fias\\Elastic\\Tests\\IndexMapper';
+$generator = new MapperTestGenerator($registry);
 $generator->run($dirObject, $namespace);

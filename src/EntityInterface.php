@@ -14,19 +14,19 @@ interface EntityInterface
      *
      * @return string
      */
-    public function getElasticSearchDocumentType(): string;
+    public function getElasticSearchIndex(): string;
 
     /**
      * Возвращает уникальный идентификатор документа.
      *
      * @return string
      */
-    public function getElasticSearchDocumentId(): string;
+    public function getElasticSearchId(): string;
 
     /**
      * Возвращает массив данных для индексирования.
      *
      * @return array
      */
-    public function getElasticSearchDocumentData(): array;
+    public function getElasticSearchData(): array;
 }

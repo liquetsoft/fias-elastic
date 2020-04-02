@@ -66,9 +66,9 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->expects($this->once())->method('bulk')->with($this->equalTo([
             'body' => [
-                ['index' => ['_index' => $index, '_type' => $index, '_id' => $entity->id]],
+                ['index' => ['_index' => $index, '_id' => $entity->id]],
                 $entity->data,
-                ['index' => ['_index' => $index, '_type' => $index, '_id' => $entity1->id]],
+                ['index' => ['_index' => $index, '_id' => $entity1->id]],
                 $entity1->data,
             ],
         ]));
@@ -103,13 +103,13 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->expects($this->at(0))->method('bulk')->with($this->equalTo([
             'body' => [
-                ['index' => ['_index' => $index, '_type' => $index, '_id' => $entity->id]],
+                ['index' => ['_index' => $index, '_id' => $entity->id]],
                 $entity->data,
             ],
         ]));
         $client->expects($this->at(1))->method('bulk')->with($this->equalTo([
             'body' => [
-                ['index' => ['_index' => $index, '_type' => $index, '_id' => $entity1->id]],
+                ['index' => ['_index' => $index, '_id' => $entity1->id]],
                 $entity1->data,
             ],
         ]));
@@ -158,7 +158,6 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->expects($this->once())->method('delete')->with($this->equalTo([
             'index' => 'ElasticStorageTestEntity',
-            'type' => 'ElasticStorageTestEntity',
             'id' => $entity->id,
         ]));
 
@@ -205,7 +204,6 @@ class ElasticStorageTest extends BaseCase
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->expects($this->once())->method('index')->with($this->equalTo([
             'index' => 'ElasticStorageTestEntity',
-            'type' => 'ElasticStorageTestEntity',
             'id' => $entity->id,
             'body' => $entity->data,
         ]));
@@ -248,7 +246,7 @@ class ElasticStorageTest extends BaseCase
     {
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->expects($this->once())->method('deleteByQuery')->with(
-            $this->equalTo(['index' => 'ElasticStorageTestEntity', 'type' => 'ElasticStorageTestEntity', 'body' => []])
+            $this->equalTo(['index' => 'ElasticStorageTestEntity', 'body' => []])
         );
 
         $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
@@ -293,7 +291,7 @@ class ElasticStorageTestEntity implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
         return 'ElasticStorageTestEntity';
     }
@@ -301,7 +299,7 @@ class ElasticStorageTestEntity implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->id;
     }
@@ -309,7 +307,7 @@ class ElasticStorageTestEntity implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return $this->data;
     }

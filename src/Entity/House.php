@@ -270,15 +270,15 @@ class House implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'House';
+        return 'house';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->houseid;
     }
@@ -286,7 +286,7 @@ class House implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'houseid' => $this->houseid,
@@ -301,9 +301,9 @@ class House implements EntityInterface
             'okato' => $this->okato,
             'oktmo' => $this->oktmo,
             'postalcode' => $this->postalcode,
-            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
-            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
-            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'startdate' => $this->startdate->format('Y-m-d\TH:i:s'),
+            'enddate' => $this->enddate->format('Y-m-d\TH:i:s'),
+            'updatedate' => $this->updatedate->format('Y-m-d\TH:i:s'),
             'counter' => $this->counter,
             'divtype' => $this->divtype,
         ];

@@ -12,22 +12,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class IntervalStatusTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('IntervalStatus', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('intervalstatus', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->numberBetween(1, 1000000);
 
         $entity = $this->createEntity();
         $entity->setIntvstatid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setIntvstatid($this->createFakeData()->numberBetween(1, 1000000));
@@ -38,7 +38,7 @@ class IntervalStatusTest extends EntityCase
             'name' => $entity->getName(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**

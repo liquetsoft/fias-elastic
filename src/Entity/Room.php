@@ -210,15 +210,15 @@ class Room implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'Room';
+        return 'room';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->roomid;
     }
@@ -226,7 +226,7 @@ class Room implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'roomid' => $this->roomid,
@@ -236,9 +236,9 @@ class Room implements EntityInterface
             'flatnumber' => $this->flatnumber,
             'flattype' => $this->flattype,
             'postalcode' => $this->postalcode,
-            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
-            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
-            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'startdate' => $this->startdate->format('Y-m-d\TH:i:s'),
+            'enddate' => $this->enddate->format('Y-m-d\TH:i:s'),
+            'updatedate' => $this->updatedate->format('Y-m-d\TH:i:s'),
             'operstatus' => $this->operstatus,
             'livestatus' => $this->livestatus,
             'normdoc' => $this->normdoc,

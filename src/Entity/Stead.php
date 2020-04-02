@@ -270,15 +270,15 @@ class Stead implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'Stead';
+        return 'stead';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->steadguid;
     }
@@ -286,7 +286,7 @@ class Stead implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'steadguid' => $this->steadguid,
@@ -300,9 +300,9 @@ class Stead implements EntityInterface
             'parentguid' => $this->parentguid,
             'steadid' => $this->steadid,
             'operstatus' => $this->operstatus,
-            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
-            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
-            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'startdate' => $this->startdate->format('Y-m-d\TH:i:s'),
+            'enddate' => $this->enddate->format('Y-m-d\TH:i:s'),
+            'updatedate' => $this->updatedate->format('Y-m-d\TH:i:s'),
             'livestatus' => $this->livestatus,
             'divtype' => $this->divtype,
             'normdoc' => $this->normdoc,

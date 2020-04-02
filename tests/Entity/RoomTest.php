@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
 use DateTime;
-use DateTimeInterface;
 use Liquetsoft\Fias\Elastic\Entity\Room;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
@@ -14,22 +13,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class RoomTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('Room', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('room', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->word;
 
         $entity = $this->createEntity();
         $entity->setRoomid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setRoomid($this->createFakeData()->word);
@@ -54,15 +53,15 @@ class RoomTest extends EntityCase
             'flatnumber' => $entity->getFlatnumber(),
             'flattype' => $entity->getFlattype(),
             'postalcode' => $entity->getPostalcode(),
-            'startdate' => $entity->getStartdate()->format(DateTimeInterface::ATOM),
-            'enddate' => $entity->getEnddate()->format(DateTimeInterface::ATOM),
-            'updatedate' => $entity->getUpdatedate()->format(DateTimeInterface::ATOM),
+            'startdate' => $entity->getStartdate()->format('Y-m-d\TH:i:s'),
+            'enddate' => $entity->getEnddate()->format('Y-m-d\TH:i:s'),
+            'updatedate' => $entity->getUpdatedate()->format('Y-m-d\TH:i:s'),
             'operstatus' => $entity->getOperstatus(),
             'livestatus' => $entity->getLivestatus(),
             'normdoc' => $entity->getNormdoc(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**

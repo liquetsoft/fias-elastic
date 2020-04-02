@@ -718,15 +718,15 @@ class AddressObject implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'AddressObject';
+        return 'addressobject';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->aoid;
     }
@@ -734,7 +734,7 @@ class AddressObject implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'aoid' => $this->aoid,
@@ -770,9 +770,9 @@ class AddressObject implements EntityInterface
             'okato' => $this->okato,
             'oktmo' => $this->oktmo,
             'postalcode' => $this->postalcode,
-            'startdate' => $this->startdate->format(DateTimeInterface::ATOM),
-            'enddate' => $this->enddate->format(DateTimeInterface::ATOM),
-            'updatedate' => $this->updatedate->format(DateTimeInterface::ATOM),
+            'startdate' => $this->startdate->format('Y-m-d\TH:i:s'),
+            'enddate' => $this->enddate->format('Y-m-d\TH:i:s'),
+            'updatedate' => $this->updatedate->format('Y-m-d\TH:i:s'),
             'divtype' => $this->divtype,
         ];
     }

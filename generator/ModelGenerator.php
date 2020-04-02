@@ -51,11 +51,11 @@ class ModelGenerator extends AbstractGenerator
             }
         }
 
-        $this->decorateElasticTypeGetter($class->addMethod('getElasticSearchDocumentType'), $descriptor);
+        $this->decorateElasticIndexGetter($class->addMethod('getElasticSearchIndex'), $descriptor);
         if ($primary) {
-            $this->decorateElasticIdGetter($class->addMethod('getElasticSearchDocumentId'), $primary);
+            $this->decorateElasticIdGetter($class->addMethod('getElasticSearchId'), $primary);
         }
-        $this->decorateElasticDataGetter($class->addMethod('getElasticSearchDocumentData'), $descriptor);
+        $this->decorateElasticDataGetter($class->addMethod('getElasticSearchData'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -215,9 +215,9 @@ class ModelGenerator extends AbstractGenerator
      * @param Method           $method
      * @param EntityDescriptor $descriptor
      */
-    private function decorateElasticTypeGetter(Method $method, EntityDescriptor $descriptor): void
+    private function decorateElasticIndexGetter(Method $method, EntityDescriptor $descriptor): void
     {
-        $name = $this->unifyClassName($descriptor->getName());
+        $name = strtolower($this->unifyClassName($descriptor->getName()));
 
         $method->addComment('@inheritDoc');
         $method->setVisibility('public');
@@ -245,9 +245,9 @@ class ModelGenerator extends AbstractGenerator
             $value = "'{$fieldName}' => \$this->{$fieldName}";
             if ($type === 'string_date') {
                 if ($field->isNullable()) {
-                    $value = "'{$fieldName}' => \$this->{$fieldName} ? \$this->{$fieldName}->format(DateTimeInterface::ATOM) : null";
+                    $value = "'{$fieldName}' => \$this->{$fieldName} ? \$this->{$fieldName}->format('Y-m-d\TH:i:s') : null";
                 } else {
-                    $value = "'{$fieldName}' => \$this->{$fieldName}->format(DateTimeInterface::ATOM)";
+                    $value = "'{$fieldName}' => \$this->{$fieldName}->format('Y-m-d\TH:i:s')";
                 }
             }
 

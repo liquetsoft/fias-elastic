@@ -59,15 +59,15 @@ class FlatType implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'FlatType';
+        return 'flattype';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return (string) $this->fltypeid;
     }
@@ -75,7 +75,7 @@ class FlatType implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'fltypeid' => $this->fltypeid,

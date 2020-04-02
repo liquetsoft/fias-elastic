@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
 use DateTime;
-use DateTimeInterface;
 use Liquetsoft\Fias\Elastic\Entity\NormativeDocument;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
@@ -14,22 +13,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class NormativeDocumentTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('NormativeDocument', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('normativedocument', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->word;
 
         $entity = $this->createEntity();
         $entity->setNormdocid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setNormdocid($this->createFakeData()->word);
@@ -41,12 +40,12 @@ class NormativeDocumentTest extends EntityCase
         $arrayToTest = [
             'normdocid' => $entity->getNormdocid(),
             'docname' => $entity->getDocname(),
-            'docdate' => $entity->getDocdate()->format(DateTimeInterface::ATOM),
+            'docdate' => $entity->getDocdate()->format('Y-m-d\TH:i:s'),
             'docnum' => $entity->getDocnum(),
             'doctype' => $entity->getDoctype(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**
