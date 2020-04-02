@@ -22,22 +22,17 @@ class RoomTypeIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'rmtypeid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                    'shortname' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'rmtypeid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
+            ],
+            'shortname' => [
+                'type' => 'text',
             ],
         ];
     }

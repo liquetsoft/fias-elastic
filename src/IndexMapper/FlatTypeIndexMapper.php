@@ -22,22 +22,17 @@ class FlatTypeIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'fltypeid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                    'shortname' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'fltypeid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
+            ],
+            'shortname' => [
+                'type' => 'text',
             ],
         ];
     }

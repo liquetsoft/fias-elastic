@@ -19,16 +19,14 @@ class StructureStatusIndexMapperTest extends BaseCase
         $this->assertSame('structurestatus', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new StructureStatusIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('strstatid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('name', $map['_doc']['properties']);
-        $this->assertArrayHasKey('shortname', $map['_doc']['properties']);
+        $this->assertArrayHasKey('strstatid', $map);
+        $this->assertArrayHasKey('name', $map);
+        $this->assertArrayHasKey('shortname', $map);
     }
 }

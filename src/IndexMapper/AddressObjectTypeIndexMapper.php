@@ -22,25 +22,20 @@ class AddressObjectTypeIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'kodtst' => [
-                        'type' => 'keyword',
-                    ],
-                    'level' => [
-                        'type' => 'integer',
-                    ],
-                    'socrname' => [
-                        'type' => 'text',
-                    ],
-                    'scname' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'kodtst' => [
+                'type' => 'keyword',
+            ],
+            'level' => [
+                'type' => 'integer',
+            ],
+            'socrname' => [
+                'type' => 'text',
+            ],
+            'scname' => [
+                'type' => 'text',
             ],
         ];
     }

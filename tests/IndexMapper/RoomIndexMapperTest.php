@@ -19,26 +19,24 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertSame('room', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new RoomIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('roomid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('roomguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('houseguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('regioncode', $map['_doc']['properties']);
-        $this->assertArrayHasKey('flatnumber', $map['_doc']['properties']);
-        $this->assertArrayHasKey('flattype', $map['_doc']['properties']);
-        $this->assertArrayHasKey('postalcode', $map['_doc']['properties']);
-        $this->assertArrayHasKey('startdate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('enddate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('updatedate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('operstatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('livestatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('normdoc', $map['_doc']['properties']);
+        $this->assertArrayHasKey('roomid', $map);
+        $this->assertArrayHasKey('roomguid', $map);
+        $this->assertArrayHasKey('houseguid', $map);
+        $this->assertArrayHasKey('regioncode', $map);
+        $this->assertArrayHasKey('flatnumber', $map);
+        $this->assertArrayHasKey('flattype', $map);
+        $this->assertArrayHasKey('postalcode', $map);
+        $this->assertArrayHasKey('startdate', $map);
+        $this->assertArrayHasKey('enddate', $map);
+        $this->assertArrayHasKey('updatedate', $map);
+        $this->assertArrayHasKey('operstatus', $map);
+        $this->assertArrayHasKey('livestatus', $map);
+        $this->assertArrayHasKey('normdoc', $map);
     }
 }

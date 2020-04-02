@@ -36,7 +36,7 @@ class MapperGenerator extends AbstractGenerator
         $this->decorateClass($class, $descriptor);
 
         $this->decorateNameGetter($class->addMethod('getName'), $descriptor);
-        $this->decorateMapGetter($class->addMethod('getMap'), $descriptor);
+        $this->decorateMapGetter($class->addMethod('getMappingProperties'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -96,25 +96,18 @@ class MapperGenerator extends AbstractGenerator
         $method->setVisibility('public');
         $method->setReturnType('array');
 
-        $body = [
-            "'dynamic' => 'strict',",
-            "'_doc' => [",
-            "    'properties' => [",
-        ];
-        $fields = [];
+        $body = [];
         foreach ($descriptor->getFields() as $field) {
             $fieldName = $this->unifyColumnName($field->getName());
             $type = $this->convertFieldTypeToElasticType($field);
             $format = $this->convertFieldTypeToElasticFormat($field);
-            $body[] = "        '{$fieldName}' => [";
-            $body[] = "            'type' => '{$type}',";
+            $body[] = "'{$fieldName}' => [";
+            $body[] = "    'type' => '{$type}',";
             if ($format !== null) {
-                $body[] = "            'format' => {$format},";
+                $body[] = "    'format' => {$format},";
             }
-            $body[] = '        ],';
+            $body[] = '],';
         }
-        $body[] = '    ],';
-        $body[] = '],';
 
         $method->setBody("return [\n    " . implode("\n    ", $body) . "\n];");
     }

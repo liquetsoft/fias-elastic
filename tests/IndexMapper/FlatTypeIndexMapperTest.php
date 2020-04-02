@@ -19,16 +19,14 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertSame('flattype', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new FlatTypeIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('fltypeid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('name', $map['_doc']['properties']);
-        $this->assertArrayHasKey('shortname', $map['_doc']['properties']);
+        $this->assertArrayHasKey('fltypeid', $map);
+        $this->assertArrayHasKey('name', $map);
+        $this->assertArrayHasKey('shortname', $map);
     }
 }

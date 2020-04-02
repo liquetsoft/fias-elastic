@@ -22,22 +22,17 @@ class StructureStatusIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'strstatid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                    'shortname' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'strstatid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
+            ],
+            'shortname' => [
+                'type' => 'text',
             ],
         ];
     }

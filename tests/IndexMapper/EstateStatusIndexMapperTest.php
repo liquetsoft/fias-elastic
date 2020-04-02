@@ -19,15 +19,13 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertSame('estatestatus', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new EstateStatusIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('eststatid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('name', $map['_doc']['properties']);
+        $this->assertArrayHasKey('eststatid', $map);
+        $this->assertArrayHasKey('name', $map);
     }
 }

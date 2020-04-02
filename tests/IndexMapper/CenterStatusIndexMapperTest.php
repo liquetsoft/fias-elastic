@@ -19,15 +19,13 @@ class CenterStatusIndexMapperTest extends BaseCase
         $this->assertSame('centerstatus', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new CenterStatusIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('centerstid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('name', $map['_doc']['properties']);
+        $this->assertArrayHasKey('centerstid', $map);
+        $this->assertArrayHasKey('name', $map);
     }
 }

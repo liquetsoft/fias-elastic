@@ -22,19 +22,14 @@ class IntervalStatusIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'intvstatid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'intvstatid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
             ],
         ];
     }

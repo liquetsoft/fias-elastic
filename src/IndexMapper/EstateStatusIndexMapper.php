@@ -22,19 +22,14 @@ class EstateStatusIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'eststatid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'eststatid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
             ],
         ];
     }

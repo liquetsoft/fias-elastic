@@ -22,19 +22,14 @@ class ActualStatusIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'actstatid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'actstatid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
             ],
         ];
     }

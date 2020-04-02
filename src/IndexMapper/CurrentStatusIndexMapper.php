@@ -22,19 +22,14 @@ class CurrentStatusIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'curentstid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'curentstid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
             ],
         ];
     }

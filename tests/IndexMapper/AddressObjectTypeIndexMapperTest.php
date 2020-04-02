@@ -19,17 +19,15 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
         $this->assertSame('addressobjecttype', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new AddressObjectTypeIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('kodtst', $map['_doc']['properties']);
-        $this->assertArrayHasKey('level', $map['_doc']['properties']);
-        $this->assertArrayHasKey('socrname', $map['_doc']['properties']);
-        $this->assertArrayHasKey('scname', $map['_doc']['properties']);
+        $this->assertArrayHasKey('kodtst', $map);
+        $this->assertArrayHasKey('level', $map);
+        $this->assertArrayHasKey('socrname', $map);
+        $this->assertArrayHasKey('scname', $map);
     }
 }

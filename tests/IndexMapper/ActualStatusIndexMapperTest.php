@@ -19,15 +19,13 @@ class ActualStatusIndexMapperTest extends BaseCase
         $this->assertSame('actualstatus', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new ActualStatusIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('actstatid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('name', $map['_doc']['properties']);
+        $this->assertArrayHasKey('actstatid', $map);
+        $this->assertArrayHasKey('name', $map);
     }
 }

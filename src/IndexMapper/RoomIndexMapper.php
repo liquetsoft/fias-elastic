@@ -22,55 +22,50 @@ class RoomIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'roomid' => [
-                        'type' => 'keyword',
-                    ],
-                    'roomguid' => [
-                        'type' => 'text',
-                    ],
-                    'houseguid' => [
-                        'type' => 'text',
-                    ],
-                    'regioncode' => [
-                        'type' => 'text',
-                    ],
-                    'flatnumber' => [
-                        'type' => 'text',
-                    ],
-                    'flattype' => [
-                        'type' => 'integer',
-                    ],
-                    'postalcode' => [
-                        'type' => 'text',
-                    ],
-                    'startdate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'enddate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'updatedate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'operstatus' => [
-                        'type' => 'text',
-                    ],
-                    'livestatus' => [
-                        'type' => 'text',
-                    ],
-                    'normdoc' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'roomid' => [
+                'type' => 'keyword',
+            ],
+            'roomguid' => [
+                'type' => 'text',
+            ],
+            'houseguid' => [
+                'type' => 'text',
+            ],
+            'regioncode' => [
+                'type' => 'text',
+            ],
+            'flatnumber' => [
+                'type' => 'text',
+            ],
+            'flattype' => [
+                'type' => 'integer',
+            ],
+            'postalcode' => [
+                'type' => 'text',
+            ],
+            'startdate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'enddate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'updatedate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'operstatus' => [
+                'type' => 'text',
+            ],
+            'livestatus' => [
+                'type' => 'text',
+            ],
+            'normdoc' => [
+                'type' => 'text',
             ],
         ];
     }

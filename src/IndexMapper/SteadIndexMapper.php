@@ -22,67 +22,62 @@ class SteadIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'steadguid' => [
-                        'type' => 'keyword',
-                    ],
-                    'number' => [
-                        'type' => 'text',
-                    ],
-                    'regioncode' => [
-                        'type' => 'text',
-                    ],
-                    'postalcode' => [
-                        'type' => 'text',
-                    ],
-                    'ifnsfl' => [
-                        'type' => 'text',
-                    ],
-                    'ifnsul' => [
-                        'type' => 'text',
-                    ],
-                    'okato' => [
-                        'type' => 'text',
-                    ],
-                    'oktmo' => [
-                        'type' => 'text',
-                    ],
-                    'parentguid' => [
-                        'type' => 'text',
-                    ],
-                    'steadid' => [
-                        'type' => 'text',
-                    ],
-                    'operstatus' => [
-                        'type' => 'text',
-                    ],
-                    'startdate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'enddate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'updatedate' => [
-                        'type' => 'date',
-                        'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
-                    ],
-                    'livestatus' => [
-                        'type' => 'text',
-                    ],
-                    'divtype' => [
-                        'type' => 'text',
-                    ],
-                    'normdoc' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'steadguid' => [
+                'type' => 'keyword',
+            ],
+            'number' => [
+                'type' => 'text',
+            ],
+            'regioncode' => [
+                'type' => 'text',
+            ],
+            'postalcode' => [
+                'type' => 'text',
+            ],
+            'ifnsfl' => [
+                'type' => 'text',
+            ],
+            'ifnsul' => [
+                'type' => 'text',
+            ],
+            'okato' => [
+                'type' => 'text',
+            ],
+            'oktmo' => [
+                'type' => 'text',
+            ],
+            'parentguid' => [
+                'type' => 'text',
+            ],
+            'steadid' => [
+                'type' => 'text',
+            ],
+            'operstatus' => [
+                'type' => 'text',
+            ],
+            'startdate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'enddate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'updatedate' => [
+                'type' => 'date',
+                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+            ],
+            'livestatus' => [
+                'type' => 'text',
+            ],
+            'divtype' => [
+                'type' => 'text',
+            ],
+            'normdoc' => [
+                'type' => 'text',
             ],
         ];
     }

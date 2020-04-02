@@ -19,18 +19,16 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame('normativedocument', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new NormativeDocumentIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('normdocid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('docname', $map['_doc']['properties']);
-        $this->assertArrayHasKey('docdate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('docnum', $map['_doc']['properties']);
-        $this->assertArrayHasKey('doctype', $map['_doc']['properties']);
+        $this->assertArrayHasKey('normdocid', $map);
+        $this->assertArrayHasKey('docname', $map);
+        $this->assertArrayHasKey('docdate', $map);
+        $this->assertArrayHasKey('docnum', $map);
+        $this->assertArrayHasKey('doctype', $map);
     }
 }

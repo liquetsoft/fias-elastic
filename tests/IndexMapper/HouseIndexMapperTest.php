@@ -19,30 +19,28 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertSame('house', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new HouseIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('houseid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('houseguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('aoguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('housenum', $map['_doc']['properties']);
-        $this->assertArrayHasKey('strstatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('eststatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('statstatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('ifnsfl', $map['_doc']['properties']);
-        $this->assertArrayHasKey('ifnsul', $map['_doc']['properties']);
-        $this->assertArrayHasKey('okato', $map['_doc']['properties']);
-        $this->assertArrayHasKey('oktmo', $map['_doc']['properties']);
-        $this->assertArrayHasKey('postalcode', $map['_doc']['properties']);
-        $this->assertArrayHasKey('startdate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('enddate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('updatedate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('counter', $map['_doc']['properties']);
-        $this->assertArrayHasKey('divtype', $map['_doc']['properties']);
+        $this->assertArrayHasKey('houseid', $map);
+        $this->assertArrayHasKey('houseguid', $map);
+        $this->assertArrayHasKey('aoguid', $map);
+        $this->assertArrayHasKey('housenum', $map);
+        $this->assertArrayHasKey('strstatus', $map);
+        $this->assertArrayHasKey('eststatus', $map);
+        $this->assertArrayHasKey('statstatus', $map);
+        $this->assertArrayHasKey('ifnsfl', $map);
+        $this->assertArrayHasKey('ifnsul', $map);
+        $this->assertArrayHasKey('okato', $map);
+        $this->assertArrayHasKey('oktmo', $map);
+        $this->assertArrayHasKey('postalcode', $map);
+        $this->assertArrayHasKey('startdate', $map);
+        $this->assertArrayHasKey('enddate', $map);
+        $this->assertArrayHasKey('updatedate', $map);
+        $this->assertArrayHasKey('counter', $map);
+        $this->assertArrayHasKey('divtype', $map);
     }
 }

@@ -21,5 +21,5 @@ interface IndexMapperInterface
      *
      * @return array
      */
-    public function getMap(): array;
+    public function getMappingProperties(): array;
 }

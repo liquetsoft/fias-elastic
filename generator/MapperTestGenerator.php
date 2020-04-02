@@ -36,7 +36,7 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateClass($class, $descriptor);
 
         $this->decorateNameTest($class->addMethod('testGetName'), $descriptor);
-        $this->decorateMapTest($class->addMethod('testGetMap'), $descriptor);
+        $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -99,14 +99,12 @@ class MapperTestGenerator extends AbstractGenerator
         $name = $baseName . 'IndexMapper';
 
         $method->addBody("\$mapper = new $name();");
-        $method->addBody('$map = $mapper->getMap();');
+        $method->addBody('$map = $mapper->getMappingProperties();');
         $method->addBody('');
         $method->addBody('$this->assertIsArray($map);');
-        $method->addBody('$this->assertArrayHasKey(\'_doc\', $map);');
-        $method->addBody('$this->assertArrayHasKey(\'properties\', $map[\'_doc\']);');
         foreach ($descriptor->getFields() as $field) {
             $name = $this->unifyColumnName($field->getName());
-            $method->addBody("\$this->assertArrayHasKey('{$name}', \$map['_doc']['properties']);");
+            $method->addBody("\$this->assertArrayHasKey('{$name}', \$map);");
         }
     }
 }

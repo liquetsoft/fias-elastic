@@ -19,30 +19,28 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertSame('stead', $mapper->getName());
     }
 
-    public function testGetMap()
+    public function testGetMappingProperties()
     {
         $mapper = new SteadIndexMapper();
-        $map = $mapper->getMap();
+        $map = $mapper->getMappingProperties();
 
         $this->assertIsArray($map);
-        $this->assertArrayHasKey('_doc', $map);
-        $this->assertArrayHasKey('properties', $map['_doc']);
-        $this->assertArrayHasKey('steadguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('number', $map['_doc']['properties']);
-        $this->assertArrayHasKey('regioncode', $map['_doc']['properties']);
-        $this->assertArrayHasKey('postalcode', $map['_doc']['properties']);
-        $this->assertArrayHasKey('ifnsfl', $map['_doc']['properties']);
-        $this->assertArrayHasKey('ifnsul', $map['_doc']['properties']);
-        $this->assertArrayHasKey('okato', $map['_doc']['properties']);
-        $this->assertArrayHasKey('oktmo', $map['_doc']['properties']);
-        $this->assertArrayHasKey('parentguid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('steadid', $map['_doc']['properties']);
-        $this->assertArrayHasKey('operstatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('startdate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('enddate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('updatedate', $map['_doc']['properties']);
-        $this->assertArrayHasKey('livestatus', $map['_doc']['properties']);
-        $this->assertArrayHasKey('divtype', $map['_doc']['properties']);
-        $this->assertArrayHasKey('normdoc', $map['_doc']['properties']);
+        $this->assertArrayHasKey('steadguid', $map);
+        $this->assertArrayHasKey('number', $map);
+        $this->assertArrayHasKey('regioncode', $map);
+        $this->assertArrayHasKey('postalcode', $map);
+        $this->assertArrayHasKey('ifnsfl', $map);
+        $this->assertArrayHasKey('ifnsul', $map);
+        $this->assertArrayHasKey('okato', $map);
+        $this->assertArrayHasKey('oktmo', $map);
+        $this->assertArrayHasKey('parentguid', $map);
+        $this->assertArrayHasKey('steadid', $map);
+        $this->assertArrayHasKey('operstatus', $map);
+        $this->assertArrayHasKey('startdate', $map);
+        $this->assertArrayHasKey('enddate', $map);
+        $this->assertArrayHasKey('updatedate', $map);
+        $this->assertArrayHasKey('livestatus', $map);
+        $this->assertArrayHasKey('divtype', $map);
+        $this->assertArrayHasKey('normdoc', $map);
     }
 }

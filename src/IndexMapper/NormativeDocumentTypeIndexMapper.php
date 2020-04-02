@@ -22,19 +22,14 @@ class NormativeDocumentTypeIndexMapper implements IndexMapperInterface
     /**
      * @inheritDoc
      */
-    public function getMap(): array
+    public function getMappingProperties(): array
     {
         return [
-            'dynamic' => 'strict',
-            '_doc' => [
-                'properties' => [
-                    'ndtypeid' => [
-                        'type' => 'keyword',
-                    ],
-                    'name' => [
-                        'type' => 'text',
-                    ],
-                ],
+            'ndtypeid' => [
+                'type' => 'keyword',
+            ],
+            'name' => [
+                'type' => 'text',
             ],
         ];
     }
