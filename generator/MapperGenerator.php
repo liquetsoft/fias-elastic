@@ -30,7 +30,7 @@ class MapperGenerator extends AbstractGenerator
         $phpFile->setStrictTypes();
 
         $namespace = $phpFile->addNamespace($namespace);
-        $this->decorateNamespace($namespace, $descriptor);
+        $this->decorateNamespace($namespace);
 
         $class = $namespace->addClass($name);
         $this->decorateClass($class, $descriptor);
@@ -44,10 +44,9 @@ class MapperGenerator extends AbstractGenerator
     /**
      * Добавляет все необходимые импорты в пространство имен.
      *
-     * @param PhpNamespace     $namespace
-     * @param EntityDescriptor $descriptor
+     * @param PhpNamespace $namespace
      */
-    protected function decorateNamespace(PhpNamespace $namespace, EntityDescriptor $descriptor): void
+    protected function decorateNamespace(PhpNamespace $namespace): void
     {
         $namespace->addUse('\\Liquetsoft\\Fias\\Elastic\\IndexMapperInterface');
     }
