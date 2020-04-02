@@ -44,15 +44,15 @@ class CurrentStatus implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'CurrentStatus';
+        return 'currentstatus';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return (string) $this->curentstid;
     }
@@ -60,7 +60,7 @@ class CurrentStatus implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'curentstid' => $this->curentstid,

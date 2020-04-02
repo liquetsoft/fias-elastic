@@ -98,9 +98,8 @@ class ElasticStorage implements Storage
 
         try {
             $this->getClient()->delete([
-                'index' => $elasticEntity->getElasticSearchDocumentType(),
-                'type' => $elasticEntity->getElasticSearchDocumentType(),
-                'id' => $elasticEntity->getElasticSearchDocumentId(),
+                'index' => $elasticEntity->getElasticSearchIndex(),
+                'id' => $elasticEntity->getElasticSearchId(),
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
@@ -116,10 +115,9 @@ class ElasticStorage implements Storage
 
         try {
             $this->getClient()->index([
-                'index' => $elasticEntity->getElasticSearchDocumentType(),
-                'type' => $elasticEntity->getElasticSearchDocumentType(),
-                'id' => $elasticEntity->getElasticSearchDocumentId(),
-                'body' => $elasticEntity->getElasticSearchDocumentData(),
+                'index' => $elasticEntity->getElasticSearchIndex(),
+                'id' => $elasticEntity->getElasticSearchId(),
+                'body' => $elasticEntity->getElasticSearchData(),
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
@@ -135,8 +133,7 @@ class ElasticStorage implements Storage
 
         try {
             $this->getClient()->deleteByQuery([
-                'index' => $entity->getElasticSearchDocumentType(),
-                'type' => $entity->getElasticSearchDocumentType(),
+                'index' => $entity->getElasticSearchIndex(),
                 'body' => [],
             ]);
         } catch (Throwable $e) {
@@ -208,12 +205,11 @@ class ElasticStorage implements Storage
         foreach ($this->insertData as $item) {
             $dataForQuery[] = [
                 'index' => [
-                    '_index' => $item->getElasticSearchDocumentType(),
-                    '_type' => $item->getElasticSearchDocumentType(),
-                    '_id' => $item->getElasticSearchDocumentId(),
+                    '_index' => $item->getElasticSearchIndex(),
+                    '_id' => $item->getElasticSearchId(),
                 ],
             ];
-            $dataForQuery[] = $item->getElasticSearchDocumentData();
+            $dataForQuery[] = $item->getElasticSearchData();
         }
 
         $this->insertData = [];

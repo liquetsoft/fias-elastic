@@ -12,22 +12,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class FlatTypeTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('FlatType', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('flattype', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->numberBetween(1, 1000000);
 
         $entity = $this->createEntity();
         $entity->setFltypeid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setFltypeid($this->createFakeData()->numberBetween(1, 1000000));
@@ -40,7 +40,7 @@ class FlatTypeTest extends EntityCase
             'shortname' => $entity->getShortname(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**

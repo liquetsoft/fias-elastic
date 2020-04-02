@@ -90,15 +90,15 @@ class NormativeDocument implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentType(): string
+    public function getElasticSearchIndex(): string
     {
-        return 'NormativeDocument';
+        return 'normativedocument';
     }
 
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentId(): string
+    public function getElasticSearchId(): string
     {
         return $this->normdocid;
     }
@@ -106,12 +106,12 @@ class NormativeDocument implements EntityInterface
     /**
      * @inheritDoc
      */
-    public function getElasticSearchDocumentData(): array
+    public function getElasticSearchData(): array
     {
         return [
             'normdocid' => $this->normdocid,
             'docname' => $this->docname,
-            'docdate' => $this->docdate ? $this->docdate->format(DateTimeInterface::ATOM) : null,
+            'docdate' => $this->docdate ? $this->docdate->format('Y-m-d\TH:i:s') : null,
             'docnum' => $this->docnum,
             'doctype' => $this->doctype,
         ];

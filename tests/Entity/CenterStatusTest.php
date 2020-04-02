@@ -12,22 +12,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class CenterStatusTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('CenterStatus', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('centerstatus', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->numberBetween(1, 1000000);
 
         $entity = $this->createEntity();
         $entity->setCenterstid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setCenterstid($this->createFakeData()->numberBetween(1, 1000000));
@@ -38,7 +38,7 @@ class CenterStatusTest extends EntityCase
             'name' => $entity->getName(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**

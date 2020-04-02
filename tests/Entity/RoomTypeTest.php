@@ -12,22 +12,22 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class RoomTypeTest extends EntityCase
 {
-    public function testGetElasticSearchDocumentType()
+    public function testGetElasticSearchIndex()
     {
-        $this->assertSame('RoomType', $this->createEntity()->getElasticSearchDocumentType());
+        $this->assertSame('roomtype', $this->createEntity()->getElasticSearchIndex());
     }
 
-    public function testGetElasticSearchDocumentId()
+    public function testGetElasticSearchId()
     {
         $value = $this->createFakeData()->numberBetween(1, 1000000);
 
         $entity = $this->createEntity();
         $entity->setRmtypeid($value);
 
-        $this->assertSame((string) $value, $entity->getElasticSearchDocumentId());
+        $this->assertSame((string) $value, $entity->getElasticSearchId());
     }
 
-    public function testGetElasticSearchDocumentData()
+    public function testGetElasticSearchData()
     {
         $entity = $this->createEntity();
         $entity->setRmtypeid($this->createFakeData()->numberBetween(1, 1000000));
@@ -40,7 +40,7 @@ class RoomTypeTest extends EntityCase
             'shortname' => $entity->getShortname(),
         ];
 
-        $this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());
+        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
     }
 
     /**

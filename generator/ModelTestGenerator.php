@@ -35,9 +35,9 @@ class ModelTestGenerator extends AbstractGenerator
         $class = $namespace->addClass($name);
         $this->decorateClass($class, $descriptor);
 
-        $this->decorateTypeTest($class->addMethod('testGetElasticSearchDocumentType'), $descriptor);
-        $this->decorateDocumentIdTest($class->addMethod('testGetElasticSearchDocumentId'), $descriptor);
-        $this->decorateDataTest($class->addMethod('testGetElasticSearchDocumentData'), $descriptor);
+        $this->decorateTypeTest($class->addMethod('testGetElasticSearchIndex'), $descriptor);
+        $this->decorateDocumentIdTest($class->addMethod('testGetElasticSearchId'), $descriptor);
+        $this->decorateDataTest($class->addMethod('testGetElasticSearchData'), $descriptor);
         $this->decorateCreateEntity($class->addMethod('createEntity'), $descriptor);
         $this->decorateCreateAccessors($class->addMethod('accessorsProvider'), $descriptor);
 
@@ -87,8 +87,8 @@ class ModelTestGenerator extends AbstractGenerator
      */
     private function decorateTypeTest(Method $method, EntityDescriptor $descriptor): void
     {
-        $baseName = $this->unifyClassName($descriptor->getName());
-        $method->setBody("\$this->assertSame('{$baseName}', \$this->createEntity()->getElasticSearchDocumentType());");
+        $baseName = strtolower($this->unifyClassName($descriptor->getName()));
+        $method->setBody("\$this->assertSame('{$baseName}', \$this->createEntity()->getElasticSearchIndex());");
     }
 
     /**
@@ -117,7 +117,7 @@ class ModelTestGenerator extends AbstractGenerator
             $method->addBody('$entity = $this->createEntity();');
             $method->addBody("\$entity->{$setter}(\$value);");
             $method->addBody('');
-            $method->addBody('$this->assertSame((string) $value, $entity->getElasticSearchDocumentId());');
+            $method->addBody('$this->assertSame((string) $value, $entity->getElasticSearchId());');
         }
     }
 
@@ -140,7 +140,7 @@ class ModelTestGenerator extends AbstractGenerator
             $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
             if ($type === 'string_date') {
                 $method->addBody("\$entity->{$setter}(new DateTime());");
-                $testArray[] = "'{$name}' => \$entity->{$getter}()->format(DateTimeInterface::ATOM)";
+                $testArray[] = "'{$name}' => \$entity->{$getter}()->format('Y-m-d\TH:i:s')";
             } elseif ($type === 'int') {
                 $method->addBody("\$entity->{$setter}(\$this->createFakeData()->numberBetween(1, 1000000));");
                 $testArray[] = "'{$name}' => \$entity->{$getter}()";
@@ -153,7 +153,7 @@ class ModelTestGenerator extends AbstractGenerator
         $method->addBody('');
         $method->addBody("\$arrayToTest = [\n    " . implode(",\n    ", $testArray) . "\n];");
         $method->addBody('');
-        $method->addBody('$this->assertSame($arrayToTest, $entity->getElasticSearchDocumentData());');
+        $method->addBody('$this->assertSame($arrayToTest, $entity->getElasticSearchData());');
     }
 
     /**
