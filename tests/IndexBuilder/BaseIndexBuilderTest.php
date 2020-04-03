@@ -8,9 +8,10 @@ use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use Liquetsoft\Fias\Component\Tests\BaseCase;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
+use Liquetsoft\Fias\Elastic\Exception\IndexBuilderException;
 use Liquetsoft\Fias\Elastic\IndexBuilder\BaseIndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
-use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -19,55 +20,254 @@ use Throwable;
 class BaseIndexBuilderTest extends BaseCase
 {
     /**
-     * Проверяет, что объект верно обновит все индексы в elasticsearch или создаст новые.
+     * Проверяет, что объект создаст индекс, если его не существует.
      *
      * @throws Throwable
      */
-    public function testRefresh()
+    public function testSaveNewIndex()
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper->method('getName')->will($this->returnValue($mapperName));
         $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
 
-        $mapper1Name = $this->createFakeData()->word;
-        $mapper1Map = [$this->createFakeData()->word => $this->createFakeData()->word];
-        $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper1->method('getName')->will($this->returnValue($mapper1Name));
-        $mapper1->method('getMappingProperties')->will($this->returnValue($mapper1Map));
-
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
-        $indices->method('get')->will($this->returnCallback(function (array $params) use ($mapper1Name) {
-            return isset($params['index']) && $params['index'] === '_all'
-                ? [$mapper1Name => ['aliases' => [], 'mappings' => []]]
-                : null;
-        }));
-        $indices->expects($this->at(1))
+        $indices->method('get')->will($this->returnValue([]));
+        $indices->expects($this->once())
             ->method('create')
             ->with(
                 $this->identicalTo(
                     ['index' => $mapperName, 'body' => ['mappings' => ['properties' => $mapperMap]]]
                 )
             );
-        $indices->expects($this->at(2))
+
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $client->method('indices')->will($this->returnValue($indices));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->returnValue($client));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->save($mapper);
+    }
+
+    /**
+     * Проверяет, что объект обновит существующий индекс.
+     *
+     * @throws Throwable
+     */
+    public function testSaveExistedIndex()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
+        $indices->method('get')->will($this->returnValue([$mapperName => ['aliases' => []]]));
+        $indices->expects($this->once())
             ->method('putMapping')
             ->with(
                 $this->identicalTo(
-                    ['index' => $mapper1Name, 'body' => ['properties' => $mapper1Map]]
+                    ['index' => $mapperName, 'body' => ['properties' => $mapperMap]]
                 )
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
         $client->method('indices')->will($this->returnValue($indices));
 
-        $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $registry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->returnValue($client));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->save($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение при сохранении.
+     *
+     * @throws Throwable
+     */
+    public function testSaveException()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+
+        $this->expectException(IndexBuilderException::class);
+        $builder->save($mapper);
+    }
+
+    /**
+     * Проверяет, что объект очистит все данные в индексе.
+     *
+     * @throws Throwable
+     */
+    public function testTruncateIndex()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $client->expects($this->once())->method('deleteByQuery')->with(
+            $this->equalTo(['index' => $mapperName, 'body' => []])
+        );
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->returnValue($client));
 
-        $builder = new BaseIndexBuilder($clientProvider, $registry);
-        $builder->refresh();
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->truncate($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение при очистке.
+     *
+     * @throws Throwable
+     */
+    public function testTruncateException()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+
+        $this->expectException(IndexBuilderException::class);
+        $builder->truncate($mapper);
+    }
+
+    /**
+     * Проверяет, что объект закроет индекс.
+     *
+     * @throws Throwable
+     */
+    public function testCloseIndex()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
+        $indices->expects($this->once())
+            ->method('close')
+            ->with(
+                $this->identicalTo(
+                    ['index' => $mapperName, 'ignore_unavailable' => true]
+                )
+            );
+
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $client->method('indices')->will($this->returnValue($indices));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->returnValue($client));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->close($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение при закрытии индекса.
+     *
+     * @throws Throwable
+     */
+    public function testCloseException()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+
+        $this->expectException(IndexBuilderException::class);
+        $builder->close($mapper);
+    }
+
+    /**
+     * Проверяет, что объект откроет индекс.
+     *
+     * @throws Throwable
+     */
+    public function testOpenIndex()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
+        $indices->expects($this->once())
+            ->method('open')
+            ->with(
+                $this->identicalTo(
+                    ['index' => $mapperName, 'ignore_unavailable' => true]
+                )
+            );
+
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $client->method('indices')->will($this->returnValue($indices));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->returnValue($client));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->open($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение при открытии индекса.
+     *
+     * @throws Throwable
+     */
+    public function testOpenException()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+
+        $this->expectException(IndexBuilderException::class);
+        $builder->open($mapper);
     }
 }
