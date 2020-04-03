@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\IndexMapperRegistry;
 
 use InvalidArgumentException;
-use Liquetsoft\Fias\Elastic\EntityInterface;
+use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 
 /**
@@ -14,7 +14,7 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 class ArrayIndexMapperRegistry implements IndexMapperRegistry
 {
     /**
-     * @var IndexMapperInterface[]
+     * @var array<string, IndexMapperInterface>
      */
     private $indexMappers = [];
 
@@ -31,30 +31,8 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
                     sprintf("Item with key '%s' must implements '%s'.", $key, IndexMapperInterface::class)
                 );
             }
-            $this->indexMappers[$indexMapper->getName()] = $indexMapper;
+            $this->indexMappers[$this->unifyKey($key)] = $indexMapper;
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasMapperFor(EntityInterface $entity): bool
-    {
-        return isset($this->indexMappers[$entity->getElasticSearchIndex()]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMapperFor(EntityInterface $entity): IndexMapperInterface
-    {
-        if (!isset($this->indexMappers[$entity->getElasticSearchIndex()])) {
-            throw new InvalidArgumentException(
-                sprintf("Can't find mapper for '%s' index.", $entity->getElasticSearchIndex())
-            );
-        }
-
-        return $this->indexMappers[$entity->getElasticSearchIndex()];
     }
 
     /**
@@ -63,5 +41,50 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     public function getAllMappers(): array
     {
         return array_values($this->indexMappers);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasMapperForKey(string $key): bool
+    {
+        $unifiedKey = $this->unifyKey($key);
+
+        return isset($this->indexMappers[$unifiedKey]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasMapperForObject(object $object): bool
+    {
+        return $this->hasMapperForKey(get_class($object));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMapperForObject(object $object): IndexMapperInterface
+    {
+        $class = get_class($object);
+        $unifiedKey = $this->unifyKey($class);
+
+        if (!isset($this->indexMappers[$unifiedKey])) {
+            throw new IndexMapperRegistryException(sprintf("Can't find mapper for '%s' object.", $class));
+        }
+
+        return $this->indexMappers[$unifiedKey];
+    }
+
+    /**
+     * Приводит ключи для мапперов к общему виду.
+     *
+     * @param mixed $key
+     *
+     * @return string
+     */
+    private function unifyKey($key): string
+    {
+        return strtolower(trim((string) $key, " \t\n\r\0\x0B\\/"));
     }
 }
