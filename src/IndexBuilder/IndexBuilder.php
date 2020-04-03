@@ -22,15 +22,6 @@ interface IndexBuilder
     public function save(IndexMapperInterface $indexMapper): void;
 
     /**
-     * Очищает все данные в индексе.
-     *
-     * @param IndexMapperInterface $indexMapper
-     *
-     * @throws IndexBuilderException
-     */
-    public function truncate(IndexMapperInterface $indexMapper): void;
-
-    /**
      * Закрывает индекс.
      *
      * @param IndexMapperInterface $indexMapper

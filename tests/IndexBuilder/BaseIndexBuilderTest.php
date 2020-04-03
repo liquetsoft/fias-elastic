@@ -111,55 +111,6 @@ class BaseIndexBuilderTest extends BaseCase
     }
 
     /**
-     * Проверяет, что объект очистит все данные в индексе.
-     *
-     * @throws Throwable
-     */
-    public function testTruncateIndex()
-    {
-        $mapperName = $this->createFakeData()->word;
-        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
-
-        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
-
-        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->expects($this->once())->method('deleteByQuery')->with(
-            $this->equalTo(['index' => $mapperName, 'body' => []])
-        );
-
-        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
-
-        $builder = new BaseIndexBuilder($clientProvider);
-        $builder->truncate($mapper);
-    }
-
-    /**
-     * Проверяет, что объект перехватит исключение при очистке.
-     *
-     * @throws Throwable
-     */
-    public function testTruncateException()
-    {
-        $mapperName = $this->createFakeData()->word;
-        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
-
-        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
-
-        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
-
-        $builder = new BaseIndexBuilder($clientProvider);
-
-        $this->expectException(IndexBuilderException::class);
-        $builder->truncate($mapper);
-    }
-
-    /**
      * Проверяет, что объект закроет индекс.
      *
      * @throws Throwable
