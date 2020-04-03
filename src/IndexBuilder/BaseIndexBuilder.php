@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexBuilder;
 
+use Elasticsearch\Client;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
-use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
+use Liquetsoft\Fias\Elastic\Exception\IndexBuilderException;
+use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Throwable;
 
 /**
  * Объект, который использует клиент elasticsearch и хранилище описания индексов для обновления описания индексов.
@@ -18,51 +21,127 @@ class BaseIndexBuilder implements IndexBuilder
     private $clientProvider;
 
     /**
-     * @var IndexMapperRegistry
+     * @var Client|null
      */
-    private $indexMapperRegistry;
+    private $client;
 
     /**
-     * @param ClientProvider      $clientProvider
-     * @param IndexMapperRegistry $indexMapperRegistry
+     * @param ClientProvider $clientProvider
      */
-    public function __construct(ClientProvider $clientProvider, IndexMapperRegistry $indexMapperRegistry)
+    public function __construct(ClientProvider $clientProvider)
     {
         $this->clientProvider = $clientProvider;
-        $this->indexMapperRegistry = $indexMapperRegistry;
     }
 
     /**
      * @inheritDoc
      */
-    public function refresh(): void
+    public function save(IndexMapperInterface $indexMapper): void
     {
-        $indices = $this->clientProvider->provide()->indices();
-
-        $indicesInElastic = $indices->get([
-            'index' => '_all',
-            'allow_no_indices' => true,
-        ]);
-
-        $neededIndices = $this->indexMapperRegistry->getAllMappers();
-        foreach ($neededIndices as $index) {
-            if (isset($indicesInElastic[$index->getName()])) {
-                $indices->putMapping([
-                    'index' => $index->getName(),
+        try {
+            $client = $this->getClient();
+            if ($this->hasIndex($indexMapper)) {
+                $client->indices()->putMapping([
+                    'index' => $indexMapper->getName(),
                     'body' => [
-                        'properties' => $index->getMappingProperties(),
+                        'properties' => $indexMapper->getMappingProperties(),
                     ],
                 ]);
             } else {
-                $indices->create([
-                    'index' => $index->getName(),
+                $client->indices()->create([
+                    'index' => $indexMapper->getName(),
                     'body' => [
                         'mappings' => [
-                            'properties' => $index->getMappingProperties(),
+                            'properties' => $indexMapper->getMappingProperties(),
                         ],
                     ],
                 ]);
             }
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function truncate(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->deleteByQuery([
+                'index' => $indexMapper->getName(),
+                'body' => [],
+            ]);
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function close(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->close([
+                'index' => $indexMapper->getName(),
+                'ignore_unavailable' => true,
+            ]);
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function open(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->open([
+                'index' => $indexMapper->getName(),
+                'ignore_unavailable' => true,
+            ]);
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * Возвращает правду, если указанный индекс существует в elasticsearch.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @return bool
+     */
+    private function hasIndex(IndexMapperInterface $indexMapper): bool
+    {
+        $indices = $this->getListOfIndices();
+
+        return isset($indices[$indexMapper->getName()]);
+    }
+
+    /**
+     * Возвращает список всех индексов elasticsearch.
+     *
+     * @return array
+     */
+    private function getListOfIndices(): array
+    {
+        return $this->getClient()->indices()->get(['index' => '_all']);
+    }
+
+    /**
+     * Возвращает объект клиента elasticsearch из провайдера.
+     *
+     * @return Client
+     */
+    private function getClient(): Client
+    {
+        if ($this->client === null) {
+            $this->client = $this->clientProvider->provide();
+        }
+
+        return $this->client;
     }
 }
