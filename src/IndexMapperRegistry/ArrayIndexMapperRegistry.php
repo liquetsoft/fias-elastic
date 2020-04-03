@@ -56,6 +56,20 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     /**
      * @inheritDoc
      */
+    public function getMapperForKey(string $key): IndexMapperInterface
+    {
+        $unifiedKey = $this->unifyKey($key);
+
+        if (!isset($this->indexMappers[$unifiedKey])) {
+            throw new IndexMapperRegistryException(sprintf("Can't find mapper for '%s' key.", $key));
+        }
+
+        return $this->indexMappers[$unifiedKey];
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function hasMapperForObject(object $object): bool
     {
         return $this->hasMapperForKey(get_class($object));
@@ -66,14 +80,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
      */
     public function getMapperForObject(object $object): IndexMapperInterface
     {
-        $class = get_class($object);
-        $unifiedKey = $this->unifyKey($class);
-
-        if (!isset($this->indexMappers[$unifiedKey])) {
-            throw new IndexMapperRegistryException(sprintf("Can't find mapper for '%s' object.", $class));
-        }
-
-        return $this->indexMappers[$unifiedKey];
+        return $this->getMapperForKey(get_class($object));
     }
 
     /**

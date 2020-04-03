@@ -47,6 +47,38 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
+     * Проверяет, что объект правильно вернет соответствие для исени класса.
+     *
+     * @throws Throwable
+     */
+    public function testGetMapperForKey()
+    {
+        $key = $this->createFakeData()->word;
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+
+        $registry = new ArrayIndexMapperRegistry([$mapper1, $key => $mapper]);
+
+        $this->assertSame($mapper, $registry->getMapperForKey($key));
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если не найдет соответствие.
+     *
+     * @throws Throwable
+     */
+    public function testGetMapperForKeyException()
+    {
+        $key = $this->createFakeData()->word;
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+
+        $registry = new ArrayIndexMapperRegistry([$mapper]);
+
+        $this->expectException(IndexMapperRegistryException::class);
+        $registry->getMapperForKey($key);
+    }
+
+    /**
      * Проверяет, что объект правильно находит соответствие для объекта.
      *
      * @throws Throwable
@@ -79,7 +111,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
-     * Проверяет, что объект выбросит исключение, есои не найдет соответствие.
+     * Проверяет, что объект выбросит исключение, если не найдет соответствие.
      *
      * @throws Throwable
      */

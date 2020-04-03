@@ -29,6 +29,17 @@ interface IndexMapperRegistry
     public function hasMapperForKey(string $key): bool;
 
     /**
+     * Возвращает соответствующий объекту маппер или выбрасывает исключение.
+     *
+     * @param string $key
+     *
+     * @return IndexMapperInterface
+     *
+     * @throws IndexMapperRegistryException
+     */
+    public function getMapperForKey(string $key): IndexMapperInterface;
+
+    /**
      * Возвращает правду, если указанному объекту соответствует маппер.
      *
      * @param object $object

@@ -65,21 +65,6 @@ class BaseIndexBuilder implements IndexBuilder
     /**
      * @inheritDoc
      */
-    public function truncate(IndexMapperInterface $indexMapper): void
-    {
-        try {
-            $this->getClient()->deleteByQuery([
-                'index' => $indexMapper->getName(),
-                'body' => [],
-            ]);
-        } catch (Throwable $e) {
-            throw new IndexBuilderException($e->getMessage(), 0, $e);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function close(IndexMapperInterface $indexMapper): void
     {
         try {
