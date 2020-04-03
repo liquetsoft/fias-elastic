@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapperRegistry;
 
-use InvalidArgumentException;
-use Liquetsoft\Fias\Elastic\EntityInterface;
+use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 
 /**
@@ -14,29 +13,38 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 interface IndexMapperRegistry
 {
     /**
-     * Возвращает правду, если объект имеет описание полей индекса для указанной сущности.
-     *
-     * @param EntityInterface $entity
-     *
-     * @return bool
-     */
-    public function hasMapperFor(EntityInterface $entity): bool;
-
-    /**
-     * Возвращает описание индекса для сущности.
-     *
-     * @param EntityInterface $entity
-     *
-     * @return IndexMapperInterface
-     *
-     * @throws InvalidArgumentException
-     */
-    public function getMapperFor(EntityInterface $entity): IndexMapperInterface;
-
-    /**
      * Возвращает список всех описаний индексов.
      *
      * @return IndexMapperInterface[]
      */
     public function getAllMappers(): array;
+
+    /**
+     * Возвращает правду, если указанному ключу соответствует маппер.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function hasMapperForKey(string $key): bool;
+
+    /**
+     * Возвращает правду, если указанному объекту соответствует маппер.
+     *
+     * @param object $object
+     *
+     * @return bool
+     */
+    public function hasMapperForObject(object $object): bool;
+
+    /**
+     * Возвращает соответствующий объекту маппер или выбрасывает исключение.
+     *
+     * @param object $object
+     *
+     * @return IndexMapperInterface
+     *
+     * @throws IndexMapperRegistryException
+     */
+    public function getMapperForObject(object $object): IndexMapperInterface;
 }

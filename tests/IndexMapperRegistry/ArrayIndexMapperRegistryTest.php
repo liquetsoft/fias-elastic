@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapperRegistry;
 
 use InvalidArgumentException;
-use Liquetsoft\Fias\Elastic\EntityInterface;
+use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\ArrayIndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 use Throwable;
 
 /**
@@ -21,7 +22,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testConstructorException()
+    public function testConstructorNotARegistryException()
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
@@ -30,80 +31,67 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
-     * Проверяет, что объект верно определит наличие описания индекса для сущности.
+     * Проверяет, что объект правильно находит соответствие для строкового ключа.
      *
      * @throws Throwable
      */
-    public function testHasMapperFor()
+    public function testHasMapperForKey()
     {
-        $mapperName = $this->createFakeData()->word;
+        $key = $this->createFakeData()->word;
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
 
-        $entity = $this->getMockBuilder(EntityInterface::class)->getMock();
-        $entity->method('getElasticSearchIndex')->will($this->returnValue($mapperName));
+        $registry = new ArrayIndexMapperRegistry([$key => $mapper]);
 
-        $registry = new ArrayIndexMapperRegistry([$mapper]);
-
-        $this->assertTrue($registry->hasMapperFor($entity));
+        $this->assertTrue($registry->hasMapperForKey($key));
+        $this->assertFalse($registry->hasMapperForKey($key . '_test'));
     }
 
     /**
-     * Проверяет, что объект верно определит наличие описания индекса для сущности.
+     * Проверяет, что объект правильно находит соответствие для объекта.
      *
      * @throws Throwable
      */
-    public function testDoesNotHaveMapperFor()
+    public function testHasMapperForObject()
     {
-        $mapperName = $this->createFakeData()->word;
+        $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
 
-        $entity = $this->getMockBuilder(EntityInterface::class)->getMock();
-        $entity->method('getElasticSearchIndex')->will($this->returnValue($mapperName . '_test'));
+        $registry = new ArrayIndexMapperRegistry([get_class($object) => $mapper]);
 
-        $registry = new ArrayIndexMapperRegistry([$mapper]);
-
-        $this->assertFalse($registry->hasMapperFor($entity));
+        $this->assertTrue($registry->hasMapperForObject($object));
+        $this->assertFalse($registry->hasMapperForObject($this));
     }
 
     /**
-     * Проверяет, что объект правильно вернет описание индекса для сущности.
+     * Проверяет, что объект правильно вернет соответствие для объекта.
      *
      * @throws Throwable
      */
-    public function testGetMapperFor()
+    public function testGetMapperForObject()
     {
-        $mapperName = $this->createFakeData()->word;
+        $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
-        $entity = $this->getMockBuilder(EntityInterface::class)->getMock();
-        $entity->method('getElasticSearchIndex')->will($this->returnValue($mapperName));
+        $registry = new ArrayIndexMapperRegistry([$mapper1, get_class($object) => $mapper]);
 
-        $registry = new ArrayIndexMapperRegistry([$mapper]);
-
-        $this->assertSame($mapper, $registry->getMapperFor($entity));
+        $this->assertSame($mapper, $registry->getMapperForObject($object));
     }
 
     /**
-     * Проверяет, что объект выбросит исключение, если не сможет найти описание индекса.
+     * Проверяет, что объект выбросит исключение, есои не найдет соответствие.
      *
      * @throws Throwable
      */
-    public function testGetMapperForException()
+    public function testGetMapperForObjectException()
     {
-        $mapperName = $this->createFakeData()->word;
+        $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-
-        $entity = $this->getMockBuilder(EntityInterface::class)->getMock();
-        $entity->method('getElasticSearchIndex')->will($this->returnValue($mapperName . '_test'));
 
         $registry = new ArrayIndexMapperRegistry([$mapper]);
 
-        $this->expectException(InvalidArgumentException::class);
-        $registry->getMapperFor($entity);
+        $this->expectException(IndexMapperRegistryException::class);
+        $registry->getMapperForObject($object);
     }
 
     /**
@@ -114,10 +102,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     public function testGetAllMappers()
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue('mapper'));
-
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper1->method('getName')->will($this->returnValue('mapper1'));
 
         $registry = new ArrayIndexMapperRegistry([$mapper, $mapper1]);
         $allMappers = $registry->getAllMappers();
