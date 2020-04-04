@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\RoomIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения о помещениях (квартирах, офисах, комнатах и т.д.)'.
@@ -45,5 +46,15 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('operstatus', $map);
         $this->assertArrayHasKey('livestatus', $map);
         $this->assertArrayHasKey('normdoc', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->roomid = 'primary_value';
+
+        $mapper = new RoomIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

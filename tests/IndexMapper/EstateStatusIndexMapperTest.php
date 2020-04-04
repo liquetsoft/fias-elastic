@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\EstateStatusIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Перечень возможных видов владений'.
@@ -34,5 +35,15 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertIsArray($map);
         $this->assertArrayHasKey('eststatid', $map);
         $this->assertArrayHasKey('name', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->eststatid = 'primary_value';
+
+        $mapper = new EstateStatusIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\CenterStatusIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Перечень возможных статусов (центров) адресных объектов административных единиц'.
@@ -34,5 +35,15 @@ class CenterStatusIndexMapperTest extends BaseCase
         $this->assertIsArray($map);
         $this->assertArrayHasKey('centerstid', $map);
         $this->assertArrayHasKey('name', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->centerstid = 'primary_value';
+
+        $mapper = new CenterStatusIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

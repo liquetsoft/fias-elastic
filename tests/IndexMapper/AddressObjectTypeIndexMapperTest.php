@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\AddressObjectTypeIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации'.
@@ -36,5 +37,15 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('level', $map);
         $this->assertArrayHasKey('socrname', $map);
         $this->assertArrayHasKey('scname', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->kodtst = 'primary_value';
+
+        $mapper = new AddressObjectTypeIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

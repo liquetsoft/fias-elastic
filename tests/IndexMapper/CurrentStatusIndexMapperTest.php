@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\CurrentStatusIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0'.
@@ -34,5 +35,15 @@ class CurrentStatusIndexMapperTest extends BaseCase
         $this->assertIsArray($map);
         $this->assertArrayHasKey('curentstid', $map);
         $this->assertArrayHasKey('name', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->curentstid = 'primary_value';
+
+        $mapper = new CurrentStatusIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

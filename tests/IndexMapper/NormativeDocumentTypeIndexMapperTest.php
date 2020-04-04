@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocumentTypeIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Типы нормативных документов'.
@@ -34,5 +35,15 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertIsArray($map);
         $this->assertArrayHasKey('ndtypeid', $map);
         $this->assertArrayHasKey('name', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->ndtypeid = 'primary_value';
+
+        $mapper = new NormativeDocumentTypeIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

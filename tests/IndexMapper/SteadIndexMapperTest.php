@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\SteadIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения о земельных участках'.
@@ -49,5 +50,15 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('livestatus', $map);
         $this->assertArrayHasKey('divtype', $map);
         $this->assertArrayHasKey('normdoc', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->steadguid = 'primary_value';
+
+        $mapper = new SteadIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

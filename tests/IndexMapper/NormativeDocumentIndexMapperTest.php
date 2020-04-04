@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocumentIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по нормативному документу, являющемуся основанием присвоения адресному элементу наименования'.
@@ -37,5 +38,15 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('docdate', $map);
         $this->assertArrayHasKey('docnum', $map);
         $this->assertArrayHasKey('doctype', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->normdocid = 'primary_value';
+
+        $mapper = new NormativeDocumentIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

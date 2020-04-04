@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\HouseIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Элементы адреса, идентифицирующие адресуемые объекты'.
@@ -49,5 +50,15 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('updatedate', $map);
         $this->assertArrayHasKey('counter', $map);
         $this->assertArrayHasKey('divtype', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->houseid = 'primary_value';
+
+        $mapper = new HouseIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

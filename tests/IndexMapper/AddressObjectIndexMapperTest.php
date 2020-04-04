@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\AddressObjectIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Реестр адресообразующих элементов'.
@@ -69,5 +70,15 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('enddate', $map);
         $this->assertArrayHasKey('updatedate', $map);
         $this->assertArrayHasKey('divtype', $map);
+    }
+
+    public function testEtractPrimaryFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->aoid = 'primary_value';
+
+        $mapper = new AddressObjectIndexMapper();
+
+        $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 }

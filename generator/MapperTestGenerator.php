@@ -38,6 +38,7 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateNameTest($class->addMethod('testGetName'), $descriptor);
         $this->decorateGetPrimaryNameTest($class->addMethod('testGetPrimaryName'), $descriptor);
         $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
+        $this->decorateExtractPrimaryFromEntityTest($class->addMethod('testEtractPrimaryFromEntity'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -52,6 +53,7 @@ class MapperTestGenerator extends AbstractGenerator
     protected function decorateNamespace(PhpNamespace $namespace, string $baseNamespace, string $baseName): void
     {
         $namespace->addUse('Liquetsoft\\Fias\\Elastic\\Tests\\BaseCase');
+        $namespace->addUse('stdClass');
         $namespace->addUse($baseNamespace . '\\' . $baseName);
     }
 
@@ -129,5 +131,31 @@ class MapperTestGenerator extends AbstractGenerator
                 break;
             }
         }
+    }
+
+    /**
+     * Создает метод для проверки того, что маппер вернет правильное значение первичного ключа.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decorateExtractPrimaryFromEntityTest(Method $method, EntityDescriptor $descriptor): void
+    {
+        $baseName = $this->unifyClassName($descriptor->getName());
+        $entityName = $baseName . 'IndexMapper';
+
+        foreach ($descriptor->getFields() as $field) {
+            if ($field->isPrimary()) {
+                $primaryName = $this->unifyColumnName($field->getName());
+                break;
+            }
+        }
+
+        $method->addBody('$entity = new stdClass();');
+        $method->addBody("\$entity->{$primaryName} = 'primary_value';");
+        $method->addBody('');
+        $method->addBody("\$mapper = new $entityName();");
+        $method->addBody('');
+        $method->addBody('$this->assertSame(\'primary_value\', $mapper->extractPrimaryFromEntity($entity));');
     }
 }
