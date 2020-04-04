@@ -12,35 +12,6 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class ActualStatusTest extends EntityCase
 {
-    public function testGetElasticSearchIndex()
-    {
-        $this->assertSame('actualstatus', $this->createEntity()->getElasticSearchIndex());
-    }
-
-    public function testGetElasticSearchId()
-    {
-        $value = $this->createFakeData()->numberBetween(1, 1000000);
-
-        $entity = $this->createEntity();
-        $entity->setActstatid($value);
-
-        $this->assertSame((string) $value, $entity->getElasticSearchId());
-    }
-
-    public function testGetElasticSearchData()
-    {
-        $entity = $this->createEntity();
-        $entity->setActstatid($this->createFakeData()->numberBetween(1, 1000000));
-        $entity->setName($this->createFakeData()->word);
-
-        $arrayToTest = [
-            'actstatid' => $entity->getActstatid(),
-            'name' => $entity->getName(),
-        ];
-
-        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
-    }
-
     /**
      * @inheritdoc
      */

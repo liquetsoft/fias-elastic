@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 use DateTimeInterface;
-use Liquetsoft\Fias\Elastic\EntityInterface;
 
 /**
  * Сведения по нормативному документу, являющемуся основанием присвоения адресному элементу наименования.
  */
-class NormativeDocument implements EntityInterface
+class NormativeDocument
 {
     /** @var string */
     private $normdocid = '';
@@ -85,35 +84,5 @@ class NormativeDocument implements EntityInterface
     public function getDoctype(): string
     {
         return $this->doctype;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'normativedocument';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return $this->normdocid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'normdocid' => $this->normdocid,
-            'docname' => $this->docname,
-            'docdate' => $this->docdate ? $this->docdate->format('Y-m-d\TH:i:s') : null,
-            'docnum' => $this->docnum,
-            'doctype' => $this->doctype,
-        ];
     }
 }

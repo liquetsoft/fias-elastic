@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use Liquetsoft\Fias\Elastic\EntityInterface;
-
 /**
  * Перечень возможных статусов (центров) адресных объектов административных единиц.
  */
-class CenterStatus implements EntityInterface
+class CenterStatus
 {
     /** @var int */
     private $centerstid = 0;
@@ -39,32 +37,5 @@ class CenterStatus implements EntityInterface
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'centerstatus';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return (string) $this->centerstid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'centerstid' => $this->centerstid,
-            'name' => $this->name,
-        ];
     }
 }

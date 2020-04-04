@@ -51,12 +51,6 @@ class ModelGenerator extends AbstractGenerator
             }
         }
 
-        $this->decorateElasticIndexGetter($class->addMethod('getElasticSearchIndex'), $descriptor);
-        if ($primary) {
-            $this->decorateElasticIdGetter($class->addMethod('getElasticSearchId'), $primary);
-        }
-        $this->decorateElasticDataGetter($class->addMethod('getElasticSearchData'), $descriptor);
-
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
 
@@ -68,7 +62,6 @@ class ModelGenerator extends AbstractGenerator
      */
     protected function decorateNamespace(PhpNamespace $namespace, EntityDescriptor $descriptor): void
     {
-        $namespace->addUse('\\Liquetsoft\\Fias\\Elastic\\EntityInterface');
         foreach ($descriptor->getFields() as $field) {
             if ($field->getSubType() === 'date') {
                 $namespace->addUse('DateTimeInterface');
@@ -84,8 +77,6 @@ class ModelGenerator extends AbstractGenerator
      */
     protected function decorateClass(ClassType $class, EntityDescriptor $descriptor): void
     {
-        $class->addImplement('\\Liquetsoft\\Fias\\Elastic\\EntityInterface');
-
         $description = ucfirst(trim($descriptor->getDescription(), " \t\n\r\0\x0B."));
         if ($description) {
             $class->addComment("{$description}.\n");
@@ -187,74 +178,5 @@ class ModelGenerator extends AbstractGenerator
             $method->setReturnNullable();
         }
         $method->setBody("return \$this->{$parameterName};");
-    }
-
-    /**
-     * Задает метод для возвращения уникального ключа документа.
-     *
-     * @param Method      $method
-     * @param EntityField $field
-     */
-    private function decorateElasticIdGetter(Method $method, EntityField $field): void
-    {
-        $parameterName = $this->unifyColumnName($field->getName());
-
-        $method->addComment('@inheritDoc');
-        $method->setVisibility('public');
-        $method->setReturnType('string');
-        if ($field->getType() === 'string') {
-            $method->setBody("return \$this->{$parameterName};");
-        } else {
-            $method->setBody("return (string) \$this->{$parameterName};");
-        }
-    }
-
-    /**
-     * Задает метод для возвращения типа документа.
-     *
-     * @param Method           $method
-     * @param EntityDescriptor $descriptor
-     */
-    private function decorateElasticIndexGetter(Method $method, EntityDescriptor $descriptor): void
-    {
-        $name = strtolower($this->unifyClassName($descriptor->getName()));
-
-        $method->addComment('@inheritDoc');
-        $method->setVisibility('public');
-        $method->setReturnType('string');
-        $method->setBody("return \"{$name}\";");
-    }
-
-    /**
-     * Задает метод для возвращения данных документа.
-     *
-     * @param Method           $method
-     * @param EntityDescriptor $descriptor
-     */
-    private function decorateElasticDataGetter(Method $method, EntityDescriptor $descriptor): void
-    {
-        $method->addComment('@inheritDoc');
-        $method->setVisibility('public');
-        $method->setReturnType('array');
-
-        $fields = [];
-        foreach ($descriptor->getFields() as $field) {
-            $fieldName = $this->unifyColumnName($field->getName());
-            $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
-
-            $value = "'{$fieldName}' => \$this->{$fieldName}";
-            if ($type === 'string_date') {
-                if ($field->isNullable()) {
-                    $value = "'{$fieldName}' => \$this->{$fieldName} ? \$this->{$fieldName}->format('Y-m-d\TH:i:s') : null";
-                } else {
-                    $value = "'{$fieldName}' => \$this->{$fieldName}->format('Y-m-d\TH:i:s')";
-                }
-            }
-
-            $fields[] = $value;
-        }
-
-        $body = "return [\n    " . implode(",\n    ", $fields) . "\n];";
-        $method->addBody($body);
     }
 }

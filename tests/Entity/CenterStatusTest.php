@@ -12,35 +12,6 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
  */
 class CenterStatusTest extends EntityCase
 {
-    public function testGetElasticSearchIndex()
-    {
-        $this->assertSame('centerstatus', $this->createEntity()->getElasticSearchIndex());
-    }
-
-    public function testGetElasticSearchId()
-    {
-        $value = $this->createFakeData()->numberBetween(1, 1000000);
-
-        $entity = $this->createEntity();
-        $entity->setCenterstid($value);
-
-        $this->assertSame((string) $value, $entity->getElasticSearchId());
-    }
-
-    public function testGetElasticSearchData()
-    {
-        $entity = $this->createEntity();
-        $entity->setCenterstid($this->createFakeData()->numberBetween(1, 1000000));
-        $entity->setName($this->createFakeData()->word);
-
-        $arrayToTest = [
-            'centerstid' => $entity->getCenterstid(),
-            'name' => $entity->getName(),
-        ];
-
-        $this->assertSame($arrayToTest, $entity->getElasticSearchData());
-    }
-
     /**
      * @inheritdoc
      */
