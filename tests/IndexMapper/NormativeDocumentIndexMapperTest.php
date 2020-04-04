@@ -19,6 +19,13 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame('normativedocument', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new NormativeDocumentIndexMapper();
+
+        $this->assertSame('normdocid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new NormativeDocumentIndexMapper();

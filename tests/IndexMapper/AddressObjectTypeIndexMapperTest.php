@@ -19,6 +19,13 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
         $this->assertSame('addressobjecttype', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new AddressObjectTypeIndexMapper();
+
+        $this->assertSame('kodtst', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new AddressObjectTypeIndexMapper();

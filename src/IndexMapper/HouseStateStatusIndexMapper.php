@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Перечень возможных состояний объектов недвижимости'.
  */
-class HouseStateStatusIndexMapper implements IndexMapperInterface
+class HouseStateStatusIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class HouseStateStatusIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'housestatestatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'housestid';
     }
 
     /**

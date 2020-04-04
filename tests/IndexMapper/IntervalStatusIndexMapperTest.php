@@ -19,6 +19,13 @@ class IntervalStatusIndexMapperTest extends BaseCase
         $this->assertSame('intervalstatus', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new IntervalStatusIndexMapper();
+
+        $this->assertSame('intvstatid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new IntervalStatusIndexMapper();

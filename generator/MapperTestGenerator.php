@@ -36,6 +36,7 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateClass($class, $descriptor);
 
         $this->decorateNameTest($class->addMethod('testGetName'), $descriptor);
+        $this->decorateGetPrimaryNameTest($class->addMethod('testGetPrimaryName'), $descriptor);
         $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
@@ -104,6 +105,29 @@ class MapperTestGenerator extends AbstractGenerator
         foreach ($descriptor->getFields() as $field) {
             $name = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$name}', \$map);");
+        }
+    }
+
+    /**
+     * Создает метод для проверки того, что маппер вернет правильное имя первичного ключа.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decorateGetPrimaryNameTest(Method $method, EntityDescriptor $descriptor): void
+    {
+        $baseName = $this->unifyClassName($descriptor->getName());
+        $name = $baseName . 'IndexMapper';
+
+        $method->addBody("\$mapper = new $name();");
+        $method->addBody('');
+
+        foreach ($descriptor->getFields() as $field) {
+            if ($field->isPrimary()) {
+                $name = $this->unifyColumnName($field->getName());
+                $method->addBody("\$this->assertSame('{$name}', \$mapper->getPrimaryName());");
+                break;
+            }
         }
     }
 }

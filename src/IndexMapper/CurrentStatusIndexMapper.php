@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0'.
  */
-class CurrentStatusIndexMapper implements IndexMapperInterface
+class CurrentStatusIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class CurrentStatusIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'currentstatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'curentstid';
     }
 
     /**

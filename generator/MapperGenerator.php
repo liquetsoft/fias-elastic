@@ -36,6 +36,7 @@ class MapperGenerator extends AbstractGenerator
         $this->decorateClass($class, $descriptor);
 
         $this->decorateNameGetter($class->addMethod('getName'), $descriptor);
+        $this->decoratePrimaryNameGetter($class->addMethod('getPrimaryName'), $descriptor);
         $this->decorateMapGetter($class->addMethod('getMappingProperties'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
@@ -48,7 +49,7 @@ class MapperGenerator extends AbstractGenerator
      */
     protected function decorateNamespace(PhpNamespace $namespace): void
     {
-        $namespace->addUse('\\Liquetsoft\\Fias\\Elastic\\IndexMapperInterface');
+        $namespace->addUse('\\Liquetsoft\\Fias\\Elastic\\IndexMapperAbstract');
     }
 
     /**
@@ -59,7 +60,7 @@ class MapperGenerator extends AbstractGenerator
      */
     protected function decorateClass(ClassType $class, EntityDescriptor $descriptor): void
     {
-        $class->addImplement('\\Liquetsoft\\Fias\\Elastic\\IndexMapperInterface');
+        $class->setExtends('\\Liquetsoft\\Fias\\Elastic\\IndexMapperAbstract');
 
         $description = ucfirst(trim($descriptor->getDescription(), " \t\n\r\0\x0B."));
         if ($description) {
@@ -109,6 +110,27 @@ class MapperGenerator extends AbstractGenerator
         }
 
         $method->setBody("return [\n    " . implode("\n    ", $body) . "\n];");
+    }
+
+    /**
+     * Задает метод для возвращения имени первичного ключа.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decoratePrimaryNameGetter(Method $method, EntityDescriptor $descriptor): void
+    {
+        $method->addComment('@inheritDoc');
+        $method->setVisibility('public');
+        $method->setReturnType('string');
+
+        foreach ($descriptor->getFields() as $field) {
+            if ($field->isPrimary()) {
+                $name = $this->unifyColumnName($field->getName());
+                $method->setBody("return '{$name}';");
+                break;
+            }
+        }
     }
 
     /**

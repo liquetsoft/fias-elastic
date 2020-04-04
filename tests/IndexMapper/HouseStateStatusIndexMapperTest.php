@@ -19,6 +19,13 @@ class HouseStateStatusIndexMapperTest extends BaseCase
         $this->assertSame('housestatestatus', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new HouseStateStatusIndexMapper();
+
+        $this->assertSame('housestid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new HouseStateStatusIndexMapper();

@@ -19,6 +19,13 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertSame('flattype', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new FlatTypeIndexMapper();
+
+        $this->assertSame('fltypeid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new FlatTypeIndexMapper();

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Перечень возможных значений интервалов домов (обычный, четный, нечетный)'.
  */
-class IntervalStatusIndexMapper implements IndexMapperInterface
+class IntervalStatusIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class IntervalStatusIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'intervalstatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'intvstatid';
     }
 
     /**

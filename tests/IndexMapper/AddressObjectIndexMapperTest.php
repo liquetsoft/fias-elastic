@@ -19,6 +19,13 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertSame('addressobject', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new AddressObjectIndexMapper();
+
+        $this->assertSame('aoid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new AddressObjectIndexMapper();

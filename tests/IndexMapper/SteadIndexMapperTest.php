@@ -19,6 +19,13 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertSame('stead', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new SteadIndexMapper();
+
+        $this->assertSame('steadguid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new SteadIndexMapper();

@@ -19,6 +19,13 @@ class OperationStatusIndexMapperTest extends BaseCase
         $this->assertSame('operationstatus', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new OperationStatusIndexMapper();
+
+        $this->assertSame('operstatid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new OperationStatusIndexMapper();

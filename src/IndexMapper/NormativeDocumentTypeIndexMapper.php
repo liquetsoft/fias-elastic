@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Типы нормативных документов'.
  */
-class NormativeDocumentTypeIndexMapper implements IndexMapperInterface
+class NormativeDocumentTypeIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class NormativeDocumentTypeIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'normativedocumenttype';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'ndtypeid';
     }
 
     /**

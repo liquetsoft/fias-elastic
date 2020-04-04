@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации'.
  */
-class AddressObjectTypeIndexMapper implements IndexMapperInterface
+class AddressObjectTypeIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class AddressObjectTypeIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'addressobjecttype';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'kodtst';
     }
 
     /**

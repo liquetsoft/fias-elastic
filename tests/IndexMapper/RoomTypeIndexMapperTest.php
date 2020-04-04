@@ -19,6 +19,13 @@ class RoomTypeIndexMapperTest extends BaseCase
         $this->assertSame('roomtype', $mapper->getName());
     }
 
+    public function testGetPrimaryName()
+    {
+        $mapper = new RoomTypeIndexMapper();
+
+        $this->assertSame('rmtypeid', $mapper->getPrimaryName());
+    }
+
     public function testGetMappingProperties()
     {
         $mapper = new RoomTypeIndexMapper();
