@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use Liquetsoft\Fias\Elastic\EntityInterface;
-
 /**
  * Перечень статусов актуальности записи адресного элемента по ФИАС.
  */
-class ActualStatus implements EntityInterface
+class ActualStatus
 {
     /** @var int */
     private $actstatid = 0;
@@ -39,32 +37,5 @@ class ActualStatus implements EntityInterface
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'actualstatus';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return (string) $this->actstatid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'actstatid' => $this->actstatid,
-            'name' => $this->name,
-        ];
     }
 }

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use Liquetsoft\Fias\Elastic\EntityInterface;
-
 /**
  * Перечень возможных видов владений.
  */
-class EstateStatus implements EntityInterface
+class EstateStatus
 {
     /** @var int */
     private $eststatid = 0;
@@ -39,32 +37,5 @@ class EstateStatus implements EntityInterface
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'estatestatus';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return (string) $this->eststatid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'eststatid' => $this->eststatid,
-            'name' => $this->name,
-        ];
     }
 }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Сведения о помещениях (квартирах, офисах, комнатах и т.д.)'.
  */
-class RoomIndexMapper implements IndexMapperInterface
+class RoomIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class RoomIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'room';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'roomid';
     }
 
     /**

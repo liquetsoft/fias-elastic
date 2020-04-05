@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Реестр адресообразующих элементов'.
  */
-class AddressObjectIndexMapper implements IndexMapperInterface
+class AddressObjectIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class AddressObjectIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'addressobject';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'aoid';
     }
 
     /**

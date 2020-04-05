@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Сведения по нормативному документу, являющемуся основанием присвоения адресному элементу наименования'.
  */
-class NormativeDocumentIndexMapper implements IndexMapperInterface
+class NormativeDocumentIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class NormativeDocumentIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'normativedocument';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'normdocid';
     }
 
     /**

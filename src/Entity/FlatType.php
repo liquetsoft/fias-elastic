@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use Liquetsoft\Fias\Elastic\EntityInterface;
-
 /**
  * Перечень типов помещения или офиса.
  */
-class FlatType implements EntityInterface
+class FlatType
 {
     /** @var int */
     private $fltypeid = 0;
@@ -54,33 +52,5 @@ class FlatType implements EntityInterface
     public function getShortname(): string
     {
         return $this->shortname;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'flattype';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return (string) $this->fltypeid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'fltypeid' => $this->fltypeid,
-            'name' => $this->name,
-            'shortname' => $this->shortname,
-        ];
     }
 }

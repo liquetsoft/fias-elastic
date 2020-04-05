@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use Liquetsoft\Fias\Elastic\EntityInterface;
-
 /**
  * Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации.
  */
-class AddressObjectType implements EntityInterface
+class AddressObjectType
 {
     /** @var int */
     private $kodtst = 0;
@@ -69,34 +67,5 @@ class AddressObjectType implements EntityInterface
     public function getScname(): ?string
     {
         return $this->scname;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'addressobjecttype';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return (string) $this->kodtst;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'kodtst' => $this->kodtst,
-            'level' => $this->level,
-            'socrname' => $this->socrname,
-            'scname' => $this->scname,
-        ];
     }
 }

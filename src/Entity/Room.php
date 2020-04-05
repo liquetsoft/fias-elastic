@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 use DateTimeInterface;
-use Liquetsoft\Fias\Elastic\EntityInterface;
 
 /**
  * Сведения о помещениях (квартирах, офисах, комнатах и т.д.).
  */
-class Room implements EntityInterface
+class Room
 {
     /** @var string */
     private $roomid = '';
@@ -205,43 +204,5 @@ class Room implements EntityInterface
     public function getNormdoc(): ?string
     {
         return $this->normdoc;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchIndex(): string
-    {
-        return 'room';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchId(): string
-    {
-        return $this->roomid;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getElasticSearchData(): array
-    {
-        return [
-            'roomid' => $this->roomid,
-            'roomguid' => $this->roomguid,
-            'houseguid' => $this->houseguid,
-            'regioncode' => $this->regioncode,
-            'flatnumber' => $this->flatnumber,
-            'flattype' => $this->flattype,
-            'postalcode' => $this->postalcode,
-            'startdate' => $this->startdate->format('Y-m-d\TH:i:s'),
-            'enddate' => $this->enddate->format('Y-m-d\TH:i:s'),
-            'updatedate' => $this->updatedate->format('Y-m-d\TH:i:s'),
-            'operstatus' => $this->operstatus,
-            'livestatus' => $this->livestatus,
-            'normdoc' => $this->normdoc,
-        ];
     }
 }

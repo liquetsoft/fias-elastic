@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapper;
 
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
  * Описание полей индекса для сущности 'Перечень возможных статусов (центров) адресных объектов административных единиц'.
  */
-class CenterStatusIndexMapper implements IndexMapperInterface
+class CenterStatusIndexMapper extends IndexMapperAbstract
 {
     /**
      * @inheritDoc
@@ -17,6 +17,14 @@ class CenterStatusIndexMapper implements IndexMapperInterface
     public function getName(): string
     {
         return 'centerstatus';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrimaryName(): string
+    {
+        return 'centerstid';
     }
 
     /**

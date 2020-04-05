@@ -35,9 +35,6 @@ class ModelTestGenerator extends AbstractGenerator
         $class = $namespace->addClass($name);
         $this->decorateClass($class, $descriptor);
 
-        $this->decorateTypeTest($class->addMethod('testGetElasticSearchIndex'), $descriptor);
-        $this->decorateDocumentIdTest($class->addMethod('testGetElasticSearchId'), $descriptor);
-        $this->decorateDataTest($class->addMethod('testGetElasticSearchData'), $descriptor);
         $this->decorateCreateEntity($class->addMethod('createEntity'), $descriptor);
         $this->decorateCreateAccessors($class->addMethod('accessorsProvider'), $descriptor);
 
@@ -77,83 +74,6 @@ class ModelTestGenerator extends AbstractGenerator
         if ($description) {
             $class->addComment("Тест для сущности '{$description}'.\n");
         }
-    }
-
-    /**
-     * Создает метод для проверки того, что сущность вернет правильный тип.
-     *
-     * @param Method           $method
-     * @param EntityDescriptor $descriptor
-     */
-    private function decorateTypeTest(Method $method, EntityDescriptor $descriptor): void
-    {
-        $baseName = strtolower($this->unifyClassName($descriptor->getName()));
-        $method->setBody("\$this->assertSame('{$baseName}', \$this->createEntity()->getElasticSearchIndex());");
-    }
-
-    /**
-     * Создает метод для проверки того, что сущность вернет идентификатор документа.
-     *
-     * @param Method           $method
-     * @param EntityDescriptor $descriptor
-     */
-    private function decorateDocumentIdTest(Method $method, EntityDescriptor $descriptor): void
-    {
-        foreach ($descriptor->getFields() as $field) {
-            if (!$field->isPrimary()) {
-                continue;
-            }
-
-            $name = $this->unifyColumnName($field->getName());
-            $setter = 'set' . ucfirst($name);
-
-            $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
-            if ($type === 'int') {
-                $method->addBody('$value = $this->createFakeData()->numberBetween(1, 1000000);');
-            } else {
-                $method->addBody('$value = $this->createFakeData()->word;');
-            }
-            $method->addBody('');
-            $method->addBody('$entity = $this->createEntity();');
-            $method->addBody("\$entity->{$setter}(\$value);");
-            $method->addBody('');
-            $method->addBody('$this->assertSame((string) $value, $entity->getElasticSearchId());');
-        }
-    }
-
-    /**
-     * Создает метод для проверки того, что сущность вернет правильные данные для индексации.
-     *
-     * @param Method           $method
-     * @param EntityDescriptor $descriptor
-     */
-    private function decorateDataTest(Method $method, EntityDescriptor $descriptor): void
-    {
-        $method->addBody('$entity = $this->createEntity();');
-
-        $testArray = [];
-        foreach ($descriptor->getFields() as $field) {
-            $name = $this->unifyColumnName($field->getName());
-            $setter = 'set' . ucfirst($name);
-            $getter = 'get' . ucfirst($name);
-
-            $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
-            if ($type === 'string_date') {
-                $method->addBody("\$entity->{$setter}(new DateTime());");
-                $testArray[] = "'{$name}' => \$entity->{$getter}()->format('Y-m-d\TH:i:s')";
-            } elseif ($type === 'int') {
-                $method->addBody("\$entity->{$setter}(\$this->createFakeData()->numberBetween(1, 1000000));");
-                $testArray[] = "'{$name}' => \$entity->{$getter}()";
-            } else {
-                $method->addBody("\$entity->{$setter}(\$this->createFakeData()->word);");
-                $testArray[] = "'{$name}' => \$entity->{$getter}()";
-            }
-        }
-
-        $method->addBody('');
-        $method->addBody("\$arrayToTest = [\n    " . implode(",\n    ", $testArray) . "\n];");
-        $method->addBody('');
-        $method->addBody('$this->assertSame($arrayToTest, $entity->getElasticSearchData());');
     }
 
     /**
