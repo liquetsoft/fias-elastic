@@ -142,6 +142,7 @@ class MapperTestGenerator extends AbstractGenerator
     {
         $entityName = $this->getTestedObjectName($descriptor);
 
+        $primaryName = null;
         foreach ($descriptor->getFields() as $field) {
             if ($field->isPrimary()) {
                 $primaryName = $this->unifyColumnName($field->getName());

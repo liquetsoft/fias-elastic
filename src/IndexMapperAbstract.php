@@ -89,12 +89,7 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
             $convertedValue = (int) $value;
         } elseif ($type === 'text' || $type === 'keyword') {
             $convertedValue = (string) $value;
-        } elseif ($type === 'date') {
-            if (!($value instanceof DateTimeInterface)) {
-                throw new IndexMapperException(
-                    'Value must be instance of DateTimeInterface to convert.'
-                );
-            }
+        } elseif ($type === 'date' && $value instanceof DateTimeInterface) {
             $convertedValue = $value->format('Y-m-d\TH:i:s');
         } else {
             throw new IndexMapperException(
