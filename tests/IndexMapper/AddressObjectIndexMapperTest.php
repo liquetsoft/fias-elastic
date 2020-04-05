@@ -73,7 +73,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('divtype', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->aoid = 'primary_value';

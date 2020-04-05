@@ -38,7 +38,7 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateNameTest($class->addMethod('testGetName'), $descriptor);
         $this->decorateGetPrimaryNameTest($class->addMethod('testGetPrimaryName'), $descriptor);
         $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
-        $this->decorateExtractPrimaryFromEntityTest($class->addMethod('testEtractPrimaryFromEntity'), $descriptor);
+        $this->decorateExtractPrimaryFromEntityTest($class->addMethod('testExtractPrimaryFromEntity'), $descriptor);
         $this->decorateExtractDataFromEntityTest($class->addMethod('testExtractDataFromEntity'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));

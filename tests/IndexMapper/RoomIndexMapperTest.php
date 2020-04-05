@@ -49,7 +49,7 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('normdoc', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->roomid = 'primary_value';

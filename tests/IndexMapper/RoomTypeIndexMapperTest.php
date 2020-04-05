@@ -38,7 +38,7 @@ class RoomTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->rmtypeid = 'primary_value';

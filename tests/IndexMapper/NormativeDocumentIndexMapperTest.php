@@ -41,7 +41,7 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('doctype', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->normdocid = 'primary_value';

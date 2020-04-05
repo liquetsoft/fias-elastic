@@ -39,7 +39,7 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('scname', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->kodtst = 'primary_value';

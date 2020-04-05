@@ -37,7 +37,7 @@ class CenterStatusIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('name', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->centerstid = 'primary_value';

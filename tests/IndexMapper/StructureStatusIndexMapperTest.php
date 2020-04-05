@@ -38,7 +38,7 @@ class StructureStatusIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->strstatid = 'primary_value';

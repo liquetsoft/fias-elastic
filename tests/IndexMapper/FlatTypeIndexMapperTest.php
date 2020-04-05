@@ -38,7 +38,7 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->fltypeid = 'primary_value';

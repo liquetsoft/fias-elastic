@@ -53,7 +53,7 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('divtype', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->houseid = 'primary_value';

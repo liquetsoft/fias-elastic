@@ -53,7 +53,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('normdoc', $map);
     }
 
-    public function testEtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity()
     {
         $entity = new stdClass();
         $entity->steadguid = 'primary_value';
