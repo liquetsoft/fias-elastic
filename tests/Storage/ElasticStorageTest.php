@@ -68,104 +68,131 @@ class ElasticStorageTest extends BaseCase
         $this->assertFalse($storage->supportsClass($key . '_test'));
     }
 
-    // /**
-    //  * Проверяет, что хранилище добавляет сущность.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // public function testInsert()
-    // {
-    //     $index = 'ElasticStorageTestEntity';
-    //
-    //     $entity = new ElasticStorageTestEntity();
-    //     $entity->id = $this->createFakeData()->word;
-    //     $entity->data = [$this->createFakeData()->word => $this->createFakeData()->word];
-    //
-    //     $entity1 = new ElasticStorageTestEntity();
-    //     $entity1->id = $this->createFakeData()->word;
-    //     $entity1->data = [$this->createFakeData()->word => $this->createFakeData()->word];
-    //
-    //     $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-    //     $client->expects($this->once())->method('bulk')->with($this->equalTo([
-    //         'body' => [
-    //             ['index' => ['_index' => $index, '_id' => $entity->id]],
-    //             $entity->data,
-    //             ['index' => ['_index' => $index, '_id' => $entity1->id]],
-    //             $entity1->data,
-    //         ],
-    //     ]));
-    //
-    //     $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
-    //     $provider->method('provide')->will($this->returnValue($client));
-    //
-    //     $storage = new ElasticStorage($provider);
-    //     $storage->start();
-    //     $storage->insert($entity);
-    //     $storage->insert($entity1);
-    //     $storage->stop();
-    // }
-    //
-    // /**
-    //  * Проверяет, что хранилище добавляет сущность указанными партиями.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // public function testInsertByOne()
-    // {
-    //     $index = 'ElasticStorageTestEntity';
-    //
-    //     $entity = new ElasticStorageTestEntity();
-    //     $entity->id = $this->createFakeData()->word;
-    //     $entity->data = [$this->createFakeData()->word => $this->createFakeData()->word];
-    //
-    //     $entity1 = new ElasticStorageTestEntity();
-    //     $entity1->id = $this->createFakeData()->word;
-    //     $entity1->data = [$this->createFakeData()->word => $this->createFakeData()->word];
-    //
-    //     $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-    //     $client->expects($this->at(0))->method('bulk')->with($this->equalTo([
-    //         'body' => [
-    //             ['index' => ['_index' => $index, '_id' => $entity->id]],
-    //             $entity->data,
-    //         ],
-    //     ]));
-    //     $client->expects($this->at(1))->method('bulk')->with($this->equalTo([
-    //         'body' => [
-    //             ['index' => ['_index' => $index, '_id' => $entity1->id]],
-    //             $entity1->data,
-    //         ],
-    //     ]));
-    //
-    //     $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
-    //     $provider->method('provide')->will($this->returnValue($client));
-    //
-    //     $storage = new ElasticStorage($provider, 1);
-    //     $storage->start();
-    //     $storage->insert($entity);
-    //     $storage->insert($entity1);
-    //     $storage->stop();
-    // }
-    //
-    // /**
-    //  * Проверяет, что исключение при добавлении документа будет перехвачено.
-    //  *
-    //  * @throws Throwable
-    //  */
-    // public function testInsertException()
-    // {
-    //     $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-    //     $client->method('bulk')->will($this->throwException(new RuntimeException));
-    //
-    //     $provider = $this->getMockBuilder(ClientProvider::class)->disableOriginalConstructor()->getMock();
-    //     $provider->method('provide')->will($this->returnValue($client));
-    //
-    //     $storage = new ElasticStorage($provider);
-    //
-    //     $this->expectException(StorageException::class);
-    //     $storage->start();
-    //     $storage->insert(new ElasticStorageTestEntity());
-    //     $storage->stop();
-    // }
+    /**
+     * Проверяет, что хранилище добавляет сущность.
+     *
+     * @throws Throwable
+     */
+    public function testInsert()
+    {
+        $entity = new ElasticStorageTestEntity();
+        $entity->setId($this->createFakeData()->word);
+        $entity->setPayload($this->createFakeData()->word);
+
+        $entity1 = new ElasticStorageTestEntity();
+        $entity1->setId($this->createFakeData()->word);
+        $entity1->setPayload($this->createFakeData()->word);
+
+        $client = $this->createClientMock();
+        $client->expects($this->once())->method('bulk')->with($this->equalTo([
+            'body' => [
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity->getId(),
+                    'payload' => $entity->getPayload(),
+                ],
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity1->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity1->getId(),
+                    'payload' => $entity1->getPayload(),
+                ],
+            ],
+        ]));
+        $provider = $this->createClientProviderMock($client);
+        $registry = $this->createRegistryMock();
+
+        $storage = new ElasticStorage($provider, $registry);
+        $storage->start();
+        $storage->insert($entity);
+        $storage->insert($entity1);
+        $storage->stop();
+    }
+
+    /**
+     * Проверяет, что хранилище добавляет сущность указанными партиями.
+     *
+     * @throws Throwable
+     */
+    public function testInsertByOne()
+    {
+        $entity = new ElasticStorageTestEntity();
+        $entity->setId($this->createFakeData()->word);
+        $entity->setPayload($this->createFakeData()->word);
+
+        $entity1 = new ElasticStorageTestEntity();
+        $entity1->setId($this->createFakeData()->word);
+        $entity1->setPayload($this->createFakeData()->word);
+
+        $client = $this->createClientMock();
+        $client->expects($this->at(0))->method('bulk')->with($this->equalTo([
+            'body' => [
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity->getId(),
+                    'payload' => $entity->getPayload(),
+                ],
+            ],
+        ]));
+        $client->expects($this->at(1))->method('bulk')->with($this->equalTo([
+            'body' => [
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity1->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity1->getId(),
+                    'payload' => $entity1->getPayload(),
+                ],
+            ],
+        ]));
+        $provider = $this->createClientProviderMock($client);
+        $registry = $this->createRegistryMock();
+
+        $storage = new ElasticStorage($provider, $registry, 1);
+        $storage->start();
+        $storage->insert($entity);
+        $storage->insert($entity1);
+        $storage->stop();
+    }
+
+    /**
+     * Проверяет, что исключение при добавлении документа будет перехвачено.
+     *
+     * @throws Throwable
+     */
+    public function testInsertException()
+    {
+        $client = $this->createClientMock();
+        $client->method('bulk')->will(
+            $this->throwException(new RuntimeException())
+        );
+        $provider = $this->createClientProviderMock($client);
+        $registry = $this->createRegistryMock();
+
+        $storage = new ElasticStorage($provider, $registry);
+
+        $this->expectException(StorageException::class);
+        $storage->start();
+        $storage->insert(new ElasticStorageTestEntity());
+        $storage->stop();
+    }
 
     /**
      * Проверяет, что хранилище удаляет сущность.
