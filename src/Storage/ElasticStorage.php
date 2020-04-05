@@ -8,7 +8,7 @@ use Elasticsearch\Client;
 use Liquetsoft\Fias\Component\Exception\StorageException;
 use Liquetsoft\Fias\Component\Storage\Storage;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
-use Liquetsoft\Fias\Elastic\EntityInterface;
+use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Throwable;
 
 /**
@@ -24,6 +24,13 @@ class ElasticStorage implements Storage
     private $clientProvider;
 
     /**
+     * Объект с описаниями индексов.
+     *
+     * @var IndexMapperRegistry
+     */
+    private $registry;
+
+    /**
      * Количество элементов для множественной вставки.
      *
      * @var int
@@ -33,17 +40,22 @@ class ElasticStorage implements Storage
     /**
      * Сохраненные в памяти данные для множественной вставки.
      *
-     * @var EntityInterface[]
+     * @var object[]
      */
     private $insertData = [];
 
     /**
-     * @param ClientProvider $clientProvider
-     * @param int            $insertBatch
+     * @param ClientProvider      $clientProvider
+     * @param IndexMapperRegistry $registry
+     * @param int                 $insertBatch
      */
-    public function __construct(ClientProvider $clientProvider, int $insertBatch = 1000)
-    {
+    public function __construct(
+        ClientProvider $clientProvider,
+        IndexMapperRegistry $registry,
+        int $insertBatch = 1000
+    ) {
         $this->clientProvider = $clientProvider;
+        $this->registry = $registry;
         $this->insertBatch = $insertBatch;
     }
 
@@ -67,7 +79,7 @@ class ElasticStorage implements Storage
      */
     public function supports(object $entity): bool
     {
-        return $this->supportsClass(get_class($entity));
+        return $this->registry->hasMapperForObject($entity);
     }
 
     /**
@@ -75,7 +87,7 @@ class ElasticStorage implements Storage
      */
     public function supportsClass(string $class): bool
     {
-        return is_subclass_of($class, EntityInterface::class);
+        return $this->registry->hasMapperForKey($class);
     }
 
     /**
@@ -83,7 +95,8 @@ class ElasticStorage implements Storage
      */
     public function insert(object $entity): void
     {
-        $this->insertData[] = $this->checkEntity($entity);
+        $this->insertData[] = $entity;
+
         if (count($this->insertData) >= $this->insertBatch) {
             $this->flushInsert();
         }
@@ -94,12 +107,11 @@ class ElasticStorage implements Storage
      */
     public function delete(object $entity): void
     {
-        $elasticEntity = $this->checkEntity($entity);
-
         try {
+            $mapper = $this->registry->getMapperForObject($entity);
             $this->getClient()->delete([
-                'index' => $elasticEntity->getElasticSearchIndex(),
-                'id' => $elasticEntity->getElasticSearchId(),
+                'index' => $mapper->getName(),
+                'id' => $mapper->extractPrimaryFromEntity($entity),
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
@@ -111,13 +123,12 @@ class ElasticStorage implements Storage
      */
     public function upsert(object $entity): void
     {
-        $elasticEntity = $this->checkEntity($entity);
-
         try {
+            $mapper = $this->registry->getMapperForObject($entity);
             $this->getClient()->index([
-                'index' => $elasticEntity->getElasticSearchIndex(),
-                'id' => $elasticEntity->getElasticSearchId(),
-                'body' => $elasticEntity->getElasticSearchData(),
+                'index' => $mapper->getName(),
+                'id' => $mapper->extractPrimaryFromEntity($entity),
+                'body' => $mapper->extractDataFromEntity($entity),
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
@@ -129,68 +140,15 @@ class ElasticStorage implements Storage
      */
     public function truncate(string $entityClassName): void
     {
-        $entity = $this->createEntityFromString($entityClassName);
-
         try {
+            $mapper = $this->registry->getMapperForKey($entityClassName);
             $this->getClient()->deleteByQuery([
-                'index' => $entity->getElasticSearchIndex(),
+                'index' => $mapper->getName(),
                 'body' => [],
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
-    }
-
-    /**
-     * Возвращает клиента из текущего провайдера клиента elasticsearch.
-     *
-     * @return Client
-     */
-    private function getClient(): Client
-    {
-        return $this->clientProvider->provide();
-    }
-
-    /**
-     * Создает сущность по имени класса или выбрасывает исключение.
-     *
-     * @param string $entityClassName
-     *
-     * @return EntityInterface
-     *
-     * @throws StorageException
-     */
-    private function createEntityFromString(string $entityClassName): EntityInterface
-    {
-        if (!class_exists($entityClassName)) {
-            throw new StorageException(sprintf('Class %s does not exist.', $entityClassName));
-        }
-
-        $entity = new $entityClassName();
-
-        if (!($entity instanceof EntityInterface)) {
-            throw new StorageException(sprintf('Class %s must implements %s.', $entityClassName, EntityInterface::class));
-        }
-
-        return $entity;
-    }
-
-    /**
-     * Возвращает сущность, если она реализует EntityInterface, или выбрасывает исключение.
-     *
-     * @param object $entity
-     *
-     * @return EntityInterface
-     *
-     * @throws StorageException
-     */
-    private function checkEntity(object $entity): EntityInterface
-    {
-        if (!($entity instanceof EntityInterface)) {
-            throw new StorageException(sprintf('Entity must implements %s interface.', EntityInterface::class));
-        }
-
-        return $entity;
     }
 
     /**
@@ -203,13 +161,14 @@ class ElasticStorage implements Storage
         $dataForQuery = [];
 
         foreach ($this->insertData as $item) {
+            $mapper = $this->registry->getMapperForObject($item);
             $dataForQuery[] = [
                 'index' => [
-                    '_index' => $item->getElasticSearchIndex(),
-                    '_id' => $item->getElasticSearchId(),
+                    '_index' => $mapper->getName(),
+                    '_id' => $mapper->extractPrimaryFromEntity($item),
                 ],
             ];
-            $dataForQuery[] = $item->getElasticSearchData();
+            $dataForQuery[] = $mapper->extractDataFromEntity($item);
         }
 
         $this->insertData = [];
@@ -223,5 +182,15 @@ class ElasticStorage implements Storage
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
+    }
+
+    /**
+     * Возвращает клиента из текущего провайдера клиента elasticsearch.
+     *
+     * @return Client
+     */
+    private function getClient(): Client
+    {
+        return $this->clientProvider->provide();
     }
 }
