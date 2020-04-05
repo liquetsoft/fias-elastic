@@ -47,4 +47,23 @@ class FlatTypeIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->fltypeid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+        $entity->shortname = $this->createFakeData()->word;
+
+        $mapper = new FlatTypeIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('fltypeid', $dataForElastic);
+        $this->assertSame($entity->fltypeid, $dataForElastic['fltypeid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertArrayHasKey('shortname', $dataForElastic);
+        $this->assertSame($entity->shortname, $dataForElastic['shortname']);
+    }
 }

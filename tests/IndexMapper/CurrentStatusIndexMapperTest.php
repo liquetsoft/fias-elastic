@@ -46,4 +46,20 @@ class CurrentStatusIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->curentstid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+
+        $mapper = new CurrentStatusIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('curentstid', $dataForElastic);
+        $this->assertSame($entity->curentstid, $dataForElastic['curentstid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+    }
 }

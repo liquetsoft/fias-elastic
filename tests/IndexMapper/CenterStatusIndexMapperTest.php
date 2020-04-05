@@ -46,4 +46,20 @@ class CenterStatusIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->centerstid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+
+        $mapper = new CenterStatusIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('centerstid', $dataForElastic);
+        $this->assertSame($entity->centerstid, $dataForElastic['centerstid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+    }
 }

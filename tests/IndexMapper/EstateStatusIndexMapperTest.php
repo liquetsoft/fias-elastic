@@ -46,4 +46,20 @@ class EstateStatusIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->eststatid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+
+        $mapper = new EstateStatusIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('eststatid', $dataForElastic);
+        $this->assertSame($entity->eststatid, $dataForElastic['eststatid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+    }
 }

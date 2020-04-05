@@ -46,4 +46,20 @@ class IntervalStatusIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->intvstatid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+
+        $mapper = new IntervalStatusIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('intvstatid', $dataForElastic);
+        $this->assertSame($entity->intvstatid, $dataForElastic['intvstatid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+    }
 }

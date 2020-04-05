@@ -39,6 +39,7 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateGetPrimaryNameTest($class->addMethod('testGetPrimaryName'), $descriptor);
         $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
         $this->decorateExtractPrimaryFromEntityTest($class->addMethod('testEtractPrimaryFromEntity'), $descriptor);
+        $this->decorateExtractDataFromEntityTest($class->addMethod('testExtractDataFromEntity'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -54,6 +55,7 @@ class MapperTestGenerator extends AbstractGenerator
     {
         $namespace->addUse('Liquetsoft\\Fias\\Elastic\\Tests\\BaseCase');
         $namespace->addUse('stdClass');
+        $namespace->addUse('DateTime');
         $namespace->addUse($baseNamespace . '\\' . $baseName);
     }
 
@@ -80,9 +82,8 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateNameTest(Method $method, EntityDescriptor $descriptor): void
     {
-        $baseName = $this->unifyClassName($descriptor->getName());
-        $name = $baseName . 'IndexMapper';
-        $lowerName = strtolower($baseName);
+        $name = $this->getTestedObjectName($descriptor);
+        $lowerName = strtolower($descriptor->getName());
 
         $method->addBody("\$mapper = new $name();");
         $method->addBody('');
@@ -97,8 +98,7 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateMapTest(Method $method, EntityDescriptor $descriptor): void
     {
-        $baseName = $this->unifyClassName($descriptor->getName());
-        $name = $baseName . 'IndexMapper';
+        $name = $this->getTestedObjectName($descriptor);
 
         $method->addBody("\$mapper = new $name();");
         $method->addBody('$map = $mapper->getMappingProperties();');
@@ -118,8 +118,7 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateGetPrimaryNameTest(Method $method, EntityDescriptor $descriptor): void
     {
-        $baseName = $this->unifyClassName($descriptor->getName());
-        $name = $baseName . 'IndexMapper';
+        $name = $this->getTestedObjectName($descriptor);
 
         $method->addBody("\$mapper = new $name();");
         $method->addBody('');
@@ -141,8 +140,7 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateExtractPrimaryFromEntityTest(Method $method, EntityDescriptor $descriptor): void
     {
-        $baseName = $this->unifyClassName($descriptor->getName());
-        $entityName = $baseName . 'IndexMapper';
+        $entityName = $this->getTestedObjectName($descriptor);
 
         foreach ($descriptor->getFields() as $field) {
             if ($field->isPrimary()) {
@@ -157,5 +155,57 @@ class MapperTestGenerator extends AbstractGenerator
         $method->addBody("\$mapper = new $entityName();");
         $method->addBody('');
         $method->addBody('$this->assertSame(\'primary_value\', $mapper->extractPrimaryFromEntity($entity));');
+    }
+
+    /**
+     * Создает метод для проверки того, что маппер получит данные из объекта для записи.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decorateExtractDataFromEntityTest(Method $method, EntityDescriptor $descriptor): void
+    {
+        $entityName = $this->getTestedObjectName($descriptor);
+
+        $method->addBody('$entity = new stdClass();');
+        foreach ($descriptor->getFields() as $field) {
+            $fieldName = $this->unifyColumnName($field->getName());
+            if ($field->getSubType() === 'date') {
+                $method->addBody("\$entity->{$fieldName} = new DateTime();");
+            } elseif ($field->getType() === 'int') {
+                $method->addBody("\$entity->{$fieldName} = \$this->createFakeData()->numberBetween(1, 100000);");
+            } else {
+                $method->addBody("\$entity->{$fieldName} = \$this->createFakeData()->word;");
+            }
+        }
+
+        $method->addBody('');
+        $method->addBody("\$mapper = new $entityName();");
+        $method->addBody('$dataForElastic = $mapper->extractDataFromEntity($entity);');
+        $method->addBody('');
+        $method->addBody('$this->assertIsArray($dataForElastic);');
+        foreach ($descriptor->getFields() as $field) {
+            $fieldName = $this->unifyColumnName($field->getName());
+            $method->addBody("\$this->assertArrayHasKey('{$fieldName}', \$dataForElastic);");
+            if ($field->getSubType() === 'date') {
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}->format('Y-m-d\TH:i:s'), \$dataForElastic['{$fieldName}']);");
+            } else {
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}']);");
+            }
+        }
+    }
+
+    /**
+     * Возвращает имя класса для тестов.
+     *
+     * @param EntityDescriptor $descriptor
+     *
+     * @return string
+     */
+    private function getTestedObjectName(EntityDescriptor $descriptor): string
+    {
+        $baseName = $this->unifyClassName($descriptor->getName());
+
+        return $baseName . 'IndexMapper';
     }
 }

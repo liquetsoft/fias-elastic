@@ -48,4 +48,26 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->kodtst = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->level = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->socrname = $this->createFakeData()->word;
+        $entity->scname = $this->createFakeData()->word;
+
+        $mapper = new AddressObjectTypeIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('kodtst', $dataForElastic);
+        $this->assertSame($entity->kodtst, $dataForElastic['kodtst']);
+        $this->assertArrayHasKey('level', $dataForElastic);
+        $this->assertSame($entity->level, $dataForElastic['level']);
+        $this->assertArrayHasKey('socrname', $dataForElastic);
+        $this->assertSame($entity->socrname, $dataForElastic['socrname']);
+        $this->assertArrayHasKey('scname', $dataForElastic);
+        $this->assertSame($entity->scname, $dataForElastic['scname']);
+    }
 }

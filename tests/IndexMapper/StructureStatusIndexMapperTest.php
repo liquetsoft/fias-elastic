@@ -47,4 +47,23 @@ class StructureStatusIndexMapperTest extends BaseCase
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->strstatid = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->name = $this->createFakeData()->word;
+        $entity->shortname = $this->createFakeData()->word;
+
+        $mapper = new StructureStatusIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('strstatid', $dataForElastic);
+        $this->assertSame($entity->strstatid, $dataForElastic['strstatid']);
+        $this->assertArrayHasKey('name', $dataForElastic);
+        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertArrayHasKey('shortname', $dataForElastic);
+        $this->assertSame($entity->shortname, $dataForElastic['shortname']);
+    }
 }

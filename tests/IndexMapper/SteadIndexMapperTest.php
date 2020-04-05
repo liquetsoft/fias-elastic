@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
+use DateTime;
 use Liquetsoft\Fias\Elastic\IndexMapper\SteadIndexMapper;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
@@ -60,5 +61,66 @@ class SteadIndexMapperTest extends BaseCase
         $mapper = new SteadIndexMapper();
 
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
+    }
+
+    public function testExtractDataFromEntity()
+    {
+        $entity = new stdClass();
+        $entity->steadguid = $this->createFakeData()->word;
+        $entity->number = $this->createFakeData()->word;
+        $entity->regioncode = $this->createFakeData()->word;
+        $entity->postalcode = $this->createFakeData()->word;
+        $entity->ifnsfl = $this->createFakeData()->word;
+        $entity->ifnsul = $this->createFakeData()->word;
+        $entity->okato = $this->createFakeData()->word;
+        $entity->oktmo = $this->createFakeData()->word;
+        $entity->parentguid = $this->createFakeData()->word;
+        $entity->steadid = $this->createFakeData()->word;
+        $entity->operstatus = $this->createFakeData()->word;
+        $entity->startdate = new DateTime();
+        $entity->enddate = new DateTime();
+        $entity->updatedate = new DateTime();
+        $entity->livestatus = $this->createFakeData()->word;
+        $entity->divtype = $this->createFakeData()->word;
+        $entity->normdoc = $this->createFakeData()->word;
+
+        $mapper = new SteadIndexMapper();
+        $dataForElastic = $mapper->extractDataFromEntity($entity);
+
+        $this->assertIsArray($dataForElastic);
+        $this->assertArrayHasKey('steadguid', $dataForElastic);
+        $this->assertSame($entity->steadguid, $dataForElastic['steadguid']);
+        $this->assertArrayHasKey('number', $dataForElastic);
+        $this->assertSame($entity->number, $dataForElastic['number']);
+        $this->assertArrayHasKey('regioncode', $dataForElastic);
+        $this->assertSame($entity->regioncode, $dataForElastic['regioncode']);
+        $this->assertArrayHasKey('postalcode', $dataForElastic);
+        $this->assertSame($entity->postalcode, $dataForElastic['postalcode']);
+        $this->assertArrayHasKey('ifnsfl', $dataForElastic);
+        $this->assertSame($entity->ifnsfl, $dataForElastic['ifnsfl']);
+        $this->assertArrayHasKey('ifnsul', $dataForElastic);
+        $this->assertSame($entity->ifnsul, $dataForElastic['ifnsul']);
+        $this->assertArrayHasKey('okato', $dataForElastic);
+        $this->assertSame($entity->okato, $dataForElastic['okato']);
+        $this->assertArrayHasKey('oktmo', $dataForElastic);
+        $this->assertSame($entity->oktmo, $dataForElastic['oktmo']);
+        $this->assertArrayHasKey('parentguid', $dataForElastic);
+        $this->assertSame($entity->parentguid, $dataForElastic['parentguid']);
+        $this->assertArrayHasKey('steadid', $dataForElastic);
+        $this->assertSame($entity->steadid, $dataForElastic['steadid']);
+        $this->assertArrayHasKey('operstatus', $dataForElastic);
+        $this->assertSame($entity->operstatus, $dataForElastic['operstatus']);
+        $this->assertArrayHasKey('startdate', $dataForElastic);
+        $this->assertSame($entity->startdate->format('Y-m-d\TH:i:s'), $dataForElastic['startdate']);
+        $this->assertArrayHasKey('enddate', $dataForElastic);
+        $this->assertSame($entity->enddate->format('Y-m-d\TH:i:s'), $dataForElastic['enddate']);
+        $this->assertArrayHasKey('updatedate', $dataForElastic);
+        $this->assertSame($entity->updatedate->format('Y-m-d\TH:i:s'), $dataForElastic['updatedate']);
+        $this->assertArrayHasKey('livestatus', $dataForElastic);
+        $this->assertSame($entity->livestatus, $dataForElastic['livestatus']);
+        $this->assertArrayHasKey('divtype', $dataForElastic);
+        $this->assertSame($entity->divtype, $dataForElastic['divtype']);
+        $this->assertArrayHasKey('normdoc', $dataForElastic);
+        $this->assertSame($entity->normdoc, $dataForElastic['normdoc']);
     }
 }
