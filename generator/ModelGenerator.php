@@ -36,7 +36,6 @@ class ModelGenerator extends AbstractGenerator
         $class = $namespace->addClass($name);
         $this->decorateClass($class, $descriptor);
 
-        $primary = null;
         foreach ($descriptor->getFields() as $field) {
             $name = $this->unifyColumnName($field->getName());
             $setter = 'set' . ucfirst($name);
@@ -45,10 +44,6 @@ class ModelGenerator extends AbstractGenerator
             $this->decorateProperty($class->addProperty($name), $field);
             $this->decorateSetter($class->addMethod($setter), $field);
             $this->decorateGetter($class->addMethod($getter), $field);
-
-            if ($field->isPrimary()) {
-                $primary = $field;
-            }
         }
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
