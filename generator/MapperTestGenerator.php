@@ -188,9 +188,11 @@ class MapperTestGenerator extends AbstractGenerator
             $fieldName = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$fieldName}', \$dataForElastic);");
             if ($field->getSubType() === 'date') {
-                $method->addBody("\$this->assertSame(\$entity->{$fieldName}->format('Y-m-d\TH:i:s'), \$dataForElastic['{$fieldName}']);");
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}->format('Y-m-d\TH:i:s'), \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
+            } elseif ($field->isPrimary() || $field->isIndex()) {
+                $method->addBody("\$this->assertSame((string) \$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             } else {
-                $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}']);");
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             }
         }
     }

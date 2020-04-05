@@ -58,8 +58,8 @@ class OperationStatusIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('operstatid', $dataForElastic);
-        $this->assertSame($entity->operstatid, $dataForElastic['operstatid']);
+        $this->assertSame((string) $entity->operstatid, $dataForElastic['operstatid'], 'Test operstatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 }

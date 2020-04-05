@@ -81,30 +81,30 @@ class RoomIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('roomid', $dataForElastic);
-        $this->assertSame($entity->roomid, $dataForElastic['roomid']);
+        $this->assertSame((string) $entity->roomid, $dataForElastic['roomid'], 'Test roomid field conversion.');
         $this->assertArrayHasKey('roomguid', $dataForElastic);
-        $this->assertSame($entity->roomguid, $dataForElastic['roomguid']);
+        $this->assertSame($entity->roomguid, $dataForElastic['roomguid'], 'Test roomguid field conversion.');
         $this->assertArrayHasKey('houseguid', $dataForElastic);
-        $this->assertSame($entity->houseguid, $dataForElastic['houseguid']);
+        $this->assertSame($entity->houseguid, $dataForElastic['houseguid'], 'Test houseguid field conversion.');
         $this->assertArrayHasKey('regioncode', $dataForElastic);
-        $this->assertSame($entity->regioncode, $dataForElastic['regioncode']);
+        $this->assertSame($entity->regioncode, $dataForElastic['regioncode'], 'Test regioncode field conversion.');
         $this->assertArrayHasKey('flatnumber', $dataForElastic);
-        $this->assertSame($entity->flatnumber, $dataForElastic['flatnumber']);
+        $this->assertSame($entity->flatnumber, $dataForElastic['flatnumber'], 'Test flatnumber field conversion.');
         $this->assertArrayHasKey('flattype', $dataForElastic);
-        $this->assertSame($entity->flattype, $dataForElastic['flattype']);
+        $this->assertSame($entity->flattype, $dataForElastic['flattype'], 'Test flattype field conversion.');
         $this->assertArrayHasKey('postalcode', $dataForElastic);
-        $this->assertSame($entity->postalcode, $dataForElastic['postalcode']);
+        $this->assertSame($entity->postalcode, $dataForElastic['postalcode'], 'Test postalcode field conversion.');
         $this->assertArrayHasKey('startdate', $dataForElastic);
-        $this->assertSame($entity->startdate->format('Y-m-d\TH:i:s'), $dataForElastic['startdate']);
+        $this->assertSame($entity->startdate->format('Y-m-d\TH:i:s'), $dataForElastic['startdate'], 'Test startdate field conversion.');
         $this->assertArrayHasKey('enddate', $dataForElastic);
-        $this->assertSame($entity->enddate->format('Y-m-d\TH:i:s'), $dataForElastic['enddate']);
+        $this->assertSame($entity->enddate->format('Y-m-d\TH:i:s'), $dataForElastic['enddate'], 'Test enddate field conversion.');
         $this->assertArrayHasKey('updatedate', $dataForElastic);
-        $this->assertSame($entity->updatedate->format('Y-m-d\TH:i:s'), $dataForElastic['updatedate']);
+        $this->assertSame($entity->updatedate->format('Y-m-d\TH:i:s'), $dataForElastic['updatedate'], 'Test updatedate field conversion.');
         $this->assertArrayHasKey('operstatus', $dataForElastic);
-        $this->assertSame($entity->operstatus, $dataForElastic['operstatus']);
+        $this->assertSame($entity->operstatus, $dataForElastic['operstatus'], 'Test operstatus field conversion.');
         $this->assertArrayHasKey('livestatus', $dataForElastic);
-        $this->assertSame($entity->livestatus, $dataForElastic['livestatus']);
+        $this->assertSame($entity->livestatus, $dataForElastic['livestatus'], 'Test livestatus field conversion.');
         $this->assertArrayHasKey('normdoc', $dataForElastic);
-        $this->assertSame($entity->normdoc, $dataForElastic['normdoc']);
+        $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
     }
 }

@@ -60,10 +60,10 @@ class StructureStatusIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('strstatid', $dataForElastic);
-        $this->assertSame($entity->strstatid, $dataForElastic['strstatid']);
+        $this->assertSame((string) $entity->strstatid, $dataForElastic['strstatid'], 'Test strstatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
         $this->assertArrayHasKey('shortname', $dataForElastic);
-        $this->assertSame($entity->shortname, $dataForElastic['shortname']);
+        $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 }

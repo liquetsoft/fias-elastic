@@ -62,12 +62,12 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('kodtst', $dataForElastic);
-        $this->assertSame($entity->kodtst, $dataForElastic['kodtst']);
+        $this->assertSame((string) $entity->kodtst, $dataForElastic['kodtst'], 'Test kodtst field conversion.');
         $this->assertArrayHasKey('level', $dataForElastic);
-        $this->assertSame($entity->level, $dataForElastic['level']);
+        $this->assertSame($entity->level, $dataForElastic['level'], 'Test level field conversion.');
         $this->assertArrayHasKey('socrname', $dataForElastic);
-        $this->assertSame($entity->socrname, $dataForElastic['socrname']);
+        $this->assertSame($entity->socrname, $dataForElastic['socrname'], 'Test socrname field conversion.');
         $this->assertArrayHasKey('scname', $dataForElastic);
-        $this->assertSame($entity->scname, $dataForElastic['scname']);
+        $this->assertSame($entity->scname, $dataForElastic['scname'], 'Test scname field conversion.');
     }
 }

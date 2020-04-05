@@ -58,8 +58,8 @@ class IntervalStatusIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('intvstatid', $dataForElastic);
-        $this->assertSame($entity->intvstatid, $dataForElastic['intvstatid']);
+        $this->assertSame((string) $entity->intvstatid, $dataForElastic['intvstatid'], 'Test intvstatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 }

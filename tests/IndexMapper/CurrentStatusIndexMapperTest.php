@@ -58,8 +58,8 @@ class CurrentStatusIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('curentstid', $dataForElastic);
-        $this->assertSame($entity->curentstid, $dataForElastic['curentstid']);
+        $this->assertSame((string) $entity->curentstid, $dataForElastic['curentstid'], 'Test curentstid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 }

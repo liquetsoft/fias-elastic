@@ -60,10 +60,10 @@ class RoomTypeIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('rmtypeid', $dataForElastic);
-        $this->assertSame($entity->rmtypeid, $dataForElastic['rmtypeid']);
+        $this->assertSame((string) $entity->rmtypeid, $dataForElastic['rmtypeid'], 'Test rmtypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
         $this->assertArrayHasKey('shortname', $dataForElastic);
-        $this->assertSame($entity->shortname, $dataForElastic['shortname']);
+        $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 }

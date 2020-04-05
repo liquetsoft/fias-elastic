@@ -65,14 +65,14 @@ class NormativeDocumentIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('normdocid', $dataForElastic);
-        $this->assertSame($entity->normdocid, $dataForElastic['normdocid']);
+        $this->assertSame((string) $entity->normdocid, $dataForElastic['normdocid'], 'Test normdocid field conversion.');
         $this->assertArrayHasKey('docname', $dataForElastic);
-        $this->assertSame($entity->docname, $dataForElastic['docname']);
+        $this->assertSame($entity->docname, $dataForElastic['docname'], 'Test docname field conversion.');
         $this->assertArrayHasKey('docdate', $dataForElastic);
-        $this->assertSame($entity->docdate->format('Y-m-d\TH:i:s'), $dataForElastic['docdate']);
+        $this->assertSame($entity->docdate->format('Y-m-d\TH:i:s'), $dataForElastic['docdate'], 'Test docdate field conversion.');
         $this->assertArrayHasKey('docnum', $dataForElastic);
-        $this->assertSame($entity->docnum, $dataForElastic['docnum']);
+        $this->assertSame($entity->docnum, $dataForElastic['docnum'], 'Test docnum field conversion.');
         $this->assertArrayHasKey('doctype', $dataForElastic);
-        $this->assertSame($entity->doctype, $dataForElastic['doctype']);
+        $this->assertSame($entity->doctype, $dataForElastic['doctype'], 'Test doctype field conversion.');
     }
 }

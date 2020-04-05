@@ -58,8 +58,8 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('ndtypeid', $dataForElastic);
-        $this->assertSame($entity->ndtypeid, $dataForElastic['ndtypeid']);
+        $this->assertSame((string) $entity->ndtypeid, $dataForElastic['ndtypeid'], 'Test ndtypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 }

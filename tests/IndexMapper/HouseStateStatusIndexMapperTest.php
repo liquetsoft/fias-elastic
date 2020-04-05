@@ -58,8 +58,8 @@ class HouseStateStatusIndexMapperTest extends BaseCase
 
         $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('housestid', $dataForElastic);
-        $this->assertSame($entity->housestid, $dataForElastic['housestid']);
+        $this->assertSame((string) $entity->housestid, $dataForElastic['housestid'], 'Test housestid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
-        $this->assertSame($entity->name, $dataForElastic['name']);
+        $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 }
