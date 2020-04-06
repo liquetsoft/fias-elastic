@@ -68,15 +68,15 @@ class SteadIndexMapper extends IndexMapperAbstract
             ],
             'startdate' => [
                 'type' => 'date',
-                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+                'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'enddate' => [
                 'type' => 'date',
-                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+                'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'updatedate' => [
                 'type' => 'date',
-                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+                'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'livestatus' => [
                 'type' => 'text',

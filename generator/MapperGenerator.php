@@ -172,7 +172,7 @@ class MapperGenerator extends AbstractGenerator
     private function convertFieldTypeToElasticFormat(EntityField $field): ?string
     {
         if ($field->getSubType() === 'date') {
-            return "'yyyy-mm-dd\'T\'HH:mm:ss'";
+            return "'yyyy-MM-dd\'T\'HH:mm:ss'";
         }
 
         return null;

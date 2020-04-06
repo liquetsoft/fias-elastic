@@ -41,7 +41,7 @@ class NormativeDocumentIndexMapper extends IndexMapperAbstract
             ],
             'docdate' => [
                 'type' => 'date',
-                'format' => 'yyyy-mm-dd\'T\'HH:mm:ss',
+                'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'docnum' => [
                 'type' => 'text',
