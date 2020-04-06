@@ -164,26 +164,57 @@ class ElasticStorage implements Storage
     private function flushInsert(): void
     {
         try {
-            $dataForQuery = [];
-            foreach ($this->insertData as $item) {
-                $mapper = $this->registry->getMapperForObject($item);
-                $dataForQuery[] = [
-                    'index' => [
-                        '_index' => $mapper->getName(),
-                        '_id' => $mapper->extractPrimaryFromEntity($item),
-                    ],
-                ];
-                $dataForQuery[] = $mapper->extractDataFromEntity($item);
-            }
-
-            $this->insertData = [];
-
-            if (!empty($dataForQuery)) {
-                $this->getClient()->bulk(['body' => $dataForQuery]);
-            }
+            $this->runBulkInsert();
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
+    }
+
+    /**
+     * Запускает запрос на множественную вставку данных в elasticsearch.
+     *
+     * @throws StorageException
+     */
+    private function runBulkInsert(): void
+    {
+        $dataForQuery = $this->convertInsertDataForQuery($this->insertData);
+        $this->insertData = [];
+
+        if (empty($dataForQuery)) {
+            return;
+        }
+
+        $res = $this->getClient()->bulk(['body' => $dataForQuery]);
+
+        if (!empty($res['error'])) {
+            throw new StorageException(
+                'Error while bulk insert: ' . json_encode($res['items'])
+            );
+        }
+    }
+
+    /**
+     * Преобразует данные для вставки в elasticsearch.
+     *
+     * @param array $insertData
+     *
+     * @return array
+     */
+    private function convertInsertDataForQuery(array $insertData): array
+    {
+        $dataForQuery = [];
+        foreach ($this->insertData as $item) {
+            $mapper = $this->registry->getMapperForObject($item);
+            $dataForQuery[] = [
+                'index' => [
+                    '_index' => $mapper->getName(),
+                    '_id' => $mapper->extractPrimaryFromEntity($item),
+                ],
+            ];
+            $dataForQuery[] = $mapper->extractDataFromEntity($item);
+        }
+
+        return $dataForQuery;
     }
 
     /**
