@@ -144,7 +144,12 @@ class ElasticStorage implements Storage
             $mapper = $this->registry->getMapperForKey($entityClassName);
             $this->getClient()->deleteByQuery([
                 'index' => $mapper->getName(),
-                'body' => [],
+                'ignore_unavailable' => true,
+                'body' => [
+                    'query' => [
+                        'match_all' => (object) [],
+                    ],
+                ],
             ]);
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
@@ -158,27 +163,24 @@ class ElasticStorage implements Storage
      */
     private function flushInsert(): void
     {
-        $dataForQuery = [];
-
-        foreach ($this->insertData as $item) {
-            $mapper = $this->registry->getMapperForObject($item);
-            $dataForQuery[] = [
-                'index' => [
-                    '_index' => $mapper->getName(),
-                    '_id' => $mapper->extractPrimaryFromEntity($item),
-                ],
-            ];
-            $dataForQuery[] = $mapper->extractDataFromEntity($item);
-        }
-
-        $this->insertData = [];
-
-        if (empty($dataForQuery)) {
-            return;
-        }
-
         try {
-            $this->getClient()->bulk(['body' => $dataForQuery]);
+            $dataForQuery = [];
+            foreach ($this->insertData as $item) {
+                $mapper = $this->registry->getMapperForObject($item);
+                $dataForQuery[] = [
+                    'index' => [
+                        '_index' => $mapper->getName(),
+                        '_id' => $mapper->extractPrimaryFromEntity($item),
+                    ],
+                ];
+                $dataForQuery[] = $mapper->extractDataFromEntity($item);
+            }
+
+            $this->insertData = [];
+
+            if (!empty($dataForQuery)) {
+                $this->getClient()->bulk(['body' => $dataForQuery]);
+            }
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
