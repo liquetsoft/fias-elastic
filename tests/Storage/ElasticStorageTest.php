@@ -300,7 +300,12 @@ class ElasticStorageTest extends BaseCase
             $this->equalTo(
                 [
                     'index' => 'ElasticStorageTestEntity',
-                    'body' => [],
+                    'ignore_unavailable' => true,
+                    'body' => [
+                        'query' => [
+                            'match_all' => (object) [],
+                        ],
+                    ],
                 ]
             )
         );
