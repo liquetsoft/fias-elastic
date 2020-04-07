@@ -38,4 +38,13 @@ interface IndexBuilder
      * @throws IndexBuilderException
      */
     public function open(IndexMapperInterface $indexMapper): void;
+
+    /**
+     * Обновляет индекс.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @throws IndexBuilderException
+     */
+    public function refresh(IndexMapperInterface $indexMapper): void;
 }

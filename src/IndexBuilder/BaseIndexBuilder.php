@@ -93,6 +93,21 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
+     * @inheritDoc
+     */
+    public function refresh(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->refresh([
+                'index' => $indexMapper->getName(),
+                'ignore_unavailable' => true,
+            ]);
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
      * Возвращает правду, если указанный индекс существует в elasticsearch.
      *
      * @param IndexMapperInterface $indexMapper
