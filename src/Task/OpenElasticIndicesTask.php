@@ -10,9 +10,9 @@ use Liquetsoft\Fias\Elastic\IndexBuilder\IndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 
 /**
- * Операция, которая создает индексы, если они еще не созданы.
+ * Операция, которая помечает все индексы открытыми для записи.
  */
-class CreateElasticIndexesTask implements Task
+class OpenElasticIndicesTask implements Task
 {
     /**
      * @var IndexMapperRegistry
@@ -42,7 +42,7 @@ class CreateElasticIndexesTask implements Task
         $mappers = $this->registry->getAllMappers();
 
         foreach ($mappers as $mapper) {
-            $this->builder->save($mapper);
+            $this->builder->open($mapper);
         }
     }
 }
