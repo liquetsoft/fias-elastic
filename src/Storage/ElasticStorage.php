@@ -8,6 +8,8 @@ use Elasticsearch\Client;
 use Liquetsoft\Fias\Component\Exception\StorageException;
 use Liquetsoft\Fias\Component\Storage\Storage;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
+use Liquetsoft\Fias\Elastic\Exception\IndexMapperException;
+use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Throwable;
 
@@ -38,11 +40,11 @@ class ElasticStorage implements Storage
     private $insertBatch;
 
     /**
-     * Сохраненные в памяти данные для множественной вставки.
+     * Данные операций для множественной отправки.
      *
-     * @var object[]
+     * @var array<string, array>
      */
-    private $insertData = [];
+    private $bulkOperations = [];
 
     /**
      * @param ClientProvider      $clientProvider
@@ -71,7 +73,7 @@ class ElasticStorage implements Storage
      */
     public function stop(): void
     {
-        $this->flushInsert();
+        $this->flushBulk();
     }
 
     /**
@@ -95,11 +97,7 @@ class ElasticStorage implements Storage
      */
     public function insert(object $entity): void
     {
-        $this->insertData[] = $entity;
-
-        if (count($this->insertData) >= $this->insertBatch) {
-            $this->flushInsert();
-        }
+        $this->addBulkOperation('index', $entity);
     }
 
     /**
@@ -107,15 +105,7 @@ class ElasticStorage implements Storage
      */
     public function delete(object $entity): void
     {
-        try {
-            $mapper = $this->registry->getMapperForObject($entity);
-            $this->getClient()->delete([
-                'index' => $mapper->getName(),
-                'id' => $mapper->extractPrimaryFromEntity($entity),
-            ]);
-        } catch (Throwable $e) {
-            throw new StorageException($e->getMessage(), 0, $e);
-        }
+        $this->addBulkOperation('delete', $entity);
     }
 
     /**
@@ -123,16 +113,7 @@ class ElasticStorage implements Storage
      */
     public function upsert(object $entity): void
     {
-        try {
-            $mapper = $this->registry->getMapperForObject($entity);
-            $this->getClient()->index([
-                'index' => $mapper->getName(),
-                'id' => $mapper->extractPrimaryFromEntity($entity),
-                'body' => $mapper->extractDataFromEntity($entity),
-            ]);
-        } catch (Throwable $e) {
-            throw new StorageException($e->getMessage(), 0, $e);
-        }
+        $this->addBulkOperation('index', $entity);
     }
 
     /**
@@ -157,34 +138,59 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * Отправляет накопленный набор данных в elastic search.
+     * Добавляет операцию с объектом для множественной отправки команд одним запросом.
+     *
+     * @param string $operation
+     * @param object $item
      *
      * @throws StorageException
      */
-    private function flushInsert(): void
+    private function addBulkOperation(string $operation, object $item): void
+    {
+        $this->bulkOperations[$operation][] = $item;
+
+        $itemsCount = array_reduce($this->bulkOperations, function (int $carry, array $operationArray): int {
+            $carry += count($operationArray);
+
+            return $carry;
+        }, 0);
+
+        if ($itemsCount >= $this->insertBatch) {
+            $this->flushBulk();
+        }
+    }
+
+    /**
+     * Отправляет все данные в одном множественном запросе.
+     *
+     * @throws StorageException
+     */
+    private function flushBulk(): void
     {
         try {
-            $this->runBulkInsert();
+            $this->runBulkQuery();
+            $this->bulkOperations = [];
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
     }
 
     /**
-     * Запускает запрос на множественную вставку данных в elasticsearch.
+     * Непосредственная отправка запроса на применение множества операций.
      *
+     * @throws IndexMapperException
+     * @throws IndexMapperRegistryException
      * @throws StorageException
      */
-    private function runBulkInsert(): void
+    private function runBulkQuery(): void
     {
-        $dataForQuery = $this->convertInsertDataForQuery($this->insertData);
-        $this->insertData = [];
+        $bulkQuery = $this->convertBulkOperationsToBulkQuery($this->bulkOperations);
 
-        if (empty($dataForQuery)) {
+        if (empty($bulkQuery)) {
             return;
         }
 
-        $res = $this->getClient()->bulk(['body' => $dataForQuery]);
+        $res = $this->getClient()->bulk(['body' => $bulkQuery]);
 
         if (!empty($res['error'])) {
             throw new StorageException(
@@ -194,27 +200,64 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * Преобразует данные для вставки в elasticsearch.
+     * Конвертирует операции в массив для отправки запроса.
      *
-     * @param array $insertData
+     * @param array $operations
      *
      * @return array
+     *
+     * @throws IndexMapperRegistryException
+     * @throws IndexMapperException
      */
-    private function convertInsertDataForQuery(array $insertData): array
+    private function convertBulkOperationsToBulkQuery(array $operations): array
     {
-        $dataForQuery = [];
-        foreach ($this->insertData as $item) {
-            $mapper = $this->registry->getMapperForObject($item);
-            $dataForQuery[] = [
-                'index' => [
-                    '_index' => $mapper->getName(),
-                    '_id' => $mapper->extractPrimaryFromEntity($item),
-                ],
-            ];
-            $dataForQuery[] = $mapper->extractDataFromEntity($item);
+        $query = [];
+        foreach ($operations as $operation => $objects) {
+            foreach ($objects as $object) {
+                $query = array_merge($query, $this->createOperationArray($operation, $object));
+            }
         }
 
-        return $dataForQuery;
+        return $query;
+    }
+
+    /**
+     * Создает массив для конкретной операции над объектом.
+     *
+     * @param string $operation
+     * @param object $object
+     *
+     * @return array
+     *
+     * @throws IndexMapperRegistryException
+     * @throws IndexMapperException
+     */
+    private function createOperationArray(string $operation, object $object): array
+    {
+        $operationArray = [];
+
+        $mapper = $this->registry->getMapperForObject($object);
+        $index = $mapper->getName();
+        $id = $mapper->extractPrimaryFromEntity($object);
+
+        if ($operation === 'delete') {
+            $operationArray[] = [
+                'delete' => [
+                    '_index' => $index,
+                    '_id' => $id,
+                ],
+            ];
+        } else {
+            $operationArray[] = [
+                $operation => [
+                    '_index' => $index,
+                    '_id' => $id,
+                ],
+            ];
+            $operationArray[] = $mapper->extractDataFromEntity($object);
+        }
+
+        return $operationArray;
     }
 
     /**

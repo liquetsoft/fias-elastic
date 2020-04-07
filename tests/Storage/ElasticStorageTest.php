@@ -11,6 +11,7 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Storage\ElasticStorage;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
 use stdClass;
 use Throwable;
@@ -203,14 +204,16 @@ class ElasticStorageTest extends BaseCase
     {
         $entity = new ElasticStorageTestEntity();
         $client = $this->createClientMock();
-        $client->expects($this->once())->method('delete')->with(
-            $this->equalTo(
+        $client->expects($this->once())->method('bulk')->with($this->equalTo([
+            'body' => [
                 [
-                    'index' => 'ElasticStorageTestEntity',
-                    'id' => 'ElasticStorageTestEntity_id',
-                ]
-            )
-        );
+                    'delete' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity->getId(),
+                    ],
+                ],
+            ],
+        ]));
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
@@ -228,7 +231,7 @@ class ElasticStorageTest extends BaseCase
     public function testDeleteException()
     {
         $client = $this->createClientMock();
-        $client->method('delete')->will(
+        $client->method('bulk')->will(
             $this->throwException(new RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
@@ -239,6 +242,7 @@ class ElasticStorageTest extends BaseCase
         $this->expectException(StorageException::class);
         $storage->start();
         $storage->delete(new ElasticStorageTestEntity());
+        $storage->stop();
     }
 
     /**
@@ -250,14 +254,21 @@ class ElasticStorageTest extends BaseCase
     {
         $entity = new ElasticStorageTestEntity();
         $client = $this->createClientMock();
-        $client->expects($this->once())->method('index')->with($this->equalTo([
-            'index' => 'ElasticStorageTestEntity',
-            'id' => 'ElasticStorageTestEntity_id',
+        $client->expects($this->once())->method('bulk')->with($this->equalTo([
             'body' => [
-                'id' => 'ElasticStorageTestEntity_id',
-                'payload' => 'ElasticStorageTestEntity_payload',
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity->getId(),
+                    ],
+                ],
+                [
+                    'id' => 'ElasticStorageTestEntity_id',
+                    'payload' => 'ElasticStorageTestEntity_payload',
+                ],
             ],
         ]));
+
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
@@ -275,7 +286,7 @@ class ElasticStorageTest extends BaseCase
     public function testUpsertException()
     {
         $client = $this->createClientMock();
-        $client->method('index')->will(
+        $client->method('bulk')->will(
             $this->throwException(new RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
@@ -286,6 +297,7 @@ class ElasticStorageTest extends BaseCase
         $this->expectException(StorageException::class);
         $storage->start();
         $storage->upsert(new ElasticStorageTestEntity());
+        $storage->stop();
     }
 
     /**
@@ -337,12 +349,17 @@ class ElasticStorageTest extends BaseCase
         $this->expectException(StorageException::class);
         $storage->start();
         $storage->truncate(ElasticStorageTestEntity::class);
+        $storage->stop();
     }
 
     /**
      * Создает мок для объекта, клоторый предоставляет клиента.
+     *
+     * @param Client|null $client
+     *
+     * @return MockObject
      */
-    private function createClientProviderMock(?Client $client = null)
+    private function createClientProviderMock(?Client $client = null): MockObject
     {
         if ($client === null) {
             $client = $this->createClientMock();
@@ -356,8 +373,10 @@ class ElasticStorageTest extends BaseCase
 
     /**
      * Создает мок для объекта клиента.
+     *
+     * @return MockObject
      */
-    private function createClientMock()
+    private function createClientMock(): MockObject
     {
         return $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
@@ -366,8 +385,10 @@ class ElasticStorageTest extends BaseCase
 
     /**
      * Создает мок для объекта с описаниями индексов.
+     *
+     * @return MockObject
      */
-    private function createRegistryMock()
+    private function createRegistryMock(): MockObject
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper->method('getName')->will(
