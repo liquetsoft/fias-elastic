@@ -12,55 +12,55 @@ use DateTimeInterface;
 class House
 {
     /** @var string */
-    private $houseid = '';
+    protected $houseid = '';
 
     /** @var string|null */
-    private $houseguid;
+    protected $houseguid;
 
     /** @var string|null */
-    private $aoguid;
+    protected $aoguid;
 
     /** @var string|null */
-    private $housenum;
+    protected $housenum;
 
     /** @var int */
-    private $strstatus = 0;
+    protected $strstatus = 0;
 
     /** @var int */
-    private $eststatus = 0;
+    protected $eststatus = 0;
 
     /** @var int */
-    private $statstatus = 0;
+    protected $statstatus = 0;
 
     /** @var string|null */
-    private $ifnsfl;
+    protected $ifnsfl;
 
     /** @var string|null */
-    private $ifnsul;
+    protected $ifnsul;
 
     /** @var string|null */
-    private $okato;
+    protected $okato;
 
     /** @var string|null */
-    private $oktmo;
+    protected $oktmo;
 
     /** @var string|null */
-    private $postalcode;
+    protected $postalcode;
 
     /** @var DateTimeInterface */
-    private $startdate;
+    protected $startdate;
 
     /** @var DateTimeInterface */
-    private $enddate;
+    protected $enddate;
 
     /** @var DateTimeInterface */
-    private $updatedate;
+    protected $updatedate;
 
     /** @var int */
-    private $counter = 0;
+    protected $counter = 0;
 
     /** @var int */
-    private $divtype = 0;
+    protected $divtype = 0;
 
     public function setHouseid(string $houseid): self
     {

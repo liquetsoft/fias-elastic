@@ -12,43 +12,43 @@ use DateTimeInterface;
 class Room
 {
     /** @var string */
-    private $roomid = '';
+    protected $roomid = '';
 
     /** @var string|null */
-    private $roomguid;
+    protected $roomguid;
 
     /** @var string|null */
-    private $houseguid;
+    protected $houseguid;
 
     /** @var string */
-    private $regioncode = '';
+    protected $regioncode = '';
 
     /** @var string */
-    private $flatnumber = '';
+    protected $flatnumber = '';
 
     /** @var int */
-    private $flattype = 0;
+    protected $flattype = 0;
 
     /** @var string|null */
-    private $postalcode;
+    protected $postalcode;
 
     /** @var DateTimeInterface */
-    private $startdate;
+    protected $startdate;
 
     /** @var DateTimeInterface */
-    private $enddate;
+    protected $enddate;
 
     /** @var DateTimeInterface */
-    private $updatedate;
+    protected $updatedate;
 
     /** @var string */
-    private $operstatus = '';
+    protected $operstatus = '';
 
     /** @var string */
-    private $livestatus = '';
+    protected $livestatus = '';
 
     /** @var string|null */
-    private $normdoc;
+    protected $normdoc;
 
     public function setRoomid(string $roomid): self
     {

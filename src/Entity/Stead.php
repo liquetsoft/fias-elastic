@@ -12,55 +12,55 @@ use DateTimeInterface;
 class Stead
 {
     /** @var string */
-    private $steadguid = '';
+    protected $steadguid = '';
 
     /** @var string|null */
-    private $number;
+    protected $number;
 
     /** @var string */
-    private $regioncode = '';
+    protected $regioncode = '';
 
     /** @var string|null */
-    private $postalcode;
+    protected $postalcode;
 
     /** @var string */
-    private $ifnsfl = '';
+    protected $ifnsfl = '';
 
     /** @var string */
-    private $ifnsul = '';
+    protected $ifnsul = '';
 
     /** @var string */
-    private $okato = '';
+    protected $okato = '';
 
     /** @var string */
-    private $oktmo = '';
+    protected $oktmo = '';
 
     /** @var string|null */
-    private $parentguid;
+    protected $parentguid;
 
     /** @var string|null */
-    private $steadid;
+    protected $steadid;
 
     /** @var string */
-    private $operstatus = '';
+    protected $operstatus = '';
 
     /** @var DateTimeInterface */
-    private $startdate;
+    protected $startdate;
 
     /** @var DateTimeInterface */
-    private $enddate;
+    protected $enddate;
 
     /** @var DateTimeInterface */
-    private $updatedate;
+    protected $updatedate;
 
     /** @var string */
-    private $livestatus = '';
+    protected $livestatus = '';
 
     /** @var string */
-    private $divtype = '';
+    protected $divtype = '';
 
     /** @var string|null */
-    private $normdoc;
+    protected $normdoc;
 
     public function setSteadguid(string $steadguid): self
     {

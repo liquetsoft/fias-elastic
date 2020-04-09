@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class CurrentStatus
 {
     /** @var int */
-    private $curentstid = 0;
+    protected $curentstid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setCurentstid(int $curentstid): self
     {
