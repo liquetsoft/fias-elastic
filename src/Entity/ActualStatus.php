@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class ActualStatus
 {
     /** @var int */
-    private $actstatid = 0;
+    protected $actstatid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setActstatid(int $actstatid): self
     {

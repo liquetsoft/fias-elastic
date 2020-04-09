@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class NormativeDocumentType
 {
     /** @var int */
-    private $ndtypeid = 0;
+    protected $ndtypeid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setNdtypeid(int $ndtypeid): self
     {

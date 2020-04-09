@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class OperationStatus
 {
     /** @var int */
-    private $operstatid = 0;
+    protected $operstatid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setOperstatid(int $operstatid): self
     {

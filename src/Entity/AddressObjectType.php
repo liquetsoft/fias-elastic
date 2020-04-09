@@ -10,16 +10,16 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class AddressObjectType
 {
     /** @var int */
-    private $kodtst = 0;
+    protected $kodtst = 0;
 
     /** @var int */
-    private $level = 0;
+    protected $level = 0;
 
     /** @var string */
-    private $socrname = '';
+    protected $socrname = '';
 
     /** @var string|null */
-    private $scname;
+    protected $scname;
 
     public function setKodtst(int $kodtst): self
     {
