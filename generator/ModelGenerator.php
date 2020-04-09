@@ -103,7 +103,7 @@ class ModelGenerator extends AbstractGenerator
         }
 
         $property->setValue($defaultValue);
-        $property->setVisibility('private');
+        $property->setVisibility('protected');
         if ($field->getDescription()) {
             $description = ucfirst(rtrim($field->getDescription(), " \t\n\r\0\x0B.")) . '.';
             $property->addComment("{$description}\n");

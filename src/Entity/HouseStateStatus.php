@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class HouseStateStatus
 {
     /** @var int */
-    private $housestid = 0;
+    protected $housestid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setHousestid(int $housestid): self
     {

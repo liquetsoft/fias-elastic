@@ -16,259 +16,259 @@ class AddressObject
      *
      * @var string
      */
-    private $aoid = '';
+    protected $aoid = '';
 
     /**
      * Глобальный уникальный идентификатор адресного объекта.
      *
      * @var string|null
      */
-    private $aoguid;
+    protected $aoguid;
 
     /**
      * Идентификатор родительского объекта.
      *
      * @var string|null
      */
-    private $parentguid;
+    protected $parentguid;
 
     /**
      * Идентификатор записи связывания с предыдушей исторической записью.
      *
      * @var string|null
      */
-    private $previd;
+    protected $previd;
 
     /**
      * Идентификатор записи связывания с последующей исторической записью.
      *
      * @var string|null
      */
-    private $nextid;
+    protected $nextid;
 
     /**
      * Код адресного объекта одной строкой с признаком актуальности из КЛАДР 4.0.
      *
      * @var string|null
      */
-    private $code;
+    protected $code;
 
     /**
      * Формализованное наименование.
      *
      * @var string
      */
-    private $formalname = '';
+    protected $formalname = '';
 
     /**
      * Официальное наименование.
      *
      * @var string
      */
-    private $offname = '';
+    protected $offname = '';
 
     /**
      * Краткое наименование типа объекта.
      *
      * @var string
      */
-    private $shortname = '';
+    protected $shortname = '';
 
     /**
      * Уровень адресного объекта.
      *
      * @var int
      */
-    private $aolevel = 0;
+    protected $aolevel = 0;
 
     /**
      * Код региона.
      *
      * @var string
      */
-    private $regioncode = '';
+    protected $regioncode = '';
 
     /**
      * Код района.
      *
      * @var string
      */
-    private $areacode = '';
+    protected $areacode = '';
 
     /**
      * Код автономии.
      *
      * @var string
      */
-    private $autocode = '';
+    protected $autocode = '';
 
     /**
      * Код города.
      *
      * @var string
      */
-    private $citycode = '';
+    protected $citycode = '';
 
     /**
      * Код внутригородского района.
      *
      * @var string
      */
-    private $ctarcode = '';
+    protected $ctarcode = '';
 
     /**
      * Код населенного пункта.
      *
      * @var string
      */
-    private $placecode = '';
+    protected $placecode = '';
 
     /**
      * Код элемента планировочной структуры.
      *
      * @var string
      */
-    private $plancode = '';
+    protected $plancode = '';
 
     /**
      * Код улицы.
      *
      * @var string
      */
-    private $streetcode = '';
+    protected $streetcode = '';
 
     /**
      * Код дополнительного адресообразующего элемента.
      *
      * @var string
      */
-    private $extrcode = '';
+    protected $extrcode = '';
 
     /**
      * Код подчиненного дополнительного адресообразующего элемента.
      *
      * @var string
      */
-    private $sextcode = '';
+    protected $sextcode = '';
 
     /**
      * Код адресного объекта из КЛАДР 4.0 одной строкой без признака актуальности (последних двух цифр).
      *
      * @var string|null
      */
-    private $plaincode;
+    protected $plaincode;
 
     /**
      * Статус актуальности КЛАДР 4 (последние две цифры в коде).
      *
      * @var int
      */
-    private $currstatus = 0;
+    protected $currstatus = 0;
 
     /**
      * Статус актуальности адресного объекта ФИАС. Актуальный адрес на текущую дату. Обычно последняя запись об адресном объекте.
      *
      * @var int
      */
-    private $actstatus = 0;
+    protected $actstatus = 0;
 
     /**
      * Признак действующего адресного объекта.
      *
      * @var int
      */
-    private $livestatus = 0;
+    protected $livestatus = 0;
 
     /**
      * Статус центра.
      *
      * @var int
      */
-    private $centstatus = 0;
+    protected $centstatus = 0;
 
     /**
      * Статус действия над записью – причина появления записи.
      *
      * @var int
      */
-    private $operstatus = 0;
+    protected $operstatus = 0;
 
     /**
      * Код ИФНС ФЛ.
      *
      * @var string|null
      */
-    private $ifnsfl;
+    protected $ifnsfl;
 
     /**
      * Код ИФНС ЮЛ.
      *
      * @var string|null
      */
-    private $ifnsul;
+    protected $ifnsul;
 
     /**
      * Код территориального участка ИФНС ФЛ.
      *
      * @var string|null
      */
-    private $terrifnsfl;
+    protected $terrifnsfl;
 
     /**
      * Код территориального участка ИФНС ЮЛ.
      *
      * @var string|null
      */
-    private $terrifnsul;
+    protected $terrifnsul;
 
     /**
      * OKATO.
      *
      * @var string|null
      */
-    private $okato;
+    protected $okato;
 
     /**
      * OKTMO.
      *
      * @var string|null
      */
-    private $oktmo;
+    protected $oktmo;
 
     /**
      * Почтовый индекс.
      *
      * @var string|null
      */
-    private $postalcode;
+    protected $postalcode;
 
     /**
      * Начало действия записи.
      *
      * @var DateTimeInterface
      */
-    private $startdate;
+    protected $startdate;
 
     /**
      * Окончание действия записи.
      *
      * @var DateTimeInterface
      */
-    private $enddate;
+    protected $enddate;
 
     /**
      * Дата внесения (обновления) записи.
      *
      * @var DateTimeInterface
      */
-    private $updatedate;
+    protected $updatedate;
 
     /**
      * Признак адресации.
      *
      * @var int
      */
-    private $divtype = 0;
+    protected $divtype = 0;
 
     public function setAoid(string $aoid): self
     {

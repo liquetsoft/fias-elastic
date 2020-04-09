@@ -10,10 +10,10 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 class IntervalStatus
 {
     /** @var int */
-    private $intvstatid = 0;
+    protected $intvstatid = 0;
 
     /** @var string */
-    private $name = '';
+    protected $name = '';
 
     public function setIntvstatid(int $intvstatid): self
     {
