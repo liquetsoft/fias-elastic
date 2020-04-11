@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use DateTime;
 use Liquetsoft\Fias\Elastic\IndexMapper\RoomIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -106,5 +107,21 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertSame($entity->livestatus, $dataForElastic['livestatus'], 'Test livestatus field conversion.');
         $this->assertArrayHasKey('normdoc', $dataForElastic);
         $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new RoomIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('roomid'));
+        $this->assertFalse($mapper->hasProperty('roomid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new RoomIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

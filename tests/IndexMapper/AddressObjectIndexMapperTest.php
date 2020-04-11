@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use DateTime;
 use Liquetsoft\Fias\Elastic\IndexMapper\AddressObjectIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -202,5 +203,21 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertSame($entity->updatedate->format('Y-m-d\TH:i:s'), $dataForElastic['updatedate'], 'Test updatedate field conversion.');
         $this->assertArrayHasKey('divtype', $dataForElastic);
         $this->assertSame($entity->divtype, $dataForElastic['divtype'], 'Test divtype field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new AddressObjectIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('aoid'));
+        $this->assertFalse($mapper->hasProperty('aoid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new AddressObjectIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

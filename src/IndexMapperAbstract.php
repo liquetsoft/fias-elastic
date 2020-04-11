@@ -6,6 +6,8 @@ namespace Liquetsoft\Fias\Elastic;
 
 use DateTimeInterface;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperException;
+use Liquetsoft\Fias\Elastic\QueryBuilder\BaseQueryBuilder;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 
 /**
  * Базовый класс для объекта с описанием индекса.
@@ -44,6 +46,24 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
         }
 
         return $extractedData;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasProperty(string $property): bool
+    {
+        $fields = $this->getMappingProperties();
+
+        return isset($fields[$property]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function query(): QueryBuilder
+    {
+        return new BaseQueryBuilder($this);
     }
 
     /**

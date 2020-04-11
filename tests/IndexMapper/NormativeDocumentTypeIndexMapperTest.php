@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocumentTypeIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -61,5 +62,21 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertSame((string) $entity->ndtypeid, $dataForElastic['ndtypeid'], 'Test ndtypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new NormativeDocumentTypeIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('ndtypeid'));
+        $this->assertFalse($mapper->hasProperty('ndtypeid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new NormativeDocumentTypeIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\AddressObjectTypeIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -69,5 +70,21 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
         $this->assertSame($entity->socrname, $dataForElastic['socrname'], 'Test socrname field conversion.');
         $this->assertArrayHasKey('scname', $dataForElastic);
         $this->assertSame($entity->scname, $dataForElastic['scname'], 'Test scname field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new AddressObjectTypeIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('kodtst'));
+        $this->assertFalse($mapper->hasProperty('kodtst_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new AddressObjectTypeIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }
