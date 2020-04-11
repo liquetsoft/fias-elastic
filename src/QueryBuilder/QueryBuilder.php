@@ -24,6 +24,17 @@ interface QueryBuilder
     public function match(string $property, $value): QueryBuilder;
 
     /**
+     * Добавить в условие поиск по отсутствию значения.
+     *
+     * @param string $property
+     *
+     * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
+     */
+    public function notExist(string $property): QueryBuilder;
+
+    /**
      * Возвращает запрос для клиента elasticsearch.
      *
      * @return array

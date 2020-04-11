@@ -52,7 +52,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
-     * Проверяет, что объект правильно задаст условие для поиска.
+     * Проверяет, что объект выбросит исключение, если поле указано неверно.
      *
      * @throws Throwable
      */
@@ -64,6 +64,54 @@ class ArrayIndexMapperRegistryTest extends BaseCase
 
         $this->expectException(InvalidArgumentException::class);
         $builder->match('test', 'test');
+    }
+
+    /**
+     * Проверяет, что объект правильно задаст условие для отсутствия значения.
+     *
+     * @throws Throwable
+     */
+    public function testNotExist()
+    {
+        $param = $this->createFakeData()->word;
+        $param1 = $this->createFakeData()->word;
+        $mapper = $this->getMapperMock([$param, $param1]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->notExist($param)->notExist($param1);
+        $query = $builder->getQuery();
+
+        $this->assertQuery([
+            'bool' => [
+                'must_not' => [
+                    [
+                        'exists' => [
+                            'field' => $param,
+                        ],
+                    ],
+                    [
+                        'exists' => [
+                            'field' => $param1,
+                        ],
+                    ],
+                ],
+            ],
+        ], $query);
+    }
+
+    /**
+     * Проверяет, что объект выбросит исключение, если поле указано неверно.
+     *
+     * @throws Throwable
+     */
+    public function testNotExistWrongFieldException()
+    {
+        $mapper = $this->getMapperMock();
+
+        $builder = new BaseQueryBuilder($mapper);
+
+        $this->expectException(InvalidArgumentException::class);
+        $builder->notExist('test');
     }
 
     /**

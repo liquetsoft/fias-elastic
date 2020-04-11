@@ -20,7 +20,7 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @var array
      */
-    private $match = [];
+    private $query = [];
 
     /**
      * @param IndexMapperInterface $mapper
@@ -37,7 +37,27 @@ class BaseQueryBuilder implements QueryBuilder
     {
         $this->isPropertyAllowed($property);
 
-        $this->match[$property] = $value;
+        $this->query['body']['query']['bool']['must'][] = [
+            'match' => [
+                $property => $value,
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function notExist(string $property): QueryBuilder
+    {
+        $this->isPropertyAllowed($property);
+
+        $this->query['body']['query']['bool']['must_not'][] = [
+            'exists' => [
+                'field' => $property,
+            ],
+        ];
 
         return $this;
     }
@@ -47,20 +67,8 @@ class BaseQueryBuilder implements QueryBuilder
      */
     public function getQuery(): array
     {
-        $query = [
-            'index' => $this->mapper->getName(),
-            'body' => [
-                'query' => [],
-            ],
-        ];
-
-        foreach ($this->match as $property => $value) {
-            $query['body']['query']['bool']['must'][] = [
-                'match' => [
-                    $property => $value,
-                ],
-            ];
-        }
+        $query = $this->query;
+        $query['index'] = $this->mapper->getName();
 
         return $query;
     }
