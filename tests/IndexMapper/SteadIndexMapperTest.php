@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use DateTime;
 use Liquetsoft\Fias\Elastic\IndexMapper\SteadIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -122,5 +123,21 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertSame($entity->divtype, $dataForElastic['divtype'], 'Test divtype field conversion.');
         $this->assertArrayHasKey('normdoc', $dataForElastic);
         $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new SteadIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('steadguid'));
+        $this->assertFalse($mapper->hasProperty('steadguid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new SteadIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\CurrentStatusIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -61,5 +62,21 @@ class CurrentStatusIndexMapperTest extends BaseCase
         $this->assertSame((string) $entity->curentstid, $dataForElastic['curentstid'], 'Test curentstid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new CurrentStatusIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('curentstid'));
+        $this->assertFalse($mapper->hasProperty('curentstid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new CurrentStatusIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

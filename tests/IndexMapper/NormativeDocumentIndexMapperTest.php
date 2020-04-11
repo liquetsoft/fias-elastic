@@ -6,6 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use DateTime;
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocumentIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -74,5 +75,21 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame($entity->docnum, $dataForElastic['docnum'], 'Test docnum field conversion.');
         $this->assertArrayHasKey('doctype', $dataForElastic);
         $this->assertSame($entity->doctype, $dataForElastic['doctype'], 'Test doctype field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new NormativeDocumentIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('normdocid'));
+        $this->assertFalse($mapper->hasProperty('normdocid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new NormativeDocumentIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }

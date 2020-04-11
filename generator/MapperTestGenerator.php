@@ -40,6 +40,8 @@ class MapperTestGenerator extends AbstractGenerator
         $this->decorateMapTest($class->addMethod('testGetMappingProperties'), $descriptor);
         $this->decorateExtractPrimaryFromEntityTest($class->addMethod('testExtractPrimaryFromEntity'), $descriptor);
         $this->decorateExtractDataFromEntityTest($class->addMethod('testExtractDataFromEntity'), $descriptor);
+        $this->decorateHasPropertyTest($class->addMethod('testHasProperty'), $descriptor);
+        $this->decorateQueryTest($class->addMethod('testQuery'), $descriptor);
 
         file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
     }
@@ -54,6 +56,7 @@ class MapperTestGenerator extends AbstractGenerator
     protected function decorateNamespace(PhpNamespace $namespace, string $baseNamespace, string $baseName): void
     {
         $namespace->addUse('Liquetsoft\\Fias\\Elastic\\Tests\\BaseCase');
+        $namespace->addUse('Liquetsoft\\Fias\\Elastic\\QueryBuilder\\QueryBuilder;');
         $namespace->addUse('stdClass');
         $namespace->addUse('DateTime');
         $namespace->addUse($baseNamespace . '\\' . $baseName);
@@ -196,6 +199,40 @@ class MapperTestGenerator extends AbstractGenerator
                 $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             }
         }
+    }
+
+    /**
+     * Создает метод для проверки того, что маппер проверяет существование поля.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decorateHasPropertyTest(Method $method, EntityDescriptor $descriptor): void
+    {
+        $entityName = $this->getTestedObjectName($descriptor);
+
+        $propertyName = $this->unifyColumnName(reset($descriptor->getFields())->getName());
+
+        $method->addBody("\$mapper = new $entityName();");
+        $method->addBody('');
+        $method->addBody("\$this->assertTrue(\$mapper->hasProperty('{$propertyName}'));");
+        $method->addBody("\$this->assertFalse(\$mapper->hasProperty('{$propertyName}_tested_value'));");
+    }
+
+    /**
+     * Создает метод для создания конструктора запросов.
+     *
+     * @param Method           $method
+     * @param EntityDescriptor $descriptor
+     */
+    private function decorateQueryTest(Method $method, EntityDescriptor $descriptor): void
+    {
+        $entityName = $this->getTestedObjectName($descriptor);
+
+        $method->addBody("\$mapper = new $entityName();");
+        $method->addBody('$query = $mapper->query();');
+        $method->addBody('');
+        $method->addBody('$this->assertInstanceOf(QueryBuilder::class, $query);');
     }
 
     /**

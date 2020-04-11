@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
 use Liquetsoft\Fias\Elastic\IndexMapper\FlatTypeIndexMapper;
+use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
@@ -65,5 +66,21 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
         $this->assertArrayHasKey('shortname', $dataForElastic);
         $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
+    }
+
+    public function testHasProperty()
+    {
+        $mapper = new FlatTypeIndexMapper();
+
+        $this->assertTrue($mapper->hasProperty('fltypeid'));
+        $this->assertFalse($mapper->hasProperty('fltypeid_tested_value'));
+    }
+
+    public function testQuery()
+    {
+        $mapper = new FlatTypeIndexMapper();
+        $query = $mapper->query();
+
+        $this->assertInstanceOf(QueryBuilder::class, $query);
     }
 }
