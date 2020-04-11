@@ -35,6 +35,15 @@ interface QueryBuilder
     public function notExist(string $property): QueryBuilder;
 
     /**
+     * Добавить ограничение на количество документов.
+     *
+     * @property int $size
+     *
+     * @return QueryBuilder
+     */
+    public function size(int $size): QueryBuilder;
+
+    /**
      * Возвращает запрос для клиента elasticsearch.
      *
      * @return array

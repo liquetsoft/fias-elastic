@@ -65,6 +65,16 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
+    public function size(int $size): QueryBuilder
+    {
+        $this->query['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuery(): array
     {
         $query = $this->query;

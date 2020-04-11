@@ -100,6 +100,24 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
+     * Проверяет, что объект правильно ограничит количество документов.
+     *
+     * @throws Throwable
+     */
+    public function testSize()
+    {
+        $size = $this->createFakeData()->numberBetween(1, 10000);
+        $mapper = $this->getMapperMock([$param, $param1]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->size($size);
+        $query = $builder->getQuery();
+
+        $this->assertArrayHasKey('size', $query);
+        $this->assertEquals($size, $query['size']);
+    }
+
+    /**
      * Проверяет, что объект выбросит исключение, если поле указано неверно.
      *
      * @throws Throwable
