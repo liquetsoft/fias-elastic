@@ -65,9 +65,51 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
+    public function sortAsc(string $property): QueryBuilder
+    {
+        $this->isPropertyAllowed($property);
+
+        $this->query['body']['sort'][] = [
+            $property => [
+                'order' => 'asc',
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sortDesc(string $property): QueryBuilder
+    {
+        $this->isPropertyAllowed($property);
+
+        $this->query['body']['sort'][] = [
+            $property => [
+                'order' => 'desc',
+            ],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function size(int $size): QueryBuilder
     {
         $this->query['size'] = $size;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function from(int $from): QueryBuilder
+    {
+        $this->query['from'] = $from;
 
         return $this;
     }

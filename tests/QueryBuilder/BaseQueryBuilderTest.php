@@ -100,6 +100,44 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
+     * Проверяет, что объект правильно задаст сортировку.
+     *
+     * @throws Throwable
+     */
+    public function testSortAsc()
+    {
+        $param = $this->createFakeData()->word;
+        $mapper = $this->getMapperMock([$param]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->sortAsc($param);
+        $query = $builder->getQuery();
+
+        $this->assertArrayHasKey('body', $query);
+        $this->assertArrayHasKey('sort', $query['body']);
+        $this->assertEquals([[$param => ['order' => 'asc']]], $query['body']['sort']);
+    }
+
+    /**
+     * Проверяет, что объект правильно задаст сортировку.
+     *
+     * @throws Throwable
+     */
+    public function testSortDesc()
+    {
+        $param = $this->createFakeData()->word;
+        $mapper = $this->getMapperMock([$param]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->sortDesc($param);
+        $query = $builder->getQuery();
+
+        $this->assertArrayHasKey('body', $query);
+        $this->assertArrayHasKey('sort', $query['body']);
+        $this->assertEquals([[$param => ['order' => 'desc']]], $query['body']['sort']);
+    }
+
+    /**
      * Проверяет, что объект правильно ограничит количество документов.
      *
      * @throws Throwable
@@ -107,7 +145,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     public function testSize()
     {
         $size = $this->createFakeData()->numberBetween(1, 10000);
-        $mapper = $this->getMapperMock([$param, $param1]);
+        $mapper = $this->getMapperMock();
 
         $builder = new BaseQueryBuilder($mapper);
         $builder->size($size);
@@ -118,18 +156,21 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
-     * Проверяет, что объект выбросит исключение, если поле указано неверно.
+     * Проверяет, что объект правильно задаст смещение элементов.
      *
      * @throws Throwable
      */
-    public function testNotExistWrongFieldException()
+    public function testFrom()
     {
+        $from = $this->createFakeData()->numberBetween(1, 10000);
         $mapper = $this->getMapperMock();
 
         $builder = new BaseQueryBuilder($mapper);
+        $builder->from($from);
+        $query = $builder->getQuery();
 
-        $this->expectException(InvalidArgumentException::class);
-        $builder->notExist('test');
+        $this->assertArrayHasKey('from', $query);
+        $this->assertEquals($from, $query['from']);
     }
 
     /**
