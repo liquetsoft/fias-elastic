@@ -35,6 +35,24 @@ interface QueryBuilder
     public function notExist(string $property): QueryBuilder;
 
     /**
+     * Добавить порядок сортировки по возрастанию.
+     *
+     * @property string $property
+     *
+     * @return QueryBuilder
+     */
+    public function sortAsc(string $property): QueryBuilder;
+
+    /**
+     * Добавить порядок сортировки по убыванию.
+     *
+     * @property string $property
+     *
+     * @return QueryBuilder
+     */
+    public function sortDesc(string $property): QueryBuilder;
+
+    /**
      * Добавить ограничение на количество документов.
      *
      * @property int $size
@@ -42,6 +60,15 @@ interface QueryBuilder
      * @return QueryBuilder
      */
     public function size(int $size): QueryBuilder;
+
+    /**
+     * Добавить смещение по элементам.
+     *
+     * @property int $from
+     *
+     * @return QueryBuilder
+     */
+    public function from(int $from): QueryBuilder;
 
     /**
      * Возвращает запрос для клиента elasticsearch.
