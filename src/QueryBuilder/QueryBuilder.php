@@ -12,7 +12,7 @@ use InvalidArgumentException;
 interface QueryBuilder
 {
     /**
-     * Добавить в условие поиск по полному совпадению.
+     * Добавить в условие поиск по частичному совпадению.
      *
      * @param string $property
      * @param mixed  $value
@@ -22,6 +22,18 @@ interface QueryBuilder
      * @throws InvalidArgumentException
      */
     public function match(string $property, $value): QueryBuilder;
+
+    /**
+     * Добавить в условие поиск по полному совпадению.
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
+     */
+    public function term(string $property, $value): QueryBuilder;
 
     /**
      * Добавить в условие поиск по отсутствию значения.

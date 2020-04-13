@@ -67,6 +67,42 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
+     * Проверяет, что объект правильно задаст условие для поиска
+     * по полному соответствию.
+     *
+     * @throws Throwable
+     */
+    public function testTerm()
+    {
+        $param = $this->createFakeData()->word;
+        $value = $this->createFakeData()->word;
+        $param1 = $this->createFakeData()->word;
+        $value1 = $this->createFakeData()->word;
+        $mapper = $this->getMapperMock([$param, $param1]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->term($param, $value)->term($param1, $value1);
+        $query = $builder->getQuery();
+
+        $this->assertQuery([
+            'bool' => [
+                'must' => [
+                    [
+                        'term' => [
+                            $param => ['value' => $value],
+                        ],
+                    ],
+                    [
+                        'term' => [
+                            $param1 => ['value' => $value1],
+                        ],
+                    ],
+                ],
+            ],
+        ], $query);
+    }
+
+    /**
      * Проверяет, что объект правильно задаст условие для отсутствия значения.
      *
      * @throws Throwable

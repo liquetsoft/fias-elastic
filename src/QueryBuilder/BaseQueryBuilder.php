@@ -49,6 +49,20 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
+    public function term(string $property, $value): QueryBuilder
+    {
+        $this->isPropertyAllowed($property);
+
+        $this->query['body']['query']['bool']['must'][] = [
+            'term' => [$property => ['value' => $value]],
+        ];
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function notExist(string $property): QueryBuilder
     {
         $this->isPropertyAllowed($property);
