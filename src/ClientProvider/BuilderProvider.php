@@ -13,19 +13,10 @@ use RuntimeException;
  */
 class BuilderProvider implements ClientProvider
 {
-    /**
-     * @var array
-     */
-    private $hosts;
+    private array $hosts;
 
-    /**
-     * Client|null.
-     */
-    private $client;
+    private ?Client $client = null;
 
-    /**
-     * @param array $hosts
-     */
     public function __construct(array $hosts = [])
     {
         $this->hosts = $hosts;

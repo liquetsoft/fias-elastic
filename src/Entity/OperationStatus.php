@@ -9,11 +9,8 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class OperationStatus
 {
-    /** @var int */
-    protected $operstatid = 0;
-
-    /** @var string */
-    protected $name = '';
+    protected int $operstatid = 0;
+    protected string $name = '';
 
     public function setOperstatid(int $operstatid): self
     {

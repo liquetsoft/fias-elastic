@@ -14,20 +14,10 @@ use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
  */
 class CloseElasticIndicesTask implements Task
 {
-    /**
-     * @var IndexMapperRegistry
-     */
-    private $registry;
+    private IndexMapperRegistry $registry;
 
-    /**
-     * @var IndexBuilder
-     */
-    private $builder;
+    private IndexBuilder $builder;
 
-    /**
-     * @param IndexMapperRegistry $registry
-     * @param IndexBuilder        $builder
-     */
     public function __construct(IndexMapperRegistry $registry, IndexBuilder $builder)
     {
         $this->registry = $registry;

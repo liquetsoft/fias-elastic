@@ -13,262 +13,188 @@ class AddressObject
 {
     /**
      * Уникальный идентификатор записи. Ключевое поле.
-     *
-     * @var string
      */
-    protected $aoid = '';
+    protected string $aoid = '';
 
     /**
      * Глобальный уникальный идентификатор адресного объекта.
-     *
-     * @var string|null
      */
-    protected $aoguid;
+    protected ?string $aoguid = null;
 
     /**
      * Идентификатор родительского объекта.
-     *
-     * @var string|null
      */
-    protected $parentguid;
+    protected ?string $parentguid = null;
 
     /**
      * Идентификатор записи связывания с предыдушей исторической записью.
-     *
-     * @var string|null
      */
-    protected $previd;
+    protected ?string $previd = null;
 
     /**
      * Идентификатор записи связывания с последующей исторической записью.
-     *
-     * @var string|null
      */
-    protected $nextid;
+    protected ?string $nextid = null;
 
     /**
      * Код адресного объекта одной строкой с признаком актуальности из КЛАДР 4.0.
-     *
-     * @var string|null
      */
-    protected $code;
+    protected ?string $code = null;
 
     /**
      * Формализованное наименование.
-     *
-     * @var string
      */
-    protected $formalname = '';
+    protected string $formalname = '';
 
     /**
      * Официальное наименование.
-     *
-     * @var string
      */
-    protected $offname = '';
+    protected string $offname = '';
 
     /**
      * Краткое наименование типа объекта.
-     *
-     * @var string
      */
-    protected $shortname = '';
+    protected string $shortname = '';
 
     /**
      * Уровень адресного объекта.
-     *
-     * @var int
      */
-    protected $aolevel = 0;
+    protected int $aolevel = 0;
 
     /**
      * Код региона.
-     *
-     * @var string
      */
-    protected $regioncode = '';
+    protected string $regioncode = '';
 
     /**
      * Код района.
-     *
-     * @var string
      */
-    protected $areacode = '';
+    protected string $areacode = '';
 
     /**
      * Код автономии.
-     *
-     * @var string
      */
-    protected $autocode = '';
+    protected string $autocode = '';
 
     /**
      * Код города.
-     *
-     * @var string
      */
-    protected $citycode = '';
+    protected string $citycode = '';
 
     /**
      * Код внутригородского района.
-     *
-     * @var string
      */
-    protected $ctarcode = '';
+    protected string $ctarcode = '';
 
     /**
      * Код населенного пункта.
-     *
-     * @var string
      */
-    protected $placecode = '';
+    protected string $placecode = '';
 
     /**
      * Код элемента планировочной структуры.
-     *
-     * @var string
      */
-    protected $plancode = '';
+    protected string $plancode = '';
 
     /**
      * Код улицы.
-     *
-     * @var string
      */
-    protected $streetcode = '';
+    protected string $streetcode = '';
 
     /**
      * Код дополнительного адресообразующего элемента.
-     *
-     * @var string
      */
-    protected $extrcode = '';
+    protected string $extrcode = '';
 
     /**
      * Код подчиненного дополнительного адресообразующего элемента.
-     *
-     * @var string
      */
-    protected $sextcode = '';
+    protected string $sextcode = '';
 
     /**
      * Код адресного объекта из КЛАДР 4.0 одной строкой без признака актуальности (последних двух цифр).
-     *
-     * @var string|null
      */
-    protected $plaincode;
+    protected ?string $plaincode = null;
 
     /**
      * Статус актуальности КЛАДР 4 (последние две цифры в коде).
-     *
-     * @var int
      */
-    protected $currstatus = 0;
+    protected ?int $currstatus = null;
 
     /**
      * Статус актуальности адресного объекта ФИАС. Актуальный адрес на текущую дату. Обычно последняя запись об адресном объекте.
-     *
-     * @var int
      */
-    protected $actstatus = 0;
+    protected int $actstatus = 0;
 
     /**
      * Признак действующего адресного объекта.
-     *
-     * @var int
      */
-    protected $livestatus = 0;
+    protected int $livestatus = 0;
 
     /**
      * Статус центра.
-     *
-     * @var int
      */
-    protected $centstatus = 0;
+    protected int $centstatus = 0;
 
     /**
      * Статус действия над записью – причина появления записи.
-     *
-     * @var int
      */
-    protected $operstatus = 0;
+    protected int $operstatus = 0;
 
     /**
      * Код ИФНС ФЛ.
-     *
-     * @var string|null
      */
-    protected $ifnsfl;
+    protected ?string $ifnsfl = null;
 
     /**
      * Код ИФНС ЮЛ.
-     *
-     * @var string|null
      */
-    protected $ifnsul;
+    protected ?string $ifnsul = null;
 
     /**
      * Код территориального участка ИФНС ФЛ.
-     *
-     * @var string|null
      */
-    protected $terrifnsfl;
+    protected ?string $terrifnsfl = null;
 
     /**
      * Код территориального участка ИФНС ЮЛ.
-     *
-     * @var string|null
      */
-    protected $terrifnsul;
+    protected ?string $terrifnsul = null;
 
     /**
      * OKATO.
-     *
-     * @var string|null
      */
-    protected $okato;
+    protected ?string $okato = null;
 
     /**
      * OKTMO.
-     *
-     * @var string|null
      */
-    protected $oktmo;
+    protected ?string $oktmo = null;
 
     /**
      * Почтовый индекс.
-     *
-     * @var string|null
      */
-    protected $postalcode;
+    protected ?string $postalcode = null;
 
     /**
      * Начало действия записи.
-     *
-     * @var DateTimeInterface
      */
-    protected $startdate;
+    protected ?DateTimeInterface $startdate = null;
 
     /**
      * Окончание действия записи.
-     *
-     * @var DateTimeInterface
      */
-    protected $enddate;
+    protected ?DateTimeInterface $enddate = null;
 
     /**
      * Дата внесения (обновления) записи.
-     *
-     * @var DateTimeInterface
      */
-    protected $updatedate;
+    protected ?DateTimeInterface $updatedate = null;
 
     /**
      * Признак адресации.
-     *
-     * @var int
      */
-    protected $divtype = 0;
+    protected int $divtype = 0;
 
     public function setAoid(string $aoid): self
     {
@@ -522,14 +448,14 @@ class AddressObject
         return $this->plaincode;
     }
 
-    public function setCurrstatus(int $currstatus): self
+    public function setCurrstatus(?int $currstatus): self
     {
         $this->currstatus = $currstatus;
 
         return $this;
     }
 
-    public function getCurrstatus(): int
+    public function getCurrstatus(): ?int
     {
         return $this->currstatus;
     }

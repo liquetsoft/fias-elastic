@@ -9,14 +9,9 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class FlatType
 {
-    /** @var int */
-    protected $fltypeid = 0;
-
-    /** @var string */
-    protected $name = '';
-
-    /** @var string */
-    protected $shortname = '';
+    protected int $fltypeid = 0;
+    protected string $name = '';
+    protected string $shortname = '';
 
     public function setFltypeid(int $fltypeid): self
     {

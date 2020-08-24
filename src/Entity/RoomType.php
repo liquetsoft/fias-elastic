@@ -9,14 +9,9 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class RoomType
 {
-    /** @var int */
-    protected $rmtypeid = 0;
-
-    /** @var string */
-    protected $name = '';
-
-    /** @var string */
-    protected $shortname = '';
+    protected int $rmtypeid = 0;
+    protected string $name = '';
+    protected string $shortname = '';
 
     public function setRmtypeid(int $rmtypeid): self
     {

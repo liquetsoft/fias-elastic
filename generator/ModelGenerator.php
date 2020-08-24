@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Generator;
 
+use DateTimeInterface;
 use Liquetsoft\Fias\Component\EntityDescriptor\EntityDescriptor;
 use Liquetsoft\Fias\Component\EntityField\EntityField;
 use Nette\PhpGenerator\ClassType;
@@ -27,7 +28,7 @@ class ModelGenerator extends AbstractGenerator
         $name = $this->unifyClassName($descriptor->getName());
         $fullPath = "{$dir->getPathname()}/{$name}.php";
 
-        $phpFile = new PhpFile;
+        $phpFile = new PhpFile();
         $phpFile->setStrictTypes();
 
         $namespace = $phpFile->addNamespace($namespace);
@@ -46,7 +47,7 @@ class ModelGenerator extends AbstractGenerator
             $this->decorateGetter($class->addMethod($getter), $field);
         }
 
-        file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
+        file_put_contents($fullPath, (new PsrPrinter())->printFile($phpFile));
     }
 
     /**
@@ -59,7 +60,7 @@ class ModelGenerator extends AbstractGenerator
     {
         foreach ($descriptor->getFields() as $field) {
             if ($field->getSubType() === 'date') {
-                $namespace->addUse('DateTimeInterface');
+                $namespace->addUse(DateTimeInterface::class);
             }
         }
     }
@@ -91,24 +92,34 @@ class ModelGenerator extends AbstractGenerator
             case 'int':
                 $defaultValue = $field->isNullable() ? null : 0;
                 $varType = 'int' . ($field->isNullable() ? '|null' : '');
+                $property->setType('int');
+                if ($field->isNullable()) {
+                    $property->setNullable();
+                }
                 break;
             case 'string_date':
                 $defaultValue = null;
-                $varType = 'DateTimeInterface' . ($field->isNullable() ? '|null' : '');
+                $varType = 'DateTimeInterface|null';
+                $property->setType(DateTimeInterface::class);
+                $property->setNullable();
                 break;
             default:
                 $defaultValue = $field->isNullable() ? null : '';
                 $varType = 'string' . ($field->isNullable() ? '|null' : '');
+                $property->setType('string');
+                if ($field->isNullable()) {
+                    $property->setNullable();
+                }
                 break;
         }
 
         $property->setValue($defaultValue);
         $property->setVisibility('protected');
+        $property->setInitialized();
         if ($field->getDescription()) {
             $description = ucfirst(rtrim($field->getDescription(), " \t\n\r\0\x0B.")) . '.';
             $property->addComment("{$description}\n");
         }
-        $property->addComment("@var {$varType}");
     }
 
     /**

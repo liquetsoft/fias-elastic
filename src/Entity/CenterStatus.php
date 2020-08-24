@@ -9,11 +9,8 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class CenterStatus
 {
-    /** @var int */
-    protected $centerstid = 0;
-
-    /** @var string */
-    protected $name = '';
+    protected int $centerstid = 0;
+    protected string $name = '';
 
     public function setCenterstid(int $centerstid): self
     {

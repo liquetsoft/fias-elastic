@@ -11,20 +11,11 @@ use DateTimeInterface;
  */
 class NormativeDocument
 {
-    /** @var string */
-    protected $normdocid = '';
-
-    /** @var string|null */
-    protected $docname;
-
-    /** @var DateTimeInterface|null */
-    protected $docdate;
-
-    /** @var string|null */
-    protected $docnum;
-
-    /** @var string */
-    protected $doctype = '';
+    protected string $normdocid = '';
+    protected ?string $docname = null;
+    protected ?DateTimeInterface $docdate = null;
+    protected ?string $docnum = null;
+    protected string $doctype = '';
 
     public function setNormdocid(string $normdocid): self
     {

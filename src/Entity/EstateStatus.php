@@ -9,11 +9,8 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class EstateStatus
 {
-    /** @var int */
-    protected $eststatid = 0;
-
-    /** @var string */
-    protected $name = '';
+    protected int $eststatid = 0;
+    protected string $name = '';
 
     public function setEststatid(int $eststatid): self
     {

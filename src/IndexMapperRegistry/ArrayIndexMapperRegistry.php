@@ -16,13 +16,8 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     /**
      * @var array<string, IndexMapperInterface>
      */
-    private $indexMappers = [];
+    private array $indexMappers = [];
 
-    /**
-     * @param iterable $indexMappers
-     *
-     * @throws InvalidArgumentException
-     */
     public function __construct(iterable $indexMappers)
     {
         foreach ($indexMappers as $key => $indexMapper) {

@@ -11,14 +11,8 @@ use Elasticsearch\Client;
  */
 class DIProvider implements ClientProvider
 {
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;

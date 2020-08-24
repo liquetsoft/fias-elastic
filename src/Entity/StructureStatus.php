@@ -9,14 +9,9 @@ namespace Liquetsoft\Fias\Elastic\Entity;
  */
 class StructureStatus
 {
-    /** @var int */
-    protected $strstatid = 0;
-
-    /** @var string */
-    protected $name = '';
-
-    /** @var string|null */
-    protected $shortname;
+    protected int $strstatid = 0;
+    protected string $name = '';
+    protected ?string $shortname = null;
 
     public function setStrstatid(int $strstatid): self
     {

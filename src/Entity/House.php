@@ -11,56 +11,23 @@ use DateTimeInterface;
  */
 class House
 {
-    /** @var string */
-    protected $houseid = '';
-
-    /** @var string|null */
-    protected $houseguid;
-
-    /** @var string|null */
-    protected $aoguid;
-
-    /** @var string|null */
-    protected $housenum;
-
-    /** @var int */
-    protected $strstatus = 0;
-
-    /** @var int */
-    protected $eststatus = 0;
-
-    /** @var int */
-    protected $statstatus = 0;
-
-    /** @var string|null */
-    protected $ifnsfl;
-
-    /** @var string|null */
-    protected $ifnsul;
-
-    /** @var string|null */
-    protected $okato;
-
-    /** @var string|null */
-    protected $oktmo;
-
-    /** @var string|null */
-    protected $postalcode;
-
-    /** @var DateTimeInterface */
-    protected $startdate;
-
-    /** @var DateTimeInterface */
-    protected $enddate;
-
-    /** @var DateTimeInterface */
-    protected $updatedate;
-
-    /** @var int */
-    protected $counter = 0;
-
-    /** @var int */
-    protected $divtype = 0;
+    protected string $houseid = '';
+    protected ?string $houseguid = null;
+    protected ?string $aoguid = null;
+    protected ?string $housenum = null;
+    protected int $strstatus = 0;
+    protected int $eststatus = 0;
+    protected int $statstatus = 0;
+    protected ?string $ifnsfl = null;
+    protected ?string $ifnsul = null;
+    protected ?string $okato = null;
+    protected ?string $oktmo = null;
+    protected ?string $postalcode = null;
+    protected ?DateTimeInterface $startdate = null;
+    protected ?DateTimeInterface $enddate = null;
+    protected ?DateTimeInterface $updatedate = null;
+    protected int $counter = 0;
+    protected int $divtype = 0;
 
     public function setHouseid(string $houseid): self
     {
