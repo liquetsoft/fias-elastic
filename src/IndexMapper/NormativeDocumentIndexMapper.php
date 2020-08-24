@@ -47,6 +47,9 @@ class NormativeDocumentIndexMapper extends IndexMapperAbstract
                 'type' => 'text',
             ],
             'doctype' => [
+                'type' => 'integer',
+            ],
+            'docimgid' => [
                 'type' => 'text',
             ],
         ];

@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\RoomType;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень типов комнат'.
+ * Тест для сущности 'Тип комнаты'.
  */
 class RoomTypeTest extends EntityCase
 {

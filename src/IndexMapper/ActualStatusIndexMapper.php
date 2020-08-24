@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень статусов актуальности записи адресного элемента по ФИАС'.
+ * Описание полей индекса для сущности 'Статус актуальности ФИАС'.
  */
 class ActualStatusIndexMapper extends IndexMapperAbstract
 {

@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень возможных статусов (центров) адресных объектов административных единиц'.
+ * Описание полей индекса для сущности 'Статус центра'.
  */
 class CenterStatusIndexMapper extends IndexMapperAbstract
 {

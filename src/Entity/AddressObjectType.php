@@ -5,23 +5,38 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации.
+ * Тип адресного объекта.
  */
 class AddressObjectType
 {
-    protected int $kodtst = 0;
+    /**
+     * Ключевое поле.
+     */
+    protected string $kodtst = '';
+
+    /**
+     * Уровень адресного объекта.
+     */
     protected int $level = 0;
+
+    /**
+     * Полное наименование типа объекта.
+     */
     protected string $socrname = '';
+
+    /**
+     * Краткое наименование типа объекта.
+     */
     protected ?string $scname = null;
 
-    public function setKodtst(int $kodtst): self
+    public function setKodtst(string $kodtst): self
     {
         $this->kodtst = $kodtst;
 
         return $this;
     }
 
-    public function getKodtst(): int
+    public function getKodtst(): string
     {
         return $this->kodtst;
     }

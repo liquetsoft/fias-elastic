@@ -11,11 +11,35 @@ use DateTimeInterface;
  */
 class NormativeDocument
 {
+    /**
+     * Идентификатор нормативного документа.
+     */
     protected string $normdocid = '';
+
+    /**
+     * Наименование документа.
+     */
     protected ?string $docname = null;
+
+    /**
+     * Дата документа.
+     */
     protected ?DateTimeInterface $docdate = null;
+
+    /**
+     * Номер документа.
+     */
     protected ?string $docnum = null;
-    protected string $doctype = '';
+
+    /**
+     * Тип документа.
+     */
+    protected int $doctype = 0;
+
+    /**
+     * Идентификатор образа (внешний ключ).
+     */
+    protected ?string $docimgid = null;
 
     public function setNormdocid(string $normdocid): self
     {
@@ -65,15 +89,27 @@ class NormativeDocument
         return $this->docnum;
     }
 
-    public function setDoctype(string $doctype): self
+    public function setDoctype(int $doctype): self
     {
         $this->doctype = $doctype;
 
         return $this;
     }
 
-    public function getDoctype(): string
+    public function getDoctype(): int
     {
         return $this->doctype;
+    }
+
+    public function setDocimgid(?string $docimgid): self
+    {
+        $this->docimgid = $docimgid;
+
+        return $this;
+    }
+
+    public function getDocimgid(): ?string
+    {
+        return $this->docimgid;
     }
 }

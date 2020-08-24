@@ -5,11 +5,20 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень статусов актуальности записи адресного элемента по ФИАС.
+ * Статус актуальности ФИАС.
  */
 class ActualStatus
 {
+    /**
+     * Идентификатор статуса (ключ).
+     */
     protected int $actstatid = 0;
+
+    /**
+     * Наименование
+     * 0 – Не актуальный
+     * 1 – Актуальный (последняя запись по адресному объекту).
+     */
     protected string $name = '';
 
     public function setActstatid(int $actstatid): self

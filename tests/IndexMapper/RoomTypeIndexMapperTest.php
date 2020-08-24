@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень типов комнат'.
+ * Тест для описания индекса сущности 'Тип комнаты'.
  */
 class RoomTypeIndexMapperTest extends BaseCase
 {

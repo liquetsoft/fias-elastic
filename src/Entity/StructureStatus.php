@@ -5,12 +5,23 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень видов строений.
+ * Признак строения.
  */
 class StructureStatus
 {
+    /**
+     * Признак строения.
+     */
     protected int $strstatid = 0;
+
+    /**
+     * Наименование.
+     */
     protected string $name = '';
+
+    /**
+     * Краткое наименование.
+     */
     protected ?string $shortname = null;
 
     public function setStrstatid(int $strstatid): self

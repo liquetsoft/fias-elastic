@@ -5,13 +5,24 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень типов помещения или офиса.
+ * Тип помещения.
  */
 class FlatType
 {
+    /**
+     * Тип помещения.
+     */
     protected int $fltypeid = 0;
+
+    /**
+     * Наименование.
+     */
     protected string $name = '';
-    protected string $shortname = '';
+
+    /**
+     * Краткое наименование.
+     */
+    protected ?string $shortname = null;
 
     public function setFltypeid(int $fltypeid): self
     {
@@ -37,14 +48,14 @@ class FlatType
         return $this->name;
     }
 
-    public function setShortname(string $shortname): self
+    public function setShortname(?string $shortname): self
     {
         $this->shortname = $shortname;
 
         return $this;
     }
 
-    public function getShortname(): string
+    public function getShortname(): ?string
     {
         return $this->shortname;
     }

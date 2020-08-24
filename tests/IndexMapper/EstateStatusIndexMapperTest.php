@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень возможных видов владений'.
+ * Тест для описания индекса сущности 'Признак владения'.
  */
 class EstateStatusIndexMapperTest extends BaseCase
 {
@@ -36,6 +36,7 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertIsArray($map);
         $this->assertArrayHasKey('eststatid', $map);
         $this->assertArrayHasKey('name', $map);
+        $this->assertArrayHasKey('shortname', $map);
     }
 
     public function testExtractPrimaryFromEntity()
@@ -53,6 +54,7 @@ class EstateStatusIndexMapperTest extends BaseCase
         $entity = new stdClass();
         $entity->eststatid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
+        $entity->shortname = $this->createFakeData()->word;
 
         $mapper = new EstateStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
@@ -62,6 +64,8 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertSame((string) $entity->eststatid, $dataForElastic['eststatid'], 'Test eststatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
+        $this->assertArrayHasKey('shortname', $dataForElastic);
+        $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 
     public function testHasProperty()

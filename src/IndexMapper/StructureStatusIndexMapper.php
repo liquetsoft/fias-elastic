@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень видов строений'.
+ * Описание полей индекса для сущности 'Признак строения'.
  */
 class StructureStatusIndexMapper extends IndexMapperAbstract
 {

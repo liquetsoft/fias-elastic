@@ -5,12 +5,24 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень возможных видов владений.
+ * Признак владения.
  */
 class EstateStatus
 {
+    /**
+     * Признак владения.
+     */
     protected int $eststatid = 0;
+
+    /**
+     * Наименование.
+     */
     protected string $name = '';
+
+    /**
+     * Краткое наименование.
+     */
+    protected ?string $shortname = null;
 
     public function setEststatid(int $eststatid): self
     {
@@ -34,5 +46,17 @@ class EstateStatus
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setShortname(?string $shortname): self
+    {
+        $this->shortname = $shortname;
+
+        return $this;
+    }
+
+    public function getShortname(): ?string
+    {
+        return $this->shortname;
     }
 }

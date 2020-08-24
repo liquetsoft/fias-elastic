@@ -11,7 +11,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Реестр адресообразующих элементов'.
+ * Тест для описания индекса сущности 'Классификатор адресообразующих элементов'.
  */
 class AddressObjectIndexMapperTest extends BaseCase
 {
@@ -72,6 +72,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('enddate', $map);
         $this->assertArrayHasKey('updatedate', $map);
         $this->assertArrayHasKey('divtype', $map);
+        $this->assertArrayHasKey('normdoc', $map);
     }
 
     public function testExtractPrimaryFromEntity()
@@ -124,6 +125,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $entity->enddate = new DateTime();
         $entity->updatedate = new DateTime();
         $entity->divtype = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->normdoc = $this->createFakeData()->word;
 
         $mapper = new AddressObjectIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
@@ -203,6 +205,8 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertSame($entity->updatedate->format('Y-m-d\TH:i:s'), $dataForElastic['updatedate'], 'Test updatedate field conversion.');
         $this->assertArrayHasKey('divtype', $dataForElastic);
         $this->assertSame($entity->divtype, $dataForElastic['divtype'], 'Test divtype field conversion.');
+        $this->assertArrayHasKey('normdoc', $dataForElastic);
+        $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
     }
 
     public function testHasProperty()

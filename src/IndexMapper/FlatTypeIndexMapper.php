@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень типов помещения или офиса'.
+ * Описание полей индекса для сущности 'Тип помещения'.
  */
 class FlatTypeIndexMapper extends IndexMapperAbstract
 {

@@ -6,7 +6,6 @@ namespace Liquetsoft\Fias\Elastic\ClientProvider;
 
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use RuntimeException;
 
 /**
  * Провайдер, который создает новый клиент.
@@ -29,10 +28,6 @@ class BuilderProvider implements ClientProvider
     {
         if ($this->client === null) {
             $this->client = $this->createNewClient();
-        }
-
-        if (!($this->client instanceof Client)) {
-            throw new RuntimeException("Can't provide any client for elasticsearch.");
         }
 
         return $this->client;

@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0.
+ * Статус актуальности КЛАДР 4.0.
  */
 class CurrentStatus
 {
+    /**
+     * Идентификатор статуса (ключ).
+     */
     protected int $curentstid = 0;
+
+    /**
+     * Наименование (0 - актуальный, 1-50, 2-98 – исторический (кроме 51), 51 - переподчиненный, 99 - несуществующий).
+     */
     protected string $name = '';
 
     public function setCurentstid(int $curentstid): self

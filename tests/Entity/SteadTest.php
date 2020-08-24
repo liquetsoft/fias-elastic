@@ -9,7 +9,7 @@ use Liquetsoft\Fias\Elastic\Entity\Stead;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Сведения о земельных участках'.
+ * Тест для сущности 'Классификатор земельных участков'.
  */
 class SteadTest extends EntityCase
 {
@@ -37,13 +37,18 @@ class SteadTest extends EntityCase
             'oktmo' => $this->createFakeData()->word,
             'parentguid' => $this->createFakeData()->word,
             'steadid' => $this->createFakeData()->word,
-            'operstatus' => $this->createFakeData()->word,
+            'operstatus' => $this->createFakeData()->numberBetween(1, 1000000),
             'startdate' => new DateTime(),
             'enddate' => new DateTime(),
             'updatedate' => new DateTime(),
-            'livestatus' => $this->createFakeData()->word,
-            'divtype' => $this->createFakeData()->word,
+            'livestatus' => $this->createFakeData()->numberBetween(1, 1000000),
+            'divtype' => $this->createFakeData()->numberBetween(1, 1000000),
             'normdoc' => $this->createFakeData()->word,
+            'terrifnsfl' => $this->createFakeData()->word,
+            'terrifnsul' => $this->createFakeData()->word,
+            'previd' => $this->createFakeData()->word,
+            'nextid' => $this->createFakeData()->word,
+            'cadnum' => $this->createFakeData()->word,
         ];
     }
 }

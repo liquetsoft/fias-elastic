@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень возможных статусов (центров) адресных объектов административных единиц'.
+ * Тест для описания индекса сущности 'Статус центра'.
  */
 class CenterStatusIndexMapperTest extends BaseCase
 {

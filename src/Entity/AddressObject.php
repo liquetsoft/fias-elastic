@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 use DateTimeInterface;
 
 /**
- * Реестр адресообразующих элементов.
+ * Классификатор адресообразующих элементов.
  */
 class AddressObject
 {
@@ -19,10 +19,10 @@ class AddressObject
     /**
      * Глобальный уникальный идентификатор адресного объекта.
      */
-    protected ?string $aoguid = null;
+    protected string $aoguid = '';
 
     /**
-     * Идентификатор родительского объекта.
+     * Идентификатор объекта родительского объекта.
      */
     protected ?string $parentguid = null;
 
@@ -32,7 +32,7 @@ class AddressObject
     protected ?string $previd = null;
 
     /**
-     * Идентификатор записи связывания с последующей исторической записью.
+     * Идентификатор записи  связывания с последующей исторической записью.
      */
     protected ?string $nextid = null;
 
@@ -49,7 +49,7 @@ class AddressObject
     /**
      * Официальное наименование.
      */
-    protected string $offname = '';
+    protected ?string $offname = null;
 
     /**
      * Краткое наименование типа объекта.
@@ -99,7 +99,7 @@ class AddressObject
     /**
      * Код улицы.
      */
-    protected string $streetcode = '';
+    protected ?string $streetcode = null;
 
     /**
      * Код дополнительного адресообразующего элемента.
@@ -123,6 +123,8 @@ class AddressObject
 
     /**
      * Статус актуальности адресного объекта ФИАС. Актуальный адрес на текущую дату. Обычно последняя запись об адресном объекте.
+     * 0 – Не актуальный
+     * 1 - Актуальный.
      */
     protected int $actstatus = 0;
 
@@ -137,7 +139,21 @@ class AddressObject
     protected int $centstatus = 0;
 
     /**
-     * Статус действия над записью – причина появления записи.
+     * Статус действия над записью – причина появления записи (см. описание таблицы OperationStatus):
+     * 01 – Инициация;
+     * 10 – Добавление;
+     * 20 – Изменение;
+     * 21 – Групповое изменение;
+     * 30 – Удаление;
+     * 31 - Удаление вследствие удаления вышестоящего объекта;
+     * 40 – Присоединение адресного объекта (слияние);
+     * 41 – Переподчинение вследствие слияния вышестоящего объекта;
+     * 42 - Прекращение существования вследствие присоединения к другому адресному объекту;
+     * 43 - Создание нового адресного объекта в результате слияния адресных объектов;
+     * 50 – Переподчинение;
+     * 51 – Переподчинение вследствие переподчинения вышестоящего объекта;
+     * 60 – Прекращение существования вследствие дробления;
+     * 61 – Создание нового адресного объекта в результате дробления.
      */
     protected int $operstatus = 0;
 
@@ -187,14 +203,22 @@ class AddressObject
     protected ?DateTimeInterface $enddate = null;
 
     /**
-     * Дата внесения (обновления) записи.
+     * Дата  внесения записи.
      */
     protected ?DateTimeInterface $updatedate = null;
 
     /**
-     * Признак адресации.
+     * Тип адресации:
+     *                   0 - не определено
+     *                   1 - муниципальный;
+     *                   2 - административно-территориальный.
      */
     protected int $divtype = 0;
+
+    /**
+     * Внешний ключ на нормативный документ.
+     */
+    protected ?string $normdoc = null;
 
     public function setAoid(string $aoid): self
     {
@@ -208,14 +232,14 @@ class AddressObject
         return $this->aoid;
     }
 
-    public function setAoguid(?string $aoguid): self
+    public function setAoguid(string $aoguid): self
     {
         $this->aoguid = $aoguid;
 
         return $this;
     }
 
-    public function getAoguid(): ?string
+    public function getAoguid(): string
     {
         return $this->aoguid;
     }
@@ -280,14 +304,14 @@ class AddressObject
         return $this->formalname;
     }
 
-    public function setOffname(string $offname): self
+    public function setOffname(?string $offname): self
     {
         $this->offname = $offname;
 
         return $this;
     }
 
-    public function getOffname(): string
+    public function getOffname(): ?string
     {
         return $this->offname;
     }
@@ -400,14 +424,14 @@ class AddressObject
         return $this->plancode;
     }
 
-    public function setStreetcode(string $streetcode): self
+    public function setStreetcode(?string $streetcode): self
     {
         $this->streetcode = $streetcode;
 
         return $this;
     }
 
-    public function getStreetcode(): string
+    public function getStreetcode(): ?string
     {
         return $this->streetcode;
     }
@@ -599,7 +623,7 @@ class AddressObject
         return $this;
     }
 
-    public function getStartdate(): DateTimeInterface
+    public function getStartdate(): ?DateTimeInterface
     {
         return $this->startdate;
     }
@@ -611,7 +635,7 @@ class AddressObject
         return $this;
     }
 
-    public function getEnddate(): DateTimeInterface
+    public function getEnddate(): ?DateTimeInterface
     {
         return $this->enddate;
     }
@@ -623,7 +647,7 @@ class AddressObject
         return $this;
     }
 
-    public function getUpdatedate(): DateTimeInterface
+    public function getUpdatedate(): ?DateTimeInterface
     {
         return $this->updatedate;
     }
@@ -638,5 +662,17 @@ class AddressObject
     public function getDivtype(): int
     {
         return $this->divtype;
+    }
+
+    public function setNormdoc(?string $normdoc): self
+    {
+        $this->normdoc = $normdoc;
+
+        return $this;
+    }
+
+    public function getNormdoc(): ?string
+    {
+        return $this->normdoc;
     }
 }

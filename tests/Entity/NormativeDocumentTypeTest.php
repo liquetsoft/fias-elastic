@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\NormativeDocumentType;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Типы нормативных документов'.
+ * Тест для сущности 'Тип нормативного документа'.
  */
 class NormativeDocumentTypeTest extends EntityCase
 {

@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень статусов актуальности записи адресного элемента по ФИАС'.
+ * Тест для описания индекса сущности 'Статус актуальности ФИАС'.
  */
 class ActualStatusIndexMapperTest extends BaseCase
 {

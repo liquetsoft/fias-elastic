@@ -9,7 +9,7 @@ use Liquetsoft\Fias\Elastic\Entity\Room;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Сведения о помещениях (квартирах, офисах, комнатах и т.д.)'.
+ * Тест для сущности 'Классификатор помещениях'.
  */
 class RoomTest extends EntityCase
 {
@@ -37,9 +37,15 @@ class RoomTest extends EntityCase
             'startdate' => new DateTime(),
             'enddate' => new DateTime(),
             'updatedate' => new DateTime(),
-            'operstatus' => $this->createFakeData()->word,
-            'livestatus' => $this->createFakeData()->word,
+            'operstatus' => $this->createFakeData()->numberBetween(1, 1000000),
+            'livestatus' => $this->createFakeData()->numberBetween(1, 1000000),
             'normdoc' => $this->createFakeData()->word,
+            'roomnumber' => $this->createFakeData()->word,
+            'roomtype' => $this->createFakeData()->numberBetween(1, 1000000),
+            'previd' => $this->createFakeData()->word,
+            'nextid' => $this->createFakeData()->word,
+            'cadnum' => $this->createFakeData()->word,
+            'roomcadnum' => $this->createFakeData()->word,
         ];
     }
 }

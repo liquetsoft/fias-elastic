@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\FlatType;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень типов помещения или офиса'.
+ * Тест для сущности 'Тип помещения'.
  */
 class FlatTypeTest extends EntityCase
 {

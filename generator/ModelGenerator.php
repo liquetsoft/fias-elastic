@@ -167,22 +167,28 @@ class ModelGenerator extends AbstractGenerator
         switch ($type) {
             case 'int':
                 $returnHint = 'int';
+                $method->setReturnType($returnHint);
+                if ($field->isNullable()) {
+                    $method->setReturnNullable();
+                }
                 break;
             case 'string_date':
                 $returnHint = 'DateTimeInterface';
+                $method->setReturnType($returnHint);
+                $method->setReturnNullable();
                 break;
             default:
                 $returnHint = 'string';
+                $method->setReturnType($returnHint);
+                if ($field->isNullable()) {
+                    $method->setReturnNullable();
+                }
                 break;
         }
 
         $parameterName = $this->unifyColumnName($field->getName());
 
         $method->setVisibility('public');
-        $method->setReturnType($returnHint);
-        if ($field->isNullable()) {
-            $method->setReturnNullable();
-        }
         $method->setBody("return \$this->{$parameterName};");
     }
 }

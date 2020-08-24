@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\CurrentStatus;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0'.
+ * Тест для сущности 'Статус актуальности КЛАДР 4.0'.
  */
 class CurrentStatusTest extends EntityCase
 {

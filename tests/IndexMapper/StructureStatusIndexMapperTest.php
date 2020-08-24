@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень видов строений'.
+ * Тест для описания индекса сущности 'Признак строения'.
  */
 class StructureStatusIndexMapperTest extends BaseCase
 {

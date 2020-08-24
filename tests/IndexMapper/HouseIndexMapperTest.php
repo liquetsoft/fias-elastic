@@ -11,7 +11,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Элементы адреса, идентифицирующие адресуемые объекты'.
+ * Тест для описания индекса сущности 'Сведения по номерам домов улиц городов и населенных пунктов'.
  */
 class HouseIndexMapperTest extends BaseCase
 {
@@ -52,6 +52,13 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('updatedate', $map);
         $this->assertArrayHasKey('counter', $map);
         $this->assertArrayHasKey('divtype', $map);
+        $this->assertArrayHasKey('regioncode', $map);
+        $this->assertArrayHasKey('terrifnsfl', $map);
+        $this->assertArrayHasKey('terrifnsul', $map);
+        $this->assertArrayHasKey('buildnum', $map);
+        $this->assertArrayHasKey('strucnum', $map);
+        $this->assertArrayHasKey('normdoc', $map);
+        $this->assertArrayHasKey('cadnum', $map);
     }
 
     public function testExtractPrimaryFromEntity()
@@ -84,6 +91,13 @@ class HouseIndexMapperTest extends BaseCase
         $entity->updatedate = new DateTime();
         $entity->counter = $this->createFakeData()->numberBetween(1, 100000);
         $entity->divtype = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->regioncode = $this->createFakeData()->word;
+        $entity->terrifnsfl = $this->createFakeData()->word;
+        $entity->terrifnsul = $this->createFakeData()->word;
+        $entity->buildnum = $this->createFakeData()->word;
+        $entity->strucnum = $this->createFakeData()->word;
+        $entity->normdoc = $this->createFakeData()->word;
+        $entity->cadnum = $this->createFakeData()->word;
 
         $mapper = new HouseIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
@@ -123,6 +137,20 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertSame($entity->counter, $dataForElastic['counter'], 'Test counter field conversion.');
         $this->assertArrayHasKey('divtype', $dataForElastic);
         $this->assertSame($entity->divtype, $dataForElastic['divtype'], 'Test divtype field conversion.');
+        $this->assertArrayHasKey('regioncode', $dataForElastic);
+        $this->assertSame($entity->regioncode, $dataForElastic['regioncode'], 'Test regioncode field conversion.');
+        $this->assertArrayHasKey('terrifnsfl', $dataForElastic);
+        $this->assertSame($entity->terrifnsfl, $dataForElastic['terrifnsfl'], 'Test terrifnsfl field conversion.');
+        $this->assertArrayHasKey('terrifnsul', $dataForElastic);
+        $this->assertSame($entity->terrifnsul, $dataForElastic['terrifnsul'], 'Test terrifnsul field conversion.');
+        $this->assertArrayHasKey('buildnum', $dataForElastic);
+        $this->assertSame($entity->buildnum, $dataForElastic['buildnum'], 'Test buildnum field conversion.');
+        $this->assertArrayHasKey('strucnum', $dataForElastic);
+        $this->assertSame($entity->strucnum, $dataForElastic['strucnum'], 'Test strucnum field conversion.');
+        $this->assertArrayHasKey('normdoc', $dataForElastic);
+        $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
+        $this->assertArrayHasKey('cadnum', $dataForElastic);
+        $this->assertSame($entity->cadnum, $dataForElastic['cadnum'], 'Test cadnum field conversion.');
     }
 
     public function testHasProperty()
