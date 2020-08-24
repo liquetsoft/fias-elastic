@@ -90,22 +90,19 @@ class ModelGenerator extends AbstractGenerator
         $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
         switch ($type) {
             case 'int':
-                $defaultValue = $field->isNullable() ? null : 0;
-                $varType = 'int' . ($field->isNullable() ? '|null' : '');
+                $property->setValue($field->isNullable() ? null : 0);
                 $property->setType('int');
                 if ($field->isNullable()) {
                     $property->setNullable();
                 }
                 break;
             case 'string_date':
-                $defaultValue = null;
-                $varType = 'DateTimeInterface|null';
+                $property->setValue(null);
                 $property->setType(DateTimeInterface::class);
                 $property->setNullable();
                 break;
             default:
-                $defaultValue = $field->isNullable() ? null : '';
-                $varType = 'string' . ($field->isNullable() ? '|null' : '');
+                $property->setValue($field->isNullable() ? null : '');
                 $property->setType('string');
                 if ($field->isNullable()) {
                     $property->setNullable();
@@ -113,7 +110,6 @@ class ModelGenerator extends AbstractGenerator
                 break;
         }
 
-        $property->setValue($defaultValue);
         $property->setVisibility('protected');
         $property->setInitialized();
         if ($field->getDescription()) {
