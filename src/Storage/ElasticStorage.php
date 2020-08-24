@@ -20,42 +20,28 @@ class ElasticStorage implements Storage
 {
     /**
      * Клиент для отправки запросов в elastic search.
-     *
-     * @var ClientProvider
      */
-    private $clientProvider;
+    private ClientProvider $clientProvider;
 
     /**
      * Объект с описаниями индексов.
-     *
-     * @var IndexMapperRegistry
      */
-    private $registry;
+    private IndexMapperRegistry $registry;
 
     /**
      * Количество элементов для множественной вставки.
-     *
-     * @var int
      */
-    private $insertBatch;
+    private int $insertBatch;
 
     /**
      * Данные операций для множественной отправки.
      *
      * @var array<string, array>
      */
-    private $bulkOperations = [];
+    private array $bulkOperations = [];
 
-    /**
-     * @param ClientProvider      $clientProvider
-     * @param IndexMapperRegistry $registry
-     * @param int                 $insertBatch
-     */
-    public function __construct(
-        ClientProvider $clientProvider,
-        IndexMapperRegistry $registry,
-        int $insertBatch = 1000
-    ) {
+    public function __construct(ClientProvider $clientProvider, IndexMapperRegistry $registry, int $insertBatch = 1000)
+    {
         $this->clientProvider = $clientProvider;
         $this->registry = $registry;
         $this->insertBatch = $insertBatch;

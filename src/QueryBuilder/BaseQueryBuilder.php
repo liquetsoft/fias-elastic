@@ -12,19 +12,10 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
  */
 class BaseQueryBuilder implements QueryBuilder
 {
-    /**
-     * @var IndexMapperInterface
-     */
-    private $mapper;
+    private IndexMapperInterface $mapper;
 
-    /**
-     * @var array
-     */
-    private $query = [];
+    private array $query = [];
 
-    /**
-     * @param IndexMapperInterface $mapper
-     */
     public function __construct(IndexMapperInterface $mapper)
     {
         $this->mapper = $mapper;

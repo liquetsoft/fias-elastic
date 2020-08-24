@@ -9,7 +9,7 @@ use Liquetsoft\Fias\Elastic\Entity\House;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Элементы адреса, идентифицирующие адресуемые объекты'.
+ * Тест для сущности 'Сведения по номерам домов улиц городов и населенных пунктов'.
  */
 class HouseTest extends EntityCase
 {
@@ -44,6 +44,13 @@ class HouseTest extends EntityCase
             'updatedate' => new DateTime(),
             'counter' => $this->createFakeData()->numberBetween(1, 1000000),
             'divtype' => $this->createFakeData()->numberBetween(1, 1000000),
+            'regioncode' => $this->createFakeData()->word,
+            'terrifnsfl' => $this->createFakeData()->word,
+            'terrifnsul' => $this->createFakeData()->word,
+            'buildnum' => $this->createFakeData()->word,
+            'strucnum' => $this->createFakeData()->word,
+            'normdoc' => $this->createFakeData()->word,
+            'cadnum' => $this->createFakeData()->word,
         ];
     }
 }

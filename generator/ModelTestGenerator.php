@@ -26,7 +26,7 @@ class ModelTestGenerator extends AbstractGenerator
         $name = $baseName . 'Test';
         $fullPath = "{$dir->getPathname()}/{$name}.php";
 
-        $phpFile = new PhpFile;
+        $phpFile = new PhpFile();
         $phpFile->setStrictTypes();
 
         $namespace = $phpFile->addNamespace($namespace);
@@ -38,7 +38,7 @@ class ModelTestGenerator extends AbstractGenerator
         $this->decorateCreateEntity($class->addMethod('createEntity'), $descriptor);
         $this->decorateCreateAccessors($class->addMethod('accessorsProvider'), $descriptor);
 
-        file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
+        file_put_contents($fullPath, (new PsrPrinter())->printFile($phpFile));
     }
 
     /**

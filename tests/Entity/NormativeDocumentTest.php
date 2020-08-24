@@ -31,7 +31,8 @@ class NormativeDocumentTest extends EntityCase
             'docname' => $this->createFakeData()->word,
             'docdate' => new DateTime(),
             'docnum' => $this->createFakeData()->word,
-            'doctype' => $this->createFakeData()->word,
+            'doctype' => $this->createFakeData()->numberBetween(1, 1000000),
+            'docimgid' => $this->createFakeData()->word,
         ];
     }
 }

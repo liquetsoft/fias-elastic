@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации'.
+ * Тест для описания индекса сущности 'Тип адресного объекта'.
  */
 class AddressObjectTypeIndexMapperTest extends BaseCase
 {
@@ -53,7 +53,7 @@ class AddressObjectTypeIndexMapperTest extends BaseCase
     public function testExtractDataFromEntity()
     {
         $entity = new stdClass();
-        $entity->kodtst = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->kodtst = $this->createFakeData()->word;
         $entity->level = $this->createFakeData()->numberBetween(1, 100000);
         $entity->socrname = $this->createFakeData()->word;
         $entity->scname = $this->createFakeData()->word;

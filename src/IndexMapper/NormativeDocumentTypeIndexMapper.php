@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Типы нормативных документов'.
+ * Описание полей индекса для сущности 'Тип нормативного документа'.
  */
 class NormativeDocumentTypeIndexMapper extends IndexMapperAbstract
 {

@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень возможных статусов (центров) адресных объектов административных единиц.
+ * Статус центра.
  */
 class CenterStatus
 {
-    /** @var int */
-    protected $centerstid = 0;
+    /**
+     * Идентификатор статуса.
+     */
+    protected int $centerstid = 0;
 
-    /** @var string */
-    protected $name = '';
+    /**
+     * Наименование.
+     */
+    protected string $name = '';
 
     public function setCenterstid(int $centerstid): self
     {

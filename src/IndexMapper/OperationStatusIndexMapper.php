@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень кодов операций над адресными объектами'.
+ * Описание полей индекса для сущности 'Статус действия'.
  */
 class OperationStatusIndexMapper extends IndexMapperAbstract
 {

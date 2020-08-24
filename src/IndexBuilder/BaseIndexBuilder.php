@@ -15,19 +15,10 @@ use Throwable;
  */
 class BaseIndexBuilder implements IndexBuilder
 {
-    /**
-     * @var ClientProvider
-     */
-    private $clientProvider;
+    private ClientProvider $clientProvider;
 
-    /**
-     * @var Client|null
-     */
-    private $client;
+    private ?Client $client = null;
 
-    /**
-     * @param ClientProvider $clientProvider
-     */
     public function __construct(ClientProvider $clientProvider)
     {
         $this->clientProvider = $clientProvider;

@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0'.
+ * Описание полей индекса для сущности 'Статус актуальности КЛАДР 4.0'.
  */
 class CurrentStatusIndexMapper extends IndexMapperAbstract
 {

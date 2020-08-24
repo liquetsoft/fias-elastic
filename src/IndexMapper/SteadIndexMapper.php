@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Сведения о земельных участках'.
+ * Описание полей индекса для сущности 'Классификатор земельных участков'.
  */
 class SteadIndexMapper extends IndexMapperAbstract
 {
@@ -24,7 +24,7 @@ class SteadIndexMapper extends IndexMapperAbstract
      */
     public function getPrimaryName(): string
     {
-        return 'steadguid';
+        return 'steadid';
     }
 
     /**
@@ -34,7 +34,7 @@ class SteadIndexMapper extends IndexMapperAbstract
     {
         return [
             'steadguid' => [
-                'type' => 'keyword',
+                'type' => 'text',
             ],
             'number' => [
                 'type' => 'text',
@@ -61,10 +61,10 @@ class SteadIndexMapper extends IndexMapperAbstract
                 'type' => 'text',
             ],
             'steadid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'operstatus' => [
-                'type' => 'text',
+                'type' => 'integer',
             ],
             'startdate' => [
                 'type' => 'date',
@@ -79,12 +79,27 @@ class SteadIndexMapper extends IndexMapperAbstract
                 'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'livestatus' => [
-                'type' => 'text',
+                'type' => 'integer',
             ],
             'divtype' => [
-                'type' => 'text',
+                'type' => 'integer',
             ],
             'normdoc' => [
+                'type' => 'text',
+            ],
+            'terrifnsfl' => [
+                'type' => 'text',
+            ],
+            'terrifnsul' => [
+                'type' => 'text',
+            ],
+            'previd' => [
+                'type' => 'text',
+            ],
+            'nextid' => [
+                'type' => 'text',
+            ],
+            'cadnum' => [
                 'type' => 'text',
             ],
         ];

@@ -26,7 +26,7 @@ class MapperGenerator extends AbstractGenerator
         $name = $this->unifyClassName($descriptor->getName()) . 'IndexMapper';
         $fullPath = "{$dir->getPathname()}/{$name}.php";
 
-        $phpFile = new PhpFile;
+        $phpFile = new PhpFile();
         $phpFile->setStrictTypes();
 
         $namespace = $phpFile->addNamespace($namespace);
@@ -39,7 +39,7 @@ class MapperGenerator extends AbstractGenerator
         $this->decoratePrimaryNameGetter($class->addMethod('getPrimaryName'), $descriptor);
         $this->decorateMapGetter($class->addMethod('getMappingProperties'), $descriptor);
 
-        file_put_contents($fullPath, (new PsrPrinter)->printFile($phpFile));
+        file_put_contents($fullPath, (new PsrPrinter())->printFile($phpFile));
     }
 
     /**

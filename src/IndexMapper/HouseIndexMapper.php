@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Элементы адреса, идентифицирующие адресуемые объекты'.
+ * Описание полей индекса для сущности 'Сведения по номерам домов улиц городов и населенных пунктов'.
  */
 class HouseIndexMapper extends IndexMapperAbstract
 {
@@ -86,6 +86,27 @@ class HouseIndexMapper extends IndexMapperAbstract
             ],
             'divtype' => [
                 'type' => 'integer',
+            ],
+            'regioncode' => [
+                'type' => 'text',
+            ],
+            'terrifnsfl' => [
+                'type' => 'text',
+            ],
+            'terrifnsul' => [
+                'type' => 'text',
+            ],
+            'buildnum' => [
+                'type' => 'text',
+            ],
+            'strucnum' => [
+                'type' => 'text',
+            ],
+            'normdoc' => [
+                'type' => 'text',
+            ],
+            'cadnum' => [
+                'type' => 'text',
             ],
         ];
     }

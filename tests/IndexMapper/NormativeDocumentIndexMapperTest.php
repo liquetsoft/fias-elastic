@@ -40,6 +40,7 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('docdate', $map);
         $this->assertArrayHasKey('docnum', $map);
         $this->assertArrayHasKey('doctype', $map);
+        $this->assertArrayHasKey('docimgid', $map);
     }
 
     public function testExtractPrimaryFromEntity()
@@ -59,7 +60,8 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $entity->docname = $this->createFakeData()->word;
         $entity->docdate = new DateTime();
         $entity->docnum = $this->createFakeData()->word;
-        $entity->doctype = $this->createFakeData()->word;
+        $entity->doctype = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->docimgid = $this->createFakeData()->word;
 
         $mapper = new NormativeDocumentIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
@@ -75,6 +77,8 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame($entity->docnum, $dataForElastic['docnum'], 'Test docnum field conversion.');
         $this->assertArrayHasKey('doctype', $dataForElastic);
         $this->assertSame($entity->doctype, $dataForElastic['doctype'], 'Test doctype field conversion.');
+        $this->assertArrayHasKey('docimgid', $dataForElastic);
+        $this->assertSame($entity->docimgid, $dataForElastic['docimgid'], 'Test docimgid field conversion.');
     }
 
     public function testHasProperty()

@@ -9,7 +9,7 @@ use Liquetsoft\Fias\Elastic\Entity\AddressObject;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Реестр адресообразующих элементов'.
+ * Тест для сущности 'Классификатор адресообразующих элементов'.
  */
 class AddressObjectTest extends EntityCase
 {
@@ -64,6 +64,7 @@ class AddressObjectTest extends EntityCase
             'enddate' => new DateTime(),
             'updatedate' => new DateTime(),
             'divtype' => $this->createFakeData()->numberBetween(1, 1000000),
+            'normdoc' => $this->createFakeData()->word,
         ];
     }
 }

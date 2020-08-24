@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень полных, сокращённых наименований типов адресных элементов и уровней их классификации'.
+ * Описание полей индекса для сущности 'Тип адресного объекта'.
  */
 class AddressObjectTypeIndexMapper extends IndexMapperAbstract
 {

@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Типы нормативных документов'.
+ * Тест для описания индекса сущности 'Тип нормативного документа'.
  */
 class NormativeDocumentTypeIndexMapperTest extends BaseCase
 {

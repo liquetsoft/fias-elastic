@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Перечень возможных видов владений'.
+ * Описание полей индекса для сущности 'Признак владения'.
  */
 class EstateStatusIndexMapper extends IndexMapperAbstract
 {
@@ -37,6 +37,9 @@ class EstateStatusIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'name' => [
+                'type' => 'text',
+            ],
+            'shortname' => [
                 'type' => 'text',
             ],
         ];

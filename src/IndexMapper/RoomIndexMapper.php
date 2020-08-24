@@ -7,7 +7,7 @@ namespace Liquetsoft\Fias\Elastic\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 
 /**
- * Описание полей индекса для сущности 'Сведения о помещениях (квартирах, офисах, комнатах и т.д.)'.
+ * Описание полей индекса для сущности 'Классификатор помещениях'.
  */
 class RoomIndexMapper extends IndexMapperAbstract
 {
@@ -67,12 +67,30 @@ class RoomIndexMapper extends IndexMapperAbstract
                 'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'operstatus' => [
-                'type' => 'text',
+                'type' => 'integer',
             ],
             'livestatus' => [
-                'type' => 'text',
+                'type' => 'integer',
             ],
             'normdoc' => [
+                'type' => 'text',
+            ],
+            'roomnumber' => [
+                'type' => 'text',
+            ],
+            'roomtype' => [
+                'type' => 'integer',
+            ],
+            'previd' => [
+                'type' => 'text',
+            ],
+            'nextid' => [
+                'type' => 'text',
+            ],
+            'cadnum' => [
+                'type' => 'text',
+            ],
+            'roomcadnum' => [
                 'type' => 'text',
             ],
         ];

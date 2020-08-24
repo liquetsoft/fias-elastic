@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Типы нормативных документов.
+ * Тип нормативного документа.
  */
 class NormativeDocumentType
 {
-    /** @var int */
-    protected $ndtypeid = 0;
+    /**
+     * Идентификатор записи (ключ).
+     */
+    protected int $ndtypeid = 0;
 
-    /** @var string */
-    protected $name = '';
+    /**
+     * Наименование типа нормативного документа.
+     */
+    protected string $name = '';
 
     public function setNdtypeid(int $ndtypeid): self
     {

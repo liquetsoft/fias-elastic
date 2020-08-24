@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень кодов операций над адресными объектами'.
+ * Тест для описания индекса сущности 'Статус действия'.
  */
 class OperationStatusIndexMapperTest extends BaseCase
 {

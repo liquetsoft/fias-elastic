@@ -5,18 +5,24 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Entity;
 
 /**
- * Перечень типов комнат.
+ * Тип комнаты.
  */
 class RoomType
 {
-    /** @var int */
-    protected $rmtypeid = 0;
+    /**
+     * Тип комнаты.
+     */
+    protected int $rmtypeid = 0;
 
-    /** @var string */
-    protected $name = '';
+    /**
+     * Наименование.
+     */
+    protected string $name = '';
 
-    /** @var string */
-    protected $shortname = '';
+    /**
+     * Краткое наименование.
+     */
+    protected ?string $shortname = null;
 
     public function setRmtypeid(int $rmtypeid): self
     {
@@ -42,14 +48,14 @@ class RoomType
         return $this->name;
     }
 
-    public function setShortname(string $shortname): self
+    public function setShortname(?string $shortname): self
     {
         $this->shortname = $shortname;
 
         return $this;
     }
 
-    public function getShortname(): string
+    public function getShortname(): ?string
     {
         return $this->shortname;
     }

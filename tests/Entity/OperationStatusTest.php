@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\OperationStatus;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень кодов операций над адресными объектами'.
+ * Тест для сущности 'Статус действия'.
  */
 class OperationStatusTest extends EntityCase
 {

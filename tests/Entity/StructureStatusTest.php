@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\StructureStatus;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень видов строений'.
+ * Тест для сущности 'Признак строения'.
  */
 class StructureStatusTest extends EntityCase
 {

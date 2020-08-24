@@ -10,7 +10,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Перечень статусов актуальности записи адресного элемента по классификатору КЛАДР4.0'.
+ * Тест для описания индекса сущности 'Статус актуальности КЛАДР 4.0'.
  */
 class CurrentStatusIndexMapperTest extends BaseCase
 {

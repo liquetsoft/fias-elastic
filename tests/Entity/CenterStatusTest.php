@@ -8,7 +8,7 @@ use Liquetsoft\Fias\Elastic\Entity\CenterStatus;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
- * Тест для сущности 'Перечень возможных статусов (центров) адресных объектов административных единиц'.
+ * Тест для сущности 'Статус центра'.
  */
 class CenterStatusTest extends EntityCase
 {

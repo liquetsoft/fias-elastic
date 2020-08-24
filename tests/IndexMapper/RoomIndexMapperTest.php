@@ -11,7 +11,7 @@ use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use stdClass;
 
 /**
- * Тест для описания индекса сущности 'Сведения о помещениях (квартирах, офисах, комнатах и т.д.)'.
+ * Тест для описания индекса сущности 'Классификатор помещениях'.
  */
 class RoomIndexMapperTest extends BaseCase
 {
@@ -48,6 +48,12 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('operstatus', $map);
         $this->assertArrayHasKey('livestatus', $map);
         $this->assertArrayHasKey('normdoc', $map);
+        $this->assertArrayHasKey('roomnumber', $map);
+        $this->assertArrayHasKey('roomtype', $map);
+        $this->assertArrayHasKey('previd', $map);
+        $this->assertArrayHasKey('nextid', $map);
+        $this->assertArrayHasKey('cadnum', $map);
+        $this->assertArrayHasKey('roomcadnum', $map);
     }
 
     public function testExtractPrimaryFromEntity()
@@ -73,9 +79,15 @@ class RoomIndexMapperTest extends BaseCase
         $entity->startdate = new DateTime();
         $entity->enddate = new DateTime();
         $entity->updatedate = new DateTime();
-        $entity->operstatus = $this->createFakeData()->word;
-        $entity->livestatus = $this->createFakeData()->word;
+        $entity->operstatus = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->livestatus = $this->createFakeData()->numberBetween(1, 100000);
         $entity->normdoc = $this->createFakeData()->word;
+        $entity->roomnumber = $this->createFakeData()->word;
+        $entity->roomtype = $this->createFakeData()->numberBetween(1, 100000);
+        $entity->previd = $this->createFakeData()->word;
+        $entity->nextid = $this->createFakeData()->word;
+        $entity->cadnum = $this->createFakeData()->word;
+        $entity->roomcadnum = $this->createFakeData()->word;
 
         $mapper = new RoomIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
@@ -107,6 +119,18 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertSame($entity->livestatus, $dataForElastic['livestatus'], 'Test livestatus field conversion.');
         $this->assertArrayHasKey('normdoc', $dataForElastic);
         $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
+        $this->assertArrayHasKey('roomnumber', $dataForElastic);
+        $this->assertSame($entity->roomnumber, $dataForElastic['roomnumber'], 'Test roomnumber field conversion.');
+        $this->assertArrayHasKey('roomtype', $dataForElastic);
+        $this->assertSame($entity->roomtype, $dataForElastic['roomtype'], 'Test roomtype field conversion.');
+        $this->assertArrayHasKey('previd', $dataForElastic);
+        $this->assertSame($entity->previd, $dataForElastic['previd'], 'Test previd field conversion.');
+        $this->assertArrayHasKey('nextid', $dataForElastic);
+        $this->assertSame($entity->nextid, $dataForElastic['nextid'], 'Test nextid field conversion.');
+        $this->assertArrayHasKey('cadnum', $dataForElastic);
+        $this->assertSame($entity->cadnum, $dataForElastic['cadnum'], 'Test cadnum field conversion.');
+        $this->assertArrayHasKey('roomcadnum', $dataForElastic);
+        $this->assertSame($entity->roomcadnum, $dataForElastic['roomcadnum'], 'Test roomcadnum field conversion.');
     }
 
     public function testHasProperty()

@@ -7,60 +7,132 @@ namespace Liquetsoft\Fias\Elastic\Entity;
 use DateTimeInterface;
 
 /**
- * Элементы адреса, идентифицирующие адресуемые объекты.
+ * Сведения по номерам домов улиц городов и населенных пунктов.
  */
 class House
 {
-    /** @var string */
-    protected $houseid = '';
+    /**
+     * Уникальный идентификатор записи дома.
+     */
+    protected string $houseid = '';
 
-    /** @var string|null */
-    protected $houseguid;
+    /**
+     * Глобальный уникальный идентификатор дома.
+     */
+    protected string $houseguid = '';
 
-    /** @var string|null */
-    protected $aoguid;
+    /**
+     * Guid записи родительского объекта (улицы, города, населенного пункта и т.п.).
+     */
+    protected string $aoguid = '';
 
-    /** @var string|null */
-    protected $housenum;
+    /**
+     * Номер дома.
+     */
+    protected ?string $housenum = null;
 
-    /** @var int */
-    protected $strstatus = 0;
+    /**
+     * Признак строения.
+     */
+    protected ?int $strstatus = null;
 
-    /** @var int */
-    protected $eststatus = 0;
+    /**
+     * Признак владения.
+     */
+    protected int $eststatus = 0;
 
-    /** @var int */
-    protected $statstatus = 0;
+    /**
+     * Состояние дома.
+     */
+    protected int $statstatus = 0;
 
-    /** @var string|null */
-    protected $ifnsfl;
+    /**
+     * Код ИФНС ФЛ.
+     */
+    protected ?string $ifnsfl = null;
 
-    /** @var string|null */
-    protected $ifnsul;
+    /**
+     * Код ИФНС ЮЛ.
+     */
+    protected ?string $ifnsul = null;
 
-    /** @var string|null */
-    protected $okato;
+    /**
+     * OKATO.
+     */
+    protected ?string $okato = null;
 
-    /** @var string|null */
-    protected $oktmo;
+    /**
+     * OKTMO.
+     */
+    protected ?string $oktmo = null;
 
-    /** @var string|null */
-    protected $postalcode;
+    /**
+     * Почтовый индекс.
+     */
+    protected ?string $postalcode = null;
 
-    /** @var DateTimeInterface */
-    protected $startdate;
+    /**
+     * Начало действия записи.
+     */
+    protected ?DateTimeInterface $startdate = null;
 
-    /** @var DateTimeInterface */
-    protected $enddate;
+    /**
+     * Окончание действия записи.
+     */
+    protected ?DateTimeInterface $enddate = null;
 
-    /** @var DateTimeInterface */
-    protected $updatedate;
+    /**
+     * Дата время внесения записи.
+     */
+    protected ?DateTimeInterface $updatedate = null;
 
-    /** @var int */
-    protected $counter = 0;
+    /**
+     * Счетчик записей домов для КЛАДР 4.
+     */
+    protected int $counter = 0;
 
-    /** @var int */
-    protected $divtype = 0;
+    /**
+     * Тип адресации:
+     * 0 - не определено
+     * 1 - муниципальный;
+     * 2 - административно-территориальный.
+     */
+    protected int $divtype = 0;
+
+    /**
+     * Код региона.
+     */
+    protected ?string $regioncode = null;
+
+    /**
+     * Код территориального участка ИФНС ФЛ.
+     */
+    protected ?string $terrifnsfl = null;
+
+    /**
+     * Код территориального участка ИФНС ЮЛ.
+     */
+    protected ?string $terrifnsul = null;
+
+    /**
+     * Номер корпуса.
+     */
+    protected ?string $buildnum = null;
+
+    /**
+     * Номер строения.
+     */
+    protected ?string $strucnum = null;
+
+    /**
+     * Внешний ключ на нормативный документ.
+     */
+    protected ?string $normdoc = null;
+
+    /**
+     * Кадастровый номер.
+     */
+    protected ?string $cadnum = null;
 
     public function setHouseid(string $houseid): self
     {
@@ -74,26 +146,26 @@ class House
         return $this->houseid;
     }
 
-    public function setHouseguid(?string $houseguid): self
+    public function setHouseguid(string $houseguid): self
     {
         $this->houseguid = $houseguid;
 
         return $this;
     }
 
-    public function getHouseguid(): ?string
+    public function getHouseguid(): string
     {
         return $this->houseguid;
     }
 
-    public function setAoguid(?string $aoguid): self
+    public function setAoguid(string $aoguid): self
     {
         $this->aoguid = $aoguid;
 
         return $this;
     }
 
-    public function getAoguid(): ?string
+    public function getAoguid(): string
     {
         return $this->aoguid;
     }
@@ -110,14 +182,14 @@ class House
         return $this->housenum;
     }
 
-    public function setStrstatus(int $strstatus): self
+    public function setStrstatus(?int $strstatus): self
     {
         $this->strstatus = $strstatus;
 
         return $this;
     }
 
-    public function getStrstatus(): int
+    public function getStrstatus(): ?int
     {
         return $this->strstatus;
     }
@@ -213,7 +285,7 @@ class House
         return $this;
     }
 
-    public function getStartdate(): DateTimeInterface
+    public function getStartdate(): ?DateTimeInterface
     {
         return $this->startdate;
     }
@@ -225,7 +297,7 @@ class House
         return $this;
     }
 
-    public function getEnddate(): DateTimeInterface
+    public function getEnddate(): ?DateTimeInterface
     {
         return $this->enddate;
     }
@@ -237,7 +309,7 @@ class House
         return $this;
     }
 
-    public function getUpdatedate(): DateTimeInterface
+    public function getUpdatedate(): ?DateTimeInterface
     {
         return $this->updatedate;
     }
@@ -264,5 +336,89 @@ class House
     public function getDivtype(): int
     {
         return $this->divtype;
+    }
+
+    public function setRegioncode(?string $regioncode): self
+    {
+        $this->regioncode = $regioncode;
+
+        return $this;
+    }
+
+    public function getRegioncode(): ?string
+    {
+        return $this->regioncode;
+    }
+
+    public function setTerrifnsfl(?string $terrifnsfl): self
+    {
+        $this->terrifnsfl = $terrifnsfl;
+
+        return $this;
+    }
+
+    public function getTerrifnsfl(): ?string
+    {
+        return $this->terrifnsfl;
+    }
+
+    public function setTerrifnsul(?string $terrifnsul): self
+    {
+        $this->terrifnsul = $terrifnsul;
+
+        return $this;
+    }
+
+    public function getTerrifnsul(): ?string
+    {
+        return $this->terrifnsul;
+    }
+
+    public function setBuildnum(?string $buildnum): self
+    {
+        $this->buildnum = $buildnum;
+
+        return $this;
+    }
+
+    public function getBuildnum(): ?string
+    {
+        return $this->buildnum;
+    }
+
+    public function setStrucnum(?string $strucnum): self
+    {
+        $this->strucnum = $strucnum;
+
+        return $this;
+    }
+
+    public function getStrucnum(): ?string
+    {
+        return $this->strucnum;
+    }
+
+    public function setNormdoc(?string $normdoc): self
+    {
+        $this->normdoc = $normdoc;
+
+        return $this;
+    }
+
+    public function getNormdoc(): ?string
+    {
+        return $this->normdoc;
+    }
+
+    public function setCadnum(?string $cadnum): self
+    {
+        $this->cadnum = $cadnum;
+
+        return $this;
+    }
+
+    public function getCadnum(): ?string
+    {
+        return $this->cadnum;
     }
 }
