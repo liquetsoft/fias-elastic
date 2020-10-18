@@ -83,6 +83,17 @@ interface QueryBuilder
     public function from(int $from): QueryBuilder;
 
     /**
+     * Добавить значения search_after для пагинации.
+     *
+     * @property array $values
+     *
+     * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
+     */
+    public function searchAfter(array $values): QueryBuilder;
+
+    /**
      * Возвращает запрос для клиента elasticsearch.
      *
      * @return array

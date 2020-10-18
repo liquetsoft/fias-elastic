@@ -122,6 +122,16 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
+    public function searchAfter(array $values): QueryBuilder
+    {
+        $this->query['search_after'] = array_values($values);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuery(): array
     {
         $query = $this->query;
