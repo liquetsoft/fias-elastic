@@ -250,8 +250,9 @@ class ArrayIndexMapperRegistryTest extends BaseCase
         $builder->searchAfter($searchAfter);
         $query = $builder->getQuery();
 
-        $this->assertArrayHasKey('search_after', $query);
-        $this->assertEquals($searchAfter, $query['search_after']);
+        $this->assertArrayHasKey('body', $query);
+        $this->assertArrayHasKey('search_after', $query['body']);
+        $this->assertEquals($searchAfter, $query['body']['search_after']);
     }
 
     /**

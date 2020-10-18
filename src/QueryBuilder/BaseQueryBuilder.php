@@ -124,7 +124,7 @@ class BaseQueryBuilder implements QueryBuilder
      */
     public function searchAfter(array $values): QueryBuilder
     {
-        $this->query['search_after'] = array_values($values);
+        $this->query['body']['search_after'] = array_values($values);
 
         return $this;
     }
