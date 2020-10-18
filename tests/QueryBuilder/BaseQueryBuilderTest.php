@@ -33,22 +33,25 @@ class ArrayIndexMapperRegistryTest extends BaseCase
         $builder->match($param, $value)->match($param1, $value1);
         $query = $builder->getQuery();
 
-        $this->assertQuery([
-            'bool' => [
-                'must' => [
-                    [
-                        'match' => [
-                            $param => $value,
+        $this->assertQuery(
+            [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match' => [
+                                $param => $value,
+                            ],
                         ],
-                    ],
-                    [
-                        'match' => [
-                            $param1 => $value1,
+                        [
+                            'match' => [
+                                $param1 => $value1,
+                            ],
                         ],
                     ],
                 ],
             ],
-        ], $query);
+            $query
+        );
     }
 
     /**
@@ -84,22 +87,25 @@ class ArrayIndexMapperRegistryTest extends BaseCase
         $builder->term($param, $value)->term($param1, $value1);
         $query = $builder->getQuery();
 
-        $this->assertQuery([
-            'bool' => [
-                'must' => [
-                    [
-                        'term' => [
-                            $param => ['value' => $value],
+        $this->assertQuery(
+            [
+                'bool' => [
+                    'must' => [
+                        [
+                            'term' => [
+                                $param => ['value' => $value],
+                            ],
                         ],
-                    ],
-                    [
-                        'term' => [
-                            $param1 => ['value' => $value1],
+                        [
+                            'term' => [
+                                $param1 => ['value' => $value1],
+                            ],
                         ],
                     ],
                 ],
             ],
-        ], $query);
+            $query
+        );
     }
 
     /**
@@ -117,22 +123,25 @@ class ArrayIndexMapperRegistryTest extends BaseCase
         $builder->notExist($param)->notExist($param1);
         $query = $builder->getQuery();
 
-        $this->assertQuery([
-            'bool' => [
-                'must_not' => [
-                    [
-                        'exists' => [
-                            'field' => $param,
+        $this->assertQuery(
+            [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'exists' => [
+                                'field' => $param,
+                            ],
                         ],
-                    ],
-                    [
-                        'exists' => [
-                            'field' => $param1,
+                        [
+                            'exists' => [
+                                'field' => $param1,
+                            ],
                         ],
                     ],
                 ],
             ],
-        ], $query);
+            $query
+        );
     }
 
     /**
@@ -151,7 +160,14 @@ class ArrayIndexMapperRegistryTest extends BaseCase
 
         $this->assertArrayHasKey('body', $query);
         $this->assertArrayHasKey('sort', $query['body']);
-        $this->assertEquals([[$param => ['order' => 'asc']]], $query['body']['sort']);
+        $this->assertEquals(
+            [
+                [
+                    $param => ['order' => 'asc'],
+                ],
+            ],
+            $query['body']['sort']
+        );
     }
 
     /**
@@ -170,7 +186,14 @@ class ArrayIndexMapperRegistryTest extends BaseCase
 
         $this->assertArrayHasKey('body', $query);
         $this->assertArrayHasKey('sort', $query['body']);
-        $this->assertEquals([[$param => ['order' => 'desc']]], $query['body']['sort']);
+        $this->assertEquals(
+            [
+                [
+                    $param => ['order' => 'desc'],
+                ],
+            ],
+            $query['body']['sort']
+        );
     }
 
     /**
@@ -207,6 +230,28 @@ class ArrayIndexMapperRegistryTest extends BaseCase
 
         $this->assertArrayHasKey('from', $query);
         $this->assertEquals($from, $query['from']);
+    }
+
+    /**
+     * Проверяет, что объект правильно задаст search_after.
+     *
+     * @throws Throwable
+     */
+    public function testSearchAfter()
+    {
+        $searchAfter = [
+            $this->createFakeData()->numberBetween(1, 1000),
+        ];
+        $param = $this->createFakeData()->word;
+        $mapper = $this->getMapperMock([$param]);
+
+        $builder = new BaseQueryBuilder($mapper);
+        $builder->sortAsc($param);
+        $builder->searchAfter($searchAfter);
+        $query = $builder->getQuery();
+
+        $this->assertArrayHasKey('search_after', $query);
+        $this->assertEquals($searchAfter, $query['search_after']);
     }
 
     /**
