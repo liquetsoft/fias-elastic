@@ -6,7 +6,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\QueryBuilder;
 
 use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
-use Liquetsoft\Fias\Elastic\QueryBuilder\BaseQueryBuilder;
+use Liquetsoft\Fias\Elastic\QueryBuilder\MapperQueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
@@ -14,7 +14,7 @@ use Throwable;
 /**
  * Тесты для конструктора запросов к elasticsearch.
  */
-class BaseQueryBuilderTest extends BaseCase
+class MapperQueryBuilderTest extends BaseCase
 {
     /**
      * Проверяет, что объект правильно задаст условие для поиска.
@@ -29,7 +29,7 @@ class BaseQueryBuilderTest extends BaseCase
         $value1 = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param, $param1]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->match($param, $value)->match($param1, $value1);
         $query = $builder->getQuery();
 
@@ -63,7 +63,7 @@ class BaseQueryBuilderTest extends BaseCase
     {
         $mapper = $this->getMapperMock();
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
 
         $this->expectException(InvalidArgumentException::class);
         $builder->match('test', 'test');
@@ -83,7 +83,7 @@ class BaseQueryBuilderTest extends BaseCase
         $value1 = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param, $param1]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->term($param, $value)->term($param1, $value1);
         $query = $builder->getQuery();
 
@@ -119,7 +119,7 @@ class BaseQueryBuilderTest extends BaseCase
         $param1 = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param, $param1]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->notExist($param)->notExist($param1);
         $query = $builder->getQuery();
 
@@ -154,7 +154,7 @@ class BaseQueryBuilderTest extends BaseCase
         $param = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->sortAsc($param);
         $query = $builder->getQuery();
 
@@ -180,7 +180,7 @@ class BaseQueryBuilderTest extends BaseCase
         $param = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->sortDesc($param);
         $query = $builder->getQuery();
 
@@ -206,7 +206,7 @@ class BaseQueryBuilderTest extends BaseCase
         $size = $this->createFakeData()->numberBetween(1, 10000);
         $mapper = $this->getMapperMock();
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->size($size);
         $query = $builder->getQuery();
 
@@ -224,7 +224,7 @@ class BaseQueryBuilderTest extends BaseCase
         $from = $this->createFakeData()->numberBetween(1, 10000);
         $mapper = $this->getMapperMock();
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->from($from);
         $query = $builder->getQuery();
 
@@ -245,7 +245,7 @@ class BaseQueryBuilderTest extends BaseCase
         $param = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param]);
 
-        $builder = new BaseQueryBuilder($mapper);
+        $builder = new MapperQueryBuilder($mapper);
         $builder->sortAsc($param);
         $builder->searchAfter($searchAfter);
         $query = $builder->getQuery();
@@ -270,10 +270,10 @@ class BaseQueryBuilderTest extends BaseCase
 
         $mapper = $this->getMapperMock([$param1, $param2]);
 
-        $builder1 = new BaseQueryBuilder($mapper);
+        $builder1 = new MapperQueryBuilder($mapper);
         $builder1->match($param1, $value1);
 
-        $builder2 = new BaseQueryBuilder($mapper);
+        $builder2 = new MapperQueryBuilder($mapper);
         $builder2->match($param2, $value2);
 
         $query = $builder1->merge($builder2)->getQuery();

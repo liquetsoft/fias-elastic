@@ -6,7 +6,7 @@ namespace Liquetsoft\Fias\Elastic;
 
 use DateTimeInterface;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperException;
-use Liquetsoft\Fias\Elastic\QueryBuilder\BaseQueryBuilder;
+use Liquetsoft\Fias\Elastic\QueryBuilder\MapperQueryBuilder;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 
 /**
@@ -63,7 +63,7 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
      */
     public function query(): QueryBuilder
     {
-        return new BaseQueryBuilder($this);
+        return new MapperQueryBuilder($this);
     }
 
     /**
