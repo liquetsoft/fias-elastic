@@ -6,11 +6,11 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexBuilder;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
-use Liquetsoft\Fias\Component\Tests\BaseCase;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\Exception\IndexBuilderException;
 use Liquetsoft\Fias\Elastic\IndexBuilder\BaseIndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
+use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use RuntimeException;
 use Throwable;
 

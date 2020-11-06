@@ -49,7 +49,7 @@ interface QueryBuilder
     /**
      * Добавить порядок сортировки по возрастанию.
      *
-     * @property string $property
+     * @param string $property
      *
      * @return QueryBuilder
      */
@@ -58,7 +58,7 @@ interface QueryBuilder
     /**
      * Добавить порядок сортировки по убыванию.
      *
-     * @property string $property
+     * @param string $property
      *
      * @return QueryBuilder
      */
@@ -67,7 +67,7 @@ interface QueryBuilder
     /**
      * Добавить ограничение на количество документов.
      *
-     * @property int $size
+     * @param int $size
      *
      * @return QueryBuilder
      */
@@ -76,7 +76,7 @@ interface QueryBuilder
     /**
      * Добавить смещение по элементам.
      *
-     * @property int $from
+     * @param int $from
      *
      * @return QueryBuilder
      */
@@ -85,13 +85,22 @@ interface QueryBuilder
     /**
      * Добавить значения search_after для пагинации.
      *
-     * @property array $values
+     * @param array $values
      *
      * @return QueryBuilder
      *
      * @throws InvalidArgumentException
      */
     public function searchAfter(array $values): QueryBuilder;
+
+    /**
+     * Объединяет запросы из двух объектов.
+     *
+     * @param QueryBuilder $builder
+     *
+     * @return QueryBuilder
+     */
+    public function merge(QueryBuilder $builder): QueryBuilder;
 
     /**
      * Возвращает запрос для клиента elasticsearch.
