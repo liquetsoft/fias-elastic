@@ -109,15 +109,17 @@ class ElasticStorage implements Storage
     {
         try {
             $mapper = $this->registry->getMapperForKey($entityClassName);
-            $this->getClient()->deleteByQuery([
-                'index' => $mapper->getName(),
-                'ignore_unavailable' => true,
-                'body' => [
-                    'query' => [
-                        'match_all' => (object) [],
+            $this->getClient()->deleteByQuery(
+                [
+                    'index' => $mapper->getName(),
+                    'ignore_unavailable' => true,
+                    'body' => [
+                        'query' => [
+                            'match_all' => (object) [],
+                        ],
                     ],
-                ],
-            ]);
+                ]
+            );
         } catch (Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
@@ -135,11 +137,15 @@ class ElasticStorage implements Storage
     {
         $this->bulkOperations[$operation][] = $item;
 
-        $itemsCount = array_reduce($this->bulkOperations, function (int $carry, array $operationArray): int {
-            $carry += count($operationArray);
+        $itemsCount = array_reduce(
+            $this->bulkOperations,
+            function (int $carry, array $operationArray): int {
+                $carry += count($operationArray);
 
-            return $carry;
-        }, 0);
+                return $carry;
+            },
+            0
+        );
 
         if ($itemsCount >= $this->insertBatch) {
             $this->flushBulk();
@@ -176,7 +182,11 @@ class ElasticStorage implements Storage
             return;
         }
 
-        $res = $this->getClient()->bulk(['body' => $bulkQuery]);
+        $res = $this->getClient()->bulk(
+            [
+                'body' => $bulkQuery,
+            ]
+        );
 
         if (!empty($res['error'])) {
             throw new StorageException(

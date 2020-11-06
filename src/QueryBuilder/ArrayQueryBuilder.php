@@ -5,21 +5,13 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\QueryBuilder;
 
 use InvalidArgumentException;
-use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 
 /**
  * Объект, который строит запрос во внутреннем массиве.
  */
-class BaseQueryBuilder implements QueryBuilder
+class ArrayQueryBuilder implements QueryBuilder
 {
-    private IndexMapperInterface $mapper;
-
     private array $query = [];
-
-    public function __construct(IndexMapperInterface $mapper)
-    {
-        $this->mapper = $mapper;
-    }
 
     /**
      * @inheritDoc
@@ -144,10 +136,7 @@ class BaseQueryBuilder implements QueryBuilder
      */
     public function getQuery(): array
     {
-        $query = $this->query;
-        $query['index'] = $this->mapper->getName();
-
-        return $query;
+        return $this->query;
     }
 
     /**
@@ -157,11 +146,7 @@ class BaseQueryBuilder implements QueryBuilder
      *
      * @throws InvalidArgumentException
      */
-    private function isPropertyAllowed(string $property): void
+    protected function isPropertyAllowed(string $property): void
     {
-        if (!$this->mapper->hasProperty($property)) {
-            $message = sprintf("There is no '%s' property in '%s' index.", $property, $this->mapper->getName());
-            throw new InvalidArgumentException($message);
-        }
     }
 }
