@@ -26,7 +26,7 @@ RUN docker-php-ext-install pdo_pgsql zip pcntl sockets soap \
 
 
 # composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.0.1 \
     && mkdir -p /.composer \
     && chmod -Rf 777 /.composer
 

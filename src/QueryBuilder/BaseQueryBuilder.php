@@ -132,6 +132,16 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * @inheritDoc
      */
+    public function merge(QueryBuilder $builder): QueryBuilder
+    {
+        $this->query = array_merge_recursive($this->query, $builder->getQuery());
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQuery(): array
     {
         $query = $this->query;
@@ -143,7 +153,7 @@ class BaseQueryBuilder implements QueryBuilder
     /**
      * Выбрасывает исключение, если указанное свойство не существует в индексе.
      *
-     * @property string $property
+     * @param string $property
      *
      * @throws InvalidArgumentException
      */

@@ -14,7 +14,7 @@ use Throwable;
 /**
  * Тесты для конструктора запросов к elasticsearch.
  */
-class ArrayIndexMapperRegistryTest extends BaseCase
+class BaseQueryBuilderTest extends BaseCase
 {
     /**
      * Проверяет, что объект правильно задаст условие для поиска.
@@ -256,12 +256,56 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     }
 
     /**
+     * Проверяет, что объект верно объединит свои данные со внешним объектом.
+     *
+     * @throws Throwable
+     */
+    public function testMerge()
+    {
+        $param1 = $this->createFakeData()->word;
+        $value1 = $this->createFakeData()->word;
+
+        $param2 = $this->createFakeData()->word;
+        $value2 = $this->createFakeData()->word;
+
+        $mapper = $this->getMapperMock([$param1, $param2]);
+
+        $builder1 = new BaseQueryBuilder($mapper);
+        $builder1->match($param1, $value1);
+
+        $builder2 = new BaseQueryBuilder($mapper);
+        $builder2->match($param2, $value2);
+
+        $query = $builder1->merge($builder2)->getQuery();
+
+        $this->assertQuery(
+            [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match' => [
+                                $param1 => $value1,
+                            ],
+                        ],
+                        [
+                            'match' => [
+                                $param2 => $value2,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            $query
+        );
+    }
+
+    /**
      * Проверяет, что поисковый запрос совпадает с эталоном.
      *
-     * @param array $etalonQuery
+     * @param array $awaitedQuery
      * @param array $realQuery
      */
-    private function assertQuery(array $etalonQuery, array $realQuery): void
+    private function assertQuery(array $awaitedQuery, array $realQuery): void
     {
         $this->assertThat(
             $realQuery,
@@ -272,7 +316,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
                 $this->equalTo([
                     'index' => 'mock_index',
                     'body' => [
-                        'query' => $etalonQuery,
+                        'query' => $awaitedQuery,
                     ],
                 ])
             )
@@ -281,6 +325,10 @@ class ArrayIndexMapperRegistryTest extends BaseCase
 
     /**
      * Создает мок для описания индекса.
+     *
+     * @param array
+     *
+     * @return MockObject
      */
     private function getMapperMock($allowedProperties = []): MockObject
     {
