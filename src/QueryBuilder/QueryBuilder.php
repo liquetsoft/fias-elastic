@@ -11,6 +11,10 @@ use InvalidArgumentException;
  */
 interface QueryBuilder
 {
+    public const SORT_ORDER_ASC = 'asc';
+
+    public const SORT_ORDER_DESC = 'desc';
+
     /**
      * Добавить в условие поиск по частичному совпадению.
      *
@@ -52,6 +56,8 @@ interface QueryBuilder
      * @param string $property
      *
      * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
      */
     public function sortAsc(string $property): QueryBuilder;
 
@@ -61,8 +67,22 @@ interface QueryBuilder
      * @param string $property
      *
      * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
      */
     public function sortDesc(string $property): QueryBuilder;
+
+    /**
+     * Добавить сортировку в указанном порядке.
+     *
+     * @param string $property
+     * @param string $order
+     *
+     * @return QueryBuilder
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sort(string $property, string $order = QueryBuilder::SORT_ORDER_ASC): QueryBuilder;
 
     /**
      * Добавить ограничение на количество документов.

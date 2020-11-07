@@ -64,15 +64,7 @@ class ArrayQueryBuilder implements QueryBuilder
      */
     public function sortAsc(string $property): QueryBuilder
     {
-        $this->isPropertyAllowed($property);
-
-        $this->query['body']['sort'][] = [
-            $property => [
-                'order' => 'asc',
-            ],
-        ];
-
-        return $this;
+        return $this->sort($property, QueryBuilder::SORT_ORDER_ASC);
     }
 
     /**
@@ -80,11 +72,24 @@ class ArrayQueryBuilder implements QueryBuilder
      */
     public function sortDesc(string $property): QueryBuilder
     {
+        return $this->sort($property, QueryBuilder::SORT_ORDER_DESC);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function sort(string $property, string $order = QueryBuilder::SORT_ORDER_ASC): QueryBuilder
+    {
+        if ($order !== QueryBuilder::SORT_ORDER_ASC && $order !== QueryBuilder::SORT_ORDER_DESC) {
+            $message = sprintf("Wrong sort order '%s'.", $order);
+            throw new InvalidArgumentException($message);
+        }
+
         $this->isPropertyAllowed($property);
 
         $this->query['body']['sort'][] = [
             $property => [
-                'order' => 'desc',
+                'order' => $order,
             ],
         ];
 
