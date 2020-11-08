@@ -37,7 +37,7 @@ class SteadIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'number' => [
-                'type' => 'keyword',
+                'type' => 'text',
             ],
             'regioncode' => [
                 'type' => 'keyword',

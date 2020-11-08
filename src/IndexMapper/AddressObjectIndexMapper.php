@@ -52,10 +52,10 @@ class AddressObjectIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'formalname' => [
-                'type' => 'keyword',
+                'type' => 'text',
             ],
             'offname' => [
-                'type' => 'keyword',
+                'type' => 'text',
             ],
             'shortname' => [
                 'type' => 'keyword',
