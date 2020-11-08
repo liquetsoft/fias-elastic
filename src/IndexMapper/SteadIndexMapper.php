@@ -34,31 +34,31 @@ class SteadIndexMapper extends IndexMapperAbstract
     {
         return [
             'steadguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'number' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'regioncode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'postalcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'okato' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'oktmo' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'parentguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'steadid' => [
                 'type' => 'keyword',
@@ -85,22 +85,22 @@ class SteadIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'normdoc' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'previd' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'nextid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'cadnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

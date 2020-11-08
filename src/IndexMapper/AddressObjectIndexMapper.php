@@ -40,61 +40,61 @@ class AddressObjectIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'parentguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'previd' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'nextid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'code' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'formalname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'offname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'shortname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'aolevel' => [
                 'type' => 'integer',
             ],
             'regioncode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'areacode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'autocode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'citycode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ctarcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'placecode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'plancode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'streetcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'extrcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'sextcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'plaincode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'currstatus' => [
                 'type' => 'integer',
@@ -112,25 +112,25 @@ class AddressObjectIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'ifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'okato' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'oktmo' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'postalcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'startdate' => [
                 'type' => 'date',
@@ -148,7 +148,7 @@ class AddressObjectIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'normdoc' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

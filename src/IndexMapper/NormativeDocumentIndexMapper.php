@@ -44,13 +44,13 @@ class NormativeDocumentIndexMapper extends IndexMapperAbstract
                 'format' => 'yyyy-MM-dd\'T\'HH:mm:ss',
             ],
             'docnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'doctype' => [
                 'type' => 'integer',
             ],
             'docimgid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }
