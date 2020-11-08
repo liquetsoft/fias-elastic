@@ -6,6 +6,7 @@ use Liquetsoft\Fias\Elastic\Generator\MapperGenerator;
 use Liquetsoft\Fias\Elastic\Generator\MapperTestGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelTestGenerator;
+use Liquetsoft\Fias\Elastic\Generator\SerializerGenerator;
 
 $root = dirname(__DIR__);
 
@@ -52,3 +53,12 @@ $dirObject = new SplFileInfo($dir);
 $namespace = 'Liquetsoft\\Fias\\Elastic\\Tests\\IndexMapper';
 $generator = new MapperTestGenerator($registry);
 $generator->run($dirObject, $namespace);
+
+$dir = new SplFileInfo($root . '/src/Serializer');
+if (is_dir($dir)) {
+    FileSystemHelper::remove(new SplFileInfo($dir));
+}
+mkdir($dir, 0777, true);
+$namespace = 'Liquetsoft\\Fias\\Elastic\\Serializer';
+$generator = new SerializerGenerator($registry);
+$generator->run($dir, $namespace);

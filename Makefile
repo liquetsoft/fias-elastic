@@ -5,10 +5,11 @@
 SHELL = /bin/sh
 
 php_container_name := php
-docker_bin := $(shell command -v docker 2> /dev/null)
-docker_compose_bin := $(shell command -v docker-compose 2> /dev/null)
-docker_compose_yml := docker/docker-compose.yml
 user_id := $(shell id -u)
+docker_compose_yml := docker/docker-compose.yml
+
+docker_compose_bin := $(shell command -v docker-compose 2> /dev/null) --file "$(docker_compose_yml)"
+php_container_bin := $(docker_compose_bin) run --rm -u $(user_id) "$(php_container_name)"
 
 .PHONY : build shell test fixer buildEntities linter
 .DEFAULT_GOAL := build
@@ -16,23 +17,23 @@ user_id := $(shell id -u)
 # --- [ Development tasks ] -------------------------------------------------------------------------------------------
 
 build: ## Build container and install composer libs
-	$(docker_compose_bin) --file "$(docker_compose_yml)" build
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" composer update
+	$(docker_compose_bin) build
+	$(php_container_bin) composer update
 
 shell: ## Runs shell in container
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" /bin/bash
+	$(php_container_bin) /bin/bash
 
 test: ## Execute library tests
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-html=tests/coverage
+	$(php_container_bin) vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-html=tests/coverage
 
 fixer: ## Run fixes for code style
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/php-cs-fixer fix -vv
+	$(php_container_bin) vendor/bin/php-cs-fixer fix -vv
 
 buildEntities: ## Build entities from yaml file with description
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" php -f generator/generate_entities.php
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/php-cs-fixer fix -q
+	$(php_container_bin) php -f generator/generate_entities.php
+	$(php_container_bin) vendor/bin/php-cs-fixer fix -q
 
 linter: ## Run code checks
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/php-cs-fixer fix --config=.php_cs.dist -vv --dry-run --stop-on-violation
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/phpcpd ./src --exclude Entity -v
-	$(docker_compose_bin) --file "$(docker_compose_yml)" run --rm -u $(user_id) "$(php_container_name)" vendor/bin/psalm --show-info=true
+	$(php_container_bin) vendor/bin/php-cs-fixer fix --config=.php_cs.dist -vv --dry-run --stop-on-violation
+	$(php_container_bin) vendor/bin/phpcpd ./src --exclude Entity --exclude Serializer -v
+	$(php_container_bin) vendor/bin/psalm --show-info=true
