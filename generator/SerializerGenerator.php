@@ -173,7 +173,7 @@ class SerializerGenerator extends AbstractGenerator
         $method->addComment('@throws Exception');
         $method->addParameter('entity')->setType($this->createModelClass($descriptor));
         $method->addParameter('data')->setType('array');
-        $method->setVisibility('private');
+        $method->setVisibility('protected');
         $method->setReturnType('void');
         $method->setBody($body);
     }

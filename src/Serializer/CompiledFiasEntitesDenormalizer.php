@@ -110,7 +110,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillFlatTypeEntityWithData(FlatType $entity, array $data): void
+    protected function fillFlatTypeEntityWithData(FlatType $entity, array $data): void
     {
         if (($value = $data['@FLTYPEID'] ?? ($data['fltypeid'] ?? null)) !== null) {
             $entity->setFltypeid((int) $data['@FLTYPEID']);
@@ -133,7 +133,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillActualStatusEntityWithData(ActualStatus $entity, array $data): void
+    protected function fillActualStatusEntityWithData(ActualStatus $entity, array $data): void
     {
         if (($value = $data['@ACTSTATID'] ?? ($data['actstatid'] ?? null)) !== null) {
             $entity->setActstatid((int) $data['@ACTSTATID']);
@@ -152,7 +152,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillOperationStatusEntityWithData(OperationStatus $entity, array $data): void
+    protected function fillOperationStatusEntityWithData(OperationStatus $entity, array $data): void
     {
         if (($value = $data['@OPERSTATID'] ?? ($data['operstatid'] ?? null)) !== null) {
             $entity->setOperstatid((int) $data['@OPERSTATID']);
@@ -171,7 +171,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillRoomEntityWithData(Room $entity, array $data): void
+    protected function fillRoomEntityWithData(Room $entity, array $data): void
     {
         if (($value = $data['@ROOMID'] ?? ($data['roomid'] ?? null)) !== null) {
             $entity->setRoomid(trim($data['@ROOMID']));
@@ -258,7 +258,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillAddressObjectTypeEntityWithData(AddressObjectType $entity, array $data): void
+    protected function fillAddressObjectTypeEntityWithData(AddressObjectType $entity, array $data): void
     {
         if (($value = $data['@KODTST'] ?? ($data['kodtst'] ?? null)) !== null) {
             $entity->setKodtst(trim($data['@KODTST']));
@@ -285,7 +285,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillRoomTypeEntityWithData(RoomType $entity, array $data): void
+    protected function fillRoomTypeEntityWithData(RoomType $entity, array $data): void
     {
         if (($value = $data['@RMTYPEID'] ?? ($data['rmtypeid'] ?? null)) !== null) {
             $entity->setRmtypeid((int) $data['@RMTYPEID']);
@@ -308,7 +308,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillSteadEntityWithData(Stead $entity, array $data): void
+    protected function fillSteadEntityWithData(Stead $entity, array $data): void
     {
         if (($value = $data['@STEADGUID'] ?? ($data['steadguid'] ?? null)) !== null) {
             $entity->setSteadguid(trim($data['@STEADGUID']));
@@ -407,7 +407,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillCenterStatusEntityWithData(CenterStatus $entity, array $data): void
+    protected function fillCenterStatusEntityWithData(CenterStatus $entity, array $data): void
     {
         if (($value = $data['@CENTERSTID'] ?? ($data['centerstid'] ?? null)) !== null) {
             $entity->setCenterstid((int) $data['@CENTERSTID']);
@@ -426,7 +426,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillNormativeDocumentEntityWithData(NormativeDocument $entity, array $data): void
+    protected function fillNormativeDocumentEntityWithData(NormativeDocument $entity, array $data): void
     {
         if (($value = $data['@NORMDOCID'] ?? ($data['normdocid'] ?? null)) !== null) {
             $entity->setNormdocid(trim($data['@NORMDOCID']));
@@ -461,7 +461,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillCurrentStatusEntityWithData(CurrentStatus $entity, array $data): void
+    protected function fillCurrentStatusEntityWithData(CurrentStatus $entity, array $data): void
     {
         if (($value = $data['@CURENTSTID'] ?? ($data['curentstid'] ?? null)) !== null) {
             $entity->setCurentstid((int) $data['@CURENTSTID']);
@@ -480,7 +480,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillNormativeDocumentTypeEntityWithData(NormativeDocumentType $entity, array $data): void
+    protected function fillNormativeDocumentTypeEntityWithData(NormativeDocumentType $entity, array $data): void
     {
         if (($value = $data['@NDTYPEID'] ?? ($data['ndtypeid'] ?? null)) !== null) {
             $entity->setNdtypeid((int) $data['@NDTYPEID']);
@@ -499,7 +499,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillEstateStatusEntityWithData(EstateStatus $entity, array $data): void
+    protected function fillEstateStatusEntityWithData(EstateStatus $entity, array $data): void
     {
         if (($value = $data['@ESTSTATID'] ?? ($data['eststatid'] ?? null)) !== null) {
             $entity->setEststatid((int) $data['@ESTSTATID']);
@@ -522,7 +522,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillAddressObjectEntityWithData(AddressObject $entity, array $data): void
+    protected function fillAddressObjectEntityWithData(AddressObject $entity, array $data): void
     {
         if (($value = $data['@AOID'] ?? ($data['aoid'] ?? null)) !== null) {
             $entity->setAoid(trim($data['@AOID']));
@@ -685,7 +685,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillHouseEntityWithData(House $entity, array $data): void
+    protected function fillHouseEntityWithData(House $entity, array $data): void
     {
         if (($value = $data['@HOUSEID'] ?? ($data['houseid'] ?? null)) !== null) {
             $entity->setHouseid(trim($data['@HOUSEID']));
@@ -792,7 +792,7 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
      *
      * @throws Exception
      */
-    private function fillStructureStatusEntityWithData(StructureStatus $entity, array $data): void
+    protected function fillStructureStatusEntityWithData(StructureStatus $entity, array $data): void
     {
         if (($value = $data['@STRSTATID'] ?? ($data['strstatid'] ?? null)) !== null) {
             $entity->setStrstatid((int) $data['@STRSTATID']);
