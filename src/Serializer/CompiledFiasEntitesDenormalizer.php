@@ -113,15 +113,15 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillFlatTypeEntityWithData(FlatType $entity, array $data): void
     {
         if (($value = $data['@FLTYPEID'] ?? ($data['fltypeid'] ?? null)) !== null) {
-            $entity->setFltypeid((int) $data['@FLTYPEID']);
+            $entity->setFltypeid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($data['@SHORTNAME']));
+            $entity->setShortname(trim($value));
         }
     }
 
@@ -136,11 +136,11 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillActualStatusEntityWithData(ActualStatus $entity, array $data): void
     {
         if (($value = $data['@ACTSTATID'] ?? ($data['actstatid'] ?? null)) !== null) {
-            $entity->setActstatid((int) $data['@ACTSTATID']);
+            $entity->setActstatid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
     }
 
@@ -155,11 +155,11 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillOperationStatusEntityWithData(OperationStatus $entity, array $data): void
     {
         if (($value = $data['@OPERSTATID'] ?? ($data['operstatid'] ?? null)) !== null) {
-            $entity->setOperstatid((int) $data['@OPERSTATID']);
+            $entity->setOperstatid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
     }
 
@@ -174,79 +174,79 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillRoomEntityWithData(Room $entity, array $data): void
     {
         if (($value = $data['@ROOMID'] ?? ($data['roomid'] ?? null)) !== null) {
-            $entity->setRoomid(trim($data['@ROOMID']));
+            $entity->setRoomid(trim($value));
         }
 
         if (($value = $data['@ROOMGUID'] ?? ($data['roomguid'] ?? null)) !== null) {
-            $entity->setRoomguid(trim($data['@ROOMGUID']));
+            $entity->setRoomguid(trim($value));
         }
 
         if (($value = $data['@HOUSEGUID'] ?? ($data['houseguid'] ?? null)) !== null) {
-            $entity->setHouseguid(trim($data['@HOUSEGUID']));
+            $entity->setHouseguid(trim($value));
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($data['@REGIONCODE']));
+            $entity->setRegioncode(trim($value));
         }
 
         if (($value = $data['@FLATNUMBER'] ?? ($data['flatnumber'] ?? null)) !== null) {
-            $entity->setFlatnumber(trim($data['@FLATNUMBER']));
+            $entity->setFlatnumber(trim($value));
         }
 
         if (($value = $data['@FLATTYPE'] ?? ($data['flattype'] ?? null)) !== null) {
-            $entity->setFlattype((int) $data['@FLATTYPE']);
+            $entity->setFlattype((int) $value);
         }
 
         if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($data['@POSTALCODE']));
+            $entity->setPostalcode(trim($value));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($data['@STARTDATE'])));
+            $entity->setStartdate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($data['@ENDDATE'])));
+            $entity->setEnddate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($data['@UPDATEDATE'])));
+            $entity->setUpdatedate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $data['@OPERSTATUS']);
+            $entity->setOperstatus((int) $value);
         }
 
         if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $data['@LIVESTATUS']);
+            $entity->setLivestatus((int) $value);
         }
 
         if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($data['@NORMDOC']));
+            $entity->setNormdoc(trim($value));
         }
 
         if (($value = $data['@ROOMNUMBER'] ?? ($data['roomnumber'] ?? null)) !== null) {
-            $entity->setRoomnumber(trim($data['@ROOMNUMBER']));
+            $entity->setRoomnumber(trim($value));
         }
 
         if (($value = $data['@ROOMTYPE'] ?? ($data['roomtype'] ?? null)) !== null) {
-            $entity->setRoomtype((int) $data['@ROOMTYPE']);
+            $entity->setRoomtype((int) $value);
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($data['@PREVID']));
+            $entity->setPrevid(trim($value));
         }
 
         if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($data['@NEXTID']));
+            $entity->setNextid(trim($value));
         }
 
         if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($data['@CADNUM']));
+            $entity->setCadnum(trim($value));
         }
 
         if (($value = $data['@ROOMCADNUM'] ?? ($data['roomcadnum'] ?? null)) !== null) {
-            $entity->setRoomcadnum(trim($data['@ROOMCADNUM']));
+            $entity->setRoomcadnum(trim($value));
         }
     }
 
@@ -261,19 +261,19 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillAddressObjectTypeEntityWithData(AddressObjectType $entity, array $data): void
     {
         if (($value = $data['@KODTST'] ?? ($data['kodtst'] ?? null)) !== null) {
-            $entity->setKodtst(trim($data['@KODTST']));
+            $entity->setKodtst(trim($value));
         }
 
         if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
-            $entity->setLevel((int) $data['@LEVEL']);
+            $entity->setLevel((int) $value);
         }
 
         if (($value = $data['@SOCRNAME'] ?? ($data['socrname'] ?? null)) !== null) {
-            $entity->setSocrname(trim($data['@SOCRNAME']));
+            $entity->setSocrname(trim($value));
         }
 
         if (($value = $data['@SCNAME'] ?? ($data['scname'] ?? null)) !== null) {
-            $entity->setScname(trim($data['@SCNAME']));
+            $entity->setScname(trim($value));
         }
     }
 
@@ -288,15 +288,15 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillRoomTypeEntityWithData(RoomType $entity, array $data): void
     {
         if (($value = $data['@RMTYPEID'] ?? ($data['rmtypeid'] ?? null)) !== null) {
-            $entity->setRmtypeid((int) $data['@RMTYPEID']);
+            $entity->setRmtypeid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($data['@SHORTNAME']));
+            $entity->setShortname(trim($value));
         }
     }
 
@@ -311,91 +311,91 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillSteadEntityWithData(Stead $entity, array $data): void
     {
         if (($value = $data['@STEADGUID'] ?? ($data['steadguid'] ?? null)) !== null) {
-            $entity->setSteadguid(trim($data['@STEADGUID']));
+            $entity->setSteadguid(trim($value));
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($data['@NUMBER']));
+            $entity->setNumber(trim($value));
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($data['@REGIONCODE']));
+            $entity->setRegioncode(trim($value));
         }
 
         if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($data['@POSTALCODE']));
+            $entity->setPostalcode(trim($value));
         }
 
         if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($data['@IFNSFL']));
+            $entity->setIfnsfl(trim($value));
         }
 
         if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($data['@IFNSUL']));
+            $entity->setIfnsul(trim($value));
         }
 
         if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($data['@OKATO']));
+            $entity->setOkato(trim($value));
         }
 
         if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($data['@OKTMO']));
+            $entity->setOktmo(trim($value));
         }
 
         if (($value = $data['@PARENTGUID'] ?? ($data['parentguid'] ?? null)) !== null) {
-            $entity->setParentguid(trim($data['@PARENTGUID']));
+            $entity->setParentguid(trim($value));
         }
 
         if (($value = $data['@STEADID'] ?? ($data['steadid'] ?? null)) !== null) {
-            $entity->setSteadid(trim($data['@STEADID']));
+            $entity->setSteadid(trim($value));
         }
 
         if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $data['@OPERSTATUS']);
+            $entity->setOperstatus((int) $value);
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($data['@STARTDATE'])));
+            $entity->setStartdate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($data['@ENDDATE'])));
+            $entity->setEnddate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($data['@UPDATEDATE'])));
+            $entity->setUpdatedate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $data['@LIVESTATUS']);
+            $entity->setLivestatus((int) $value);
         }
 
         if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $data['@DIVTYPE']);
+            $entity->setDivtype((int) $value);
         }
 
         if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($data['@NORMDOC']));
+            $entity->setNormdoc(trim($value));
         }
 
         if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($data['@TERRIFNSFL']));
+            $entity->setTerrifnsfl(trim($value));
         }
 
         if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($data['@TERRIFNSUL']));
+            $entity->setTerrifnsul(trim($value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($data['@PREVID']));
+            $entity->setPrevid(trim($value));
         }
 
         if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($data['@NEXTID']));
+            $entity->setNextid(trim($value));
         }
 
         if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($data['@CADNUM']));
+            $entity->setCadnum(trim($value));
         }
     }
 
@@ -410,11 +410,11 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillCenterStatusEntityWithData(CenterStatus $entity, array $data): void
     {
         if (($value = $data['@CENTERSTID'] ?? ($data['centerstid'] ?? null)) !== null) {
-            $entity->setCenterstid((int) $data['@CENTERSTID']);
+            $entity->setCenterstid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
     }
 
@@ -429,27 +429,27 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillNormativeDocumentEntityWithData(NormativeDocument $entity, array $data): void
     {
         if (($value = $data['@NORMDOCID'] ?? ($data['normdocid'] ?? null)) !== null) {
-            $entity->setNormdocid(trim($data['@NORMDOCID']));
+            $entity->setNormdocid(trim($value));
         }
 
         if (($value = $data['@DOCNAME'] ?? ($data['docname'] ?? null)) !== null) {
-            $entity->setDocname(trim($data['@DOCNAME']));
+            $entity->setDocname(trim($value));
         }
 
         if (($value = $data['@DOCDATE'] ?? ($data['docdate'] ?? null)) !== null) {
-            $entity->setDocdate(new DateTime(trim($data['@DOCDATE'])));
+            $entity->setDocdate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@DOCNUM'] ?? ($data['docnum'] ?? null)) !== null) {
-            $entity->setDocnum(trim($data['@DOCNUM']));
+            $entity->setDocnum(trim($value));
         }
 
         if (($value = $data['@DOCTYPE'] ?? ($data['doctype'] ?? null)) !== null) {
-            $entity->setDoctype((int) $data['@DOCTYPE']);
+            $entity->setDoctype((int) $value);
         }
 
         if (($value = $data['@DOCIMGID'] ?? ($data['docimgid'] ?? null)) !== null) {
-            $entity->setDocimgid(trim($data['@DOCIMGID']));
+            $entity->setDocimgid(trim($value));
         }
     }
 
@@ -464,11 +464,11 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillCurrentStatusEntityWithData(CurrentStatus $entity, array $data): void
     {
         if (($value = $data['@CURENTSTID'] ?? ($data['curentstid'] ?? null)) !== null) {
-            $entity->setCurentstid((int) $data['@CURENTSTID']);
+            $entity->setCurentstid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
     }
 
@@ -483,11 +483,11 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillNormativeDocumentTypeEntityWithData(NormativeDocumentType $entity, array $data): void
     {
         if (($value = $data['@NDTYPEID'] ?? ($data['ndtypeid'] ?? null)) !== null) {
-            $entity->setNdtypeid((int) $data['@NDTYPEID']);
+            $entity->setNdtypeid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
     }
 
@@ -502,15 +502,15 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillEstateStatusEntityWithData(EstateStatus $entity, array $data): void
     {
         if (($value = $data['@ESTSTATID'] ?? ($data['eststatid'] ?? null)) !== null) {
-            $entity->setEststatid((int) $data['@ESTSTATID']);
+            $entity->setEststatid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($data['@SHORTNAME']));
+            $entity->setShortname(trim($value));
         }
     }
 
@@ -525,155 +525,155 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillAddressObjectEntityWithData(AddressObject $entity, array $data): void
     {
         if (($value = $data['@AOID'] ?? ($data['aoid'] ?? null)) !== null) {
-            $entity->setAoid(trim($data['@AOID']));
+            $entity->setAoid(trim($value));
         }
 
         if (($value = $data['@AOGUID'] ?? ($data['aoguid'] ?? null)) !== null) {
-            $entity->setAoguid(trim($data['@AOGUID']));
+            $entity->setAoguid(trim($value));
         }
 
         if (($value = $data['@PARENTGUID'] ?? ($data['parentguid'] ?? null)) !== null) {
-            $entity->setParentguid(trim($data['@PARENTGUID']));
+            $entity->setParentguid(trim($value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($data['@PREVID']));
+            $entity->setPrevid(trim($value));
         }
 
         if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($data['@NEXTID']));
+            $entity->setNextid(trim($value));
         }
 
         if (($value = $data['@CODE'] ?? ($data['code'] ?? null)) !== null) {
-            $entity->setCode(trim($data['@CODE']));
+            $entity->setCode(trim($value));
         }
 
         if (($value = $data['@FORMALNAME'] ?? ($data['formalname'] ?? null)) !== null) {
-            $entity->setFormalname(trim($data['@FORMALNAME']));
+            $entity->setFormalname(trim($value));
         }
 
         if (($value = $data['@OFFNAME'] ?? ($data['offname'] ?? null)) !== null) {
-            $entity->setOffname(trim($data['@OFFNAME']));
+            $entity->setOffname(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($data['@SHORTNAME']));
+            $entity->setShortname(trim($value));
         }
 
         if (($value = $data['@AOLEVEL'] ?? ($data['aolevel'] ?? null)) !== null) {
-            $entity->setAolevel((int) $data['@AOLEVEL']);
+            $entity->setAolevel((int) $value);
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($data['@REGIONCODE']));
+            $entity->setRegioncode(trim($value));
         }
 
         if (($value = $data['@AREACODE'] ?? ($data['areacode'] ?? null)) !== null) {
-            $entity->setAreacode(trim($data['@AREACODE']));
+            $entity->setAreacode(trim($value));
         }
 
         if (($value = $data['@AUTOCODE'] ?? ($data['autocode'] ?? null)) !== null) {
-            $entity->setAutocode(trim($data['@AUTOCODE']));
+            $entity->setAutocode(trim($value));
         }
 
         if (($value = $data['@CITYCODE'] ?? ($data['citycode'] ?? null)) !== null) {
-            $entity->setCitycode(trim($data['@CITYCODE']));
+            $entity->setCitycode(trim($value));
         }
 
         if (($value = $data['@CTARCODE'] ?? ($data['ctarcode'] ?? null)) !== null) {
-            $entity->setCtarcode(trim($data['@CTARCODE']));
+            $entity->setCtarcode(trim($value));
         }
 
         if (($value = $data['@PLACECODE'] ?? ($data['placecode'] ?? null)) !== null) {
-            $entity->setPlacecode(trim($data['@PLACECODE']));
+            $entity->setPlacecode(trim($value));
         }
 
         if (($value = $data['@PLANCODE'] ?? ($data['plancode'] ?? null)) !== null) {
-            $entity->setPlancode(trim($data['@PLANCODE']));
+            $entity->setPlancode(trim($value));
         }
 
         if (($value = $data['@STREETCODE'] ?? ($data['streetcode'] ?? null)) !== null) {
-            $entity->setStreetcode(trim($data['@STREETCODE']));
+            $entity->setStreetcode(trim($value));
         }
 
         if (($value = $data['@EXTRCODE'] ?? ($data['extrcode'] ?? null)) !== null) {
-            $entity->setExtrcode(trim($data['@EXTRCODE']));
+            $entity->setExtrcode(trim($value));
         }
 
         if (($value = $data['@SEXTCODE'] ?? ($data['sextcode'] ?? null)) !== null) {
-            $entity->setSextcode(trim($data['@SEXTCODE']));
+            $entity->setSextcode(trim($value));
         }
 
         if (($value = $data['@PLAINCODE'] ?? ($data['plaincode'] ?? null)) !== null) {
-            $entity->setPlaincode(trim($data['@PLAINCODE']));
+            $entity->setPlaincode(trim($value));
         }
 
         if (($value = $data['@CURRSTATUS'] ?? ($data['currstatus'] ?? null)) !== null) {
-            $entity->setCurrstatus((int) $data['@CURRSTATUS']);
+            $entity->setCurrstatus((int) $value);
         }
 
         if (($value = $data['@ACTSTATUS'] ?? ($data['actstatus'] ?? null)) !== null) {
-            $entity->setActstatus((int) $data['@ACTSTATUS']);
+            $entity->setActstatus((int) $value);
         }
 
         if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $data['@LIVESTATUS']);
+            $entity->setLivestatus((int) $value);
         }
 
         if (($value = $data['@CENTSTATUS'] ?? ($data['centstatus'] ?? null)) !== null) {
-            $entity->setCentstatus((int) $data['@CENTSTATUS']);
+            $entity->setCentstatus((int) $value);
         }
 
         if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $data['@OPERSTATUS']);
+            $entity->setOperstatus((int) $value);
         }
 
         if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($data['@IFNSFL']));
+            $entity->setIfnsfl(trim($value));
         }
 
         if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($data['@IFNSUL']));
+            $entity->setIfnsul(trim($value));
         }
 
         if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($data['@TERRIFNSFL']));
+            $entity->setTerrifnsfl(trim($value));
         }
 
         if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($data['@TERRIFNSUL']));
+            $entity->setTerrifnsul(trim($value));
         }
 
         if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($data['@OKATO']));
+            $entity->setOkato(trim($value));
         }
 
         if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($data['@OKTMO']));
+            $entity->setOktmo(trim($value));
         }
 
         if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($data['@POSTALCODE']));
+            $entity->setPostalcode(trim($value));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($data['@STARTDATE'])));
+            $entity->setStartdate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($data['@ENDDATE'])));
+            $entity->setEnddate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($data['@UPDATEDATE'])));
+            $entity->setUpdatedate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $data['@DIVTYPE']);
+            $entity->setDivtype((int) $value);
         }
 
         if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($data['@NORMDOC']));
+            $entity->setNormdoc(trim($value));
         }
     }
 
@@ -688,99 +688,99 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillHouseEntityWithData(House $entity, array $data): void
     {
         if (($value = $data['@HOUSEID'] ?? ($data['houseid'] ?? null)) !== null) {
-            $entity->setHouseid(trim($data['@HOUSEID']));
+            $entity->setHouseid(trim($value));
         }
 
         if (($value = $data['@HOUSEGUID'] ?? ($data['houseguid'] ?? null)) !== null) {
-            $entity->setHouseguid(trim($data['@HOUSEGUID']));
+            $entity->setHouseguid(trim($value));
         }
 
         if (($value = $data['@AOGUID'] ?? ($data['aoguid'] ?? null)) !== null) {
-            $entity->setAoguid(trim($data['@AOGUID']));
+            $entity->setAoguid(trim($value));
         }
 
         if (($value = $data['@HOUSENUM'] ?? ($data['housenum'] ?? null)) !== null) {
-            $entity->setHousenum(trim($data['@HOUSENUM']));
+            $entity->setHousenum(trim($value));
         }
 
         if (($value = $data['@STRSTATUS'] ?? ($data['strstatus'] ?? null)) !== null) {
-            $entity->setStrstatus((int) $data['@STRSTATUS']);
+            $entity->setStrstatus((int) $value);
         }
 
         if (($value = $data['@ESTSTATUS'] ?? ($data['eststatus'] ?? null)) !== null) {
-            $entity->setEststatus((int) $data['@ESTSTATUS']);
+            $entity->setEststatus((int) $value);
         }
 
         if (($value = $data['@STATSTATUS'] ?? ($data['statstatus'] ?? null)) !== null) {
-            $entity->setStatstatus((int) $data['@STATSTATUS']);
+            $entity->setStatstatus((int) $value);
         }
 
         if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($data['@IFNSFL']));
+            $entity->setIfnsfl(trim($value));
         }
 
         if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($data['@IFNSUL']));
+            $entity->setIfnsul(trim($value));
         }
 
         if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($data['@OKATO']));
+            $entity->setOkato(trim($value));
         }
 
         if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($data['@OKTMO']));
+            $entity->setOktmo(trim($value));
         }
 
         if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($data['@POSTALCODE']));
+            $entity->setPostalcode(trim($value));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($data['@STARTDATE'])));
+            $entity->setStartdate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($data['@ENDDATE'])));
+            $entity->setEnddate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($data['@UPDATEDATE'])));
+            $entity->setUpdatedate(new DateTime(trim($value)));
         }
 
         if (($value = $data['@COUNTER'] ?? ($data['counter'] ?? null)) !== null) {
-            $entity->setCounter((int) $data['@COUNTER']);
+            $entity->setCounter((int) $value);
         }
 
         if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $data['@DIVTYPE']);
+            $entity->setDivtype((int) $value);
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($data['@REGIONCODE']));
+            $entity->setRegioncode(trim($value));
         }
 
         if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($data['@TERRIFNSFL']));
+            $entity->setTerrifnsfl(trim($value));
         }
 
         if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($data['@TERRIFNSUL']));
+            $entity->setTerrifnsul(trim($value));
         }
 
         if (($value = $data['@BUILDNUM'] ?? ($data['buildnum'] ?? null)) !== null) {
-            $entity->setBuildnum(trim($data['@BUILDNUM']));
+            $entity->setBuildnum(trim($value));
         }
 
         if (($value = $data['@STRUCNUM'] ?? ($data['strucnum'] ?? null)) !== null) {
-            $entity->setStrucnum(trim($data['@STRUCNUM']));
+            $entity->setStrucnum(trim($value));
         }
 
         if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($data['@NORMDOC']));
+            $entity->setNormdoc(trim($value));
         }
 
         if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($data['@CADNUM']));
+            $entity->setCadnum(trim($value));
         }
     }
 
@@ -795,15 +795,15 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     protected function fillStructureStatusEntityWithData(StructureStatus $entity, array $data): void
     {
         if (($value = $data['@STRSTATID'] ?? ($data['strstatid'] ?? null)) !== null) {
-            $entity->setStrstatid((int) $data['@STRSTATID']);
+            $entity->setStrstatid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($data['@NAME']));
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($data['@SHORTNAME']));
+            $entity->setShortname(trim($value));
         }
     }
 }

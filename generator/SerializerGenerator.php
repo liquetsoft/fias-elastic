@@ -152,13 +152,13 @@ class SerializerGenerator extends AbstractGenerator
             $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
             switch ($type) {
                 case 'int':
-                    $varType = "(int) \$data['{$xmlAttribute}']";
+                    $varType = '(int) $value';
                     break;
                 case 'string_date':
-                    $varType = "new DateTime(trim(\$data['{$xmlAttribute}']))";
+                    $varType = 'new DateTime(trim($value))';
                     break;
                 default:
-                    $varType = "trim(\$data['{$xmlAttribute}'])";
+                    $varType = 'trim($value)';
                     break;
             }
             $body .= "\n\nif ((\$value = \$data['{$xmlAttribute}'] ?? (\$data['{$column}'] ?? null)) !== null) {";
