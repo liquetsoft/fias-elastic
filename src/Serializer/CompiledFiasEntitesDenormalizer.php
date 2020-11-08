@@ -21,7 +21,6 @@ use Liquetsoft\Fias\Elastic\Entity\Room;
 use Liquetsoft\Fias\Elastic\Entity\RoomType;
 use Liquetsoft\Fias\Elastic\Entity\Stead;
 use Liquetsoft\Fias\Elastic\Entity\StructureStatus;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -30,30 +29,26 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
 {
-    private const ALLOWED_ENTITIES = [
-        FlatType::class,
-        ActualStatus::class,
-        OperationStatus::class,
-        Room::class,
-        AddressObjectType::class,
-        RoomType::class,
-        Stead::class,
-        CenterStatus::class,
-        NormativeDocument::class,
-        CurrentStatus::class,
-        NormativeDocumentType::class,
-        EstateStatus::class,
-        AddressObject::class,
-        House::class,
-        StructureStatus::class,
-    ];
-
     /**
      * @inheritDoc
      */
     public function supportsDenormalization($data, string $type, string $format = null)
     {
-        return in_array(trim($type, " \t\n\r\0\x0B\\/"), self::ALLOWED_ENTITIES);
+        return is_subclass_of($type, FlatType::class)
+            || is_subclass_of($type, ActualStatus::class)
+            || is_subclass_of($type, OperationStatus::class)
+            || is_subclass_of($type, Room::class)
+            || is_subclass_of($type, AddressObjectType::class)
+            || is_subclass_of($type, RoomType::class)
+            || is_subclass_of($type, Stead::class)
+            || is_subclass_of($type, CenterStatus::class)
+            || is_subclass_of($type, NormativeDocument::class)
+            || is_subclass_of($type, CurrentStatus::class)
+            || is_subclass_of($type, NormativeDocumentType::class)
+            || is_subclass_of($type, EstateStatus::class)
+            || is_subclass_of($type, AddressObject::class)
+            || is_subclass_of($type, House::class)
+            || is_subclass_of($type, StructureStatus::class);
     }
 
     /**
@@ -70,55 +65,38 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
 
         $entity = $context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new $type();
 
-        switch ($type) {
-            case FlatType::class:
-                $this->fillFlatTypeEntityWithData($entity, $data);
-                break;
-            case ActualStatus::class:
-                $this->fillActualStatusEntityWithData($entity, $data);
-                break;
-            case OperationStatus::class:
-                $this->fillOperationStatusEntityWithData($entity, $data);
-                break;
-            case Room::class:
-                $this->fillRoomEntityWithData($entity, $data);
-                break;
-            case AddressObjectType::class:
-                $this->fillAddressObjectTypeEntityWithData($entity, $data);
-                break;
-            case RoomType::class:
-                $this->fillRoomTypeEntityWithData($entity, $data);
-                break;
-            case Stead::class:
-                $this->fillSteadEntityWithData($entity, $data);
-                break;
-            case CenterStatus::class:
-                $this->fillCenterStatusEntityWithData($entity, $data);
-                break;
-            case NormativeDocument::class:
-                $this->fillNormativeDocumentEntityWithData($entity, $data);
-                break;
-            case CurrentStatus::class:
-                $this->fillCurrentStatusEntityWithData($entity, $data);
-                break;
-            case NormativeDocumentType::class:
-                $this->fillNormativeDocumentTypeEntityWithData($entity, $data);
-                break;
-            case EstateStatus::class:
-                $this->fillEstateStatusEntityWithData($entity, $data);
-                break;
-            case AddressObject::class:
-                $this->fillAddressObjectEntityWithData($entity, $data);
-                break;
-            case House::class:
-                $this->fillHouseEntityWithData($entity, $data);
-                break;
-            case StructureStatus::class:
-                $this->fillStructureStatusEntityWithData($entity, $data);
-                break;
-            default:
-                $message = sprintf("Can't find data extractor for '%s' type.", $type);
-                throw new InvalidArgumentException($message);
+        if ($entity instanceof FlatType) {
+            $this->fillFlatTypeEntityWithData($entity, $data);
+        } elseif ($entity instanceof ActualStatus) {
+            $this->fillActualStatusEntityWithData($entity, $data);
+        } elseif ($entity instanceof OperationStatus) {
+            $this->fillOperationStatusEntityWithData($entity, $data);
+        } elseif ($entity instanceof Room) {
+            $this->fillRoomEntityWithData($entity, $data);
+        } elseif ($entity instanceof AddressObjectType) {
+            $this->fillAddressObjectTypeEntityWithData($entity, $data);
+        } elseif ($entity instanceof RoomType) {
+            $this->fillRoomTypeEntityWithData($entity, $data);
+        } elseif ($entity instanceof Stead) {
+            $this->fillSteadEntityWithData($entity, $data);
+        } elseif ($entity instanceof CenterStatus) {
+            $this->fillCenterStatusEntityWithData($entity, $data);
+        } elseif ($entity instanceof NormativeDocument) {
+            $this->fillNormativeDocumentEntityWithData($entity, $data);
+        } elseif ($entity instanceof CurrentStatus) {
+            $this->fillCurrentStatusEntityWithData($entity, $data);
+        } elseif ($entity instanceof NormativeDocumentType) {
+            $this->fillNormativeDocumentTypeEntityWithData($entity, $data);
+        } elseif ($entity instanceof EstateStatus) {
+            $this->fillEstateStatusEntityWithData($entity, $data);
+        } elseif ($entity instanceof AddressObject) {
+            $this->fillAddressObjectEntityWithData($entity, $data);
+        } elseif ($entity instanceof House) {
+            $this->fillHouseEntityWithData($entity, $data);
+        } elseif ($entity instanceof StructureStatus) {
+            $this->fillStructureStatusEntityWithData($entity, $data);
+        } else {
+            throw new Exception('Wrong entity object.');
         }
 
         return $entity;
@@ -127,17 +105,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'FlatType' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param FlatType $entity
+     * @param array    $data
      *
      * @throws Exception
      */
-    private function fillFlatTypeEntityWithData(object $entity, array $data): void
+    private function fillFlatTypeEntityWithData(FlatType $entity, array $data): void
     {
-        if (!($entity instanceof FlatType)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@FLTYPEID'] ?? ($data['fltypeid'] ?? null)) !== null) {
             $entity->setFltypeid((int) $data['@FLTYPEID']);
         }
@@ -154,17 +128,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'ActualStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param ActualStatus $entity
+     * @param array        $data
      *
      * @throws Exception
      */
-    private function fillActualStatusEntityWithData(object $entity, array $data): void
+    private function fillActualStatusEntityWithData(ActualStatus $entity, array $data): void
     {
-        if (!($entity instanceof ActualStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@ACTSTATID'] ?? ($data['actstatid'] ?? null)) !== null) {
             $entity->setActstatid((int) $data['@ACTSTATID']);
         }
@@ -177,17 +147,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'OperationStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param OperationStatus $entity
+     * @param array           $data
      *
      * @throws Exception
      */
-    private function fillOperationStatusEntityWithData(object $entity, array $data): void
+    private function fillOperationStatusEntityWithData(OperationStatus $entity, array $data): void
     {
-        if (!($entity instanceof OperationStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@OPERSTATID'] ?? ($data['operstatid'] ?? null)) !== null) {
             $entity->setOperstatid((int) $data['@OPERSTATID']);
         }
@@ -200,17 +166,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'Room' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param Room  $entity
+     * @param array $data
      *
      * @throws Exception
      */
-    private function fillRoomEntityWithData(object $entity, array $data): void
+    private function fillRoomEntityWithData(Room $entity, array $data): void
     {
-        if (!($entity instanceof Room)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@ROOMID'] ?? ($data['roomid'] ?? null)) !== null) {
             $entity->setRoomid(trim($data['@ROOMID']));
         }
@@ -291,17 +253,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'AddressObjectType' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param AddressObjectType $entity
+     * @param array             $data
      *
      * @throws Exception
      */
-    private function fillAddressObjectTypeEntityWithData(object $entity, array $data): void
+    private function fillAddressObjectTypeEntityWithData(AddressObjectType $entity, array $data): void
     {
-        if (!($entity instanceof AddressObjectType)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@KODTST'] ?? ($data['kodtst'] ?? null)) !== null) {
             $entity->setKodtst(trim($data['@KODTST']));
         }
@@ -322,17 +280,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'RoomType' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param RoomType $entity
+     * @param array    $data
      *
      * @throws Exception
      */
-    private function fillRoomTypeEntityWithData(object $entity, array $data): void
+    private function fillRoomTypeEntityWithData(RoomType $entity, array $data): void
     {
-        if (!($entity instanceof RoomType)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@RMTYPEID'] ?? ($data['rmtypeid'] ?? null)) !== null) {
             $entity->setRmtypeid((int) $data['@RMTYPEID']);
         }
@@ -349,17 +303,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'Stead' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param Stead $entity
+     * @param array $data
      *
      * @throws Exception
      */
-    private function fillSteadEntityWithData(object $entity, array $data): void
+    private function fillSteadEntityWithData(Stead $entity, array $data): void
     {
-        if (!($entity instanceof Stead)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@STEADGUID'] ?? ($data['steadguid'] ?? null)) !== null) {
             $entity->setSteadguid(trim($data['@STEADGUID']));
         }
@@ -452,17 +402,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'CenterStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param CenterStatus $entity
+     * @param array        $data
      *
      * @throws Exception
      */
-    private function fillCenterStatusEntityWithData(object $entity, array $data): void
+    private function fillCenterStatusEntityWithData(CenterStatus $entity, array $data): void
     {
-        if (!($entity instanceof CenterStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@CENTERSTID'] ?? ($data['centerstid'] ?? null)) !== null) {
             $entity->setCenterstid((int) $data['@CENTERSTID']);
         }
@@ -475,17 +421,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'NormativeDocument' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param NormativeDocument $entity
+     * @param array             $data
      *
      * @throws Exception
      */
-    private function fillNormativeDocumentEntityWithData(object $entity, array $data): void
+    private function fillNormativeDocumentEntityWithData(NormativeDocument $entity, array $data): void
     {
-        if (!($entity instanceof NormativeDocument)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@NORMDOCID'] ?? ($data['normdocid'] ?? null)) !== null) {
             $entity->setNormdocid(trim($data['@NORMDOCID']));
         }
@@ -514,17 +456,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'CurrentStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param CurrentStatus $entity
+     * @param array         $data
      *
      * @throws Exception
      */
-    private function fillCurrentStatusEntityWithData(object $entity, array $data): void
+    private function fillCurrentStatusEntityWithData(CurrentStatus $entity, array $data): void
     {
-        if (!($entity instanceof CurrentStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@CURENTSTID'] ?? ($data['curentstid'] ?? null)) !== null) {
             $entity->setCurentstid((int) $data['@CURENTSTID']);
         }
@@ -537,17 +475,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'NormativeDocumentType' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param NormativeDocumentType $entity
+     * @param array                 $data
      *
      * @throws Exception
      */
-    private function fillNormativeDocumentTypeEntityWithData(object $entity, array $data): void
+    private function fillNormativeDocumentTypeEntityWithData(NormativeDocumentType $entity, array $data): void
     {
-        if (!($entity instanceof NormativeDocumentType)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@NDTYPEID'] ?? ($data['ndtypeid'] ?? null)) !== null) {
             $entity->setNdtypeid((int) $data['@NDTYPEID']);
         }
@@ -560,17 +494,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'EstateStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param EstateStatus $entity
+     * @param array        $data
      *
      * @throws Exception
      */
-    private function fillEstateStatusEntityWithData(object $entity, array $data): void
+    private function fillEstateStatusEntityWithData(EstateStatus $entity, array $data): void
     {
-        if (!($entity instanceof EstateStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@ESTSTATID'] ?? ($data['eststatid'] ?? null)) !== null) {
             $entity->setEststatid((int) $data['@ESTSTATID']);
         }
@@ -587,17 +517,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'AddressObject' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param AddressObject $entity
+     * @param array         $data
      *
      * @throws Exception
      */
-    private function fillAddressObjectEntityWithData(object $entity, array $data): void
+    private function fillAddressObjectEntityWithData(AddressObject $entity, array $data): void
     {
-        if (!($entity instanceof AddressObject)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@AOID'] ?? ($data['aoid'] ?? null)) !== null) {
             $entity->setAoid(trim($data['@AOID']));
         }
@@ -754,17 +680,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'House' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param House $entity
+     * @param array $data
      *
      * @throws Exception
      */
-    private function fillHouseEntityWithData(object $entity, array $data): void
+    private function fillHouseEntityWithData(House $entity, array $data): void
     {
-        if (!($entity instanceof House)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@HOUSEID'] ?? ($data['houseid'] ?? null)) !== null) {
             $entity->setHouseid(trim($data['@HOUSEID']));
         }
@@ -865,17 +787,13 @@ class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
     /**
      * Задает все свойства модели 'StructureStatus' из массива, полученного от ФИАС.
      *
-     * @param object $entity
-     * @param array  $data
+     * @param StructureStatus $entity
+     * @param array           $data
      *
      * @throws Exception
      */
-    private function fillStructureStatusEntityWithData(object $entity, array $data): void
+    private function fillStructureStatusEntityWithData(StructureStatus $entity, array $data): void
     {
-        if (!($entity instanceof StructureStatus)) {
-            throw new InvalidArgumentException('Wrong entity to denormalize.');
-        }
-
         if (($value = $data['@STRSTATID'] ?? ($data['strstatid'] ?? null)) !== null) {
             $entity->setStrstatid((int) $data['@STRSTATID']);
         }

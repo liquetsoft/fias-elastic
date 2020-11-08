@@ -79,35 +79,39 @@ class SerializerGenerator extends AbstractGenerator
      */
     protected function decorateClass(ClassType $class): void
     {
-        $constants = [];
+        $descriptors = $this->registry->getDescriptors();
 
+        $count = 0;
+        $supportsBody = 'return ';
         $denormalizeBody = '$data = is_array($data) ? $data : [];' . "\n";
         $denormalizeBody .= '$type = trim($type, " \t\n\r\0\x0B\\\\/");' . "\n\n";
         $denormalizeBody .= "\$entity = \$context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new \$type();\n\n";
-        $denormalizeBody .= "switch (\$type) {\n";
-
-        $descriptors = $this->registry->getDescriptors();
         foreach ($descriptors as $descriptor) {
             $className = $this->unifyClassName($descriptor->getName());
-            $constants[] = new PhpLiteral("{$className}::class");
-            $denormalizeBody .= "    case {$className}::class:\n";
-            $denormalizeBody .= "        \$this->fill{$className}EntityWithData(\$entity, \$data);\n";
-            $denormalizeBody .= "        break;\n";
+            $supports[] = $className;
+            if ($count === 0) {
+                $denormalizeBody .= "if (\$entity instanceof {$className}) {\n";
+                $supportsBody .= "is_subclass_of(\$type, {$className}::class)";
+            } else {
+                $denormalizeBody .= " elseif (\$entity instanceof {$className}) {\n";
+                $supportsBody .= "\n    || is_subclass_of(\$type, {$className}::class)";
+            }
+            $denormalizeBody .= "    \$this->fill{$className}EntityWithData(\$entity, \$data);\n";
+            $denormalizeBody .= '}';
+            ++$count;
         }
-
-        $denormalizeBody .= "    default:\n";
-        $denormalizeBody .= "        \$message = sprintf(\"Can't find data extractor for '%s' type.\", \$type);\n";
-        $denormalizeBody .= "        throw new InvalidArgumentException(\$message);\n";
+        $supportsBody .= ';';
+        $denormalizeBody .= " else {\n";
+        $denormalizeBody .= "    throw new Exception('Wrong entity object.');\n";
         $denormalizeBody .= "}\n\n";
         $denormalizeBody .= 'return $entity;';
 
         $class->addComment('Скомпилированный класс для денормализации сущностей ФИАС в модели для elasticsearch.');
-        $class->addConstant('ALLOWED_ENTITIES', $constants)->setPrivate();
 
         $supports = $class->addMethod('supportsDenormalization')
             ->addComment("@inheritDoc\n")
             ->setVisibility('public')
-            ->setBody('return in_array(trim($type, " \t\n\r\0\x0B\\\\/"), self::ALLOWED_ENTITIES);');
+            ->setBody($supportsBody);
         $supports->addParameter('data');
         $supports->addParameter('type')->setType('string');
         $supports->addParameter('format', new PhpLiteral('null'))->setType('string');
@@ -141,10 +145,7 @@ class SerializerGenerator extends AbstractGenerator
     {
         $className = $this->unifyClassName($descriptor->getName());
 
-        $body = "if (!(\$entity instanceof {$className})) {";
-        $body .= "    throw new InvalidArgumentException('Wrong entity to denormalize.');";
-        $body .= '}';
-
+        $body = '';
         foreach ($descriptor->getFields() as $field) {
             $column = $this->unifyColumnName($field->getName());
             $xmlAttribute = '@' . strtoupper($column);
@@ -166,11 +167,11 @@ class SerializerGenerator extends AbstractGenerator
         }
 
         $method->addComment("Задает все свойства модели '{$className}' из массива, полученного от ФИАС.\n");
-        $method->addComment("@param object \$entity\n");
+        $method->addComment("@param {$className} \$entity\n");
         $method->addComment("@param array \$data\n");
         $method->addComment("\n");
         $method->addComment('@throws Exception');
-        $method->addParameter('entity')->setType('object');
+        $method->addParameter('entity')->setType($this->createModelClass($descriptor));
         $method->addParameter('data')->setType('array');
         $method->setVisibility('private');
         $method->setReturnType('void');
