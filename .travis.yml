@@ -8,5 +8,5 @@ before_script:
 script:
   - vendor/bin/phpunit -c phpunit.xml.dist
   - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no
-  - vendor/bin/phpcpd src --exclude Entity
+  - vendor/bin/phpcpd src --exclude Entity --exclude Serializer
   - vendor/bin/psalm
