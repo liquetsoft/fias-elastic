@@ -40,10 +40,10 @@ class AddressObjectTypeIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'socrname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'scname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

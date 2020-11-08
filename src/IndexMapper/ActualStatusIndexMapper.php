@@ -37,7 +37,7 @@ class ActualStatusIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'name' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

@@ -37,22 +37,22 @@ class RoomIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'roomguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'houseguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'regioncode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'flatnumber' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'flattype' => [
                 'type' => 'integer',
             ],
             'postalcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'startdate' => [
                 'type' => 'date',
@@ -73,25 +73,25 @@ class RoomIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'normdoc' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'roomnumber' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'roomtype' => [
                 'type' => 'integer',
             ],
             'previd' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'nextid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'cadnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'roomcadnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

@@ -37,13 +37,13 @@ class HouseIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'houseguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'aoguid' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'housenum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'strstatus' => [
                 'type' => 'integer',
@@ -55,19 +55,19 @@ class HouseIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'ifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'okato' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'oktmo' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'postalcode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'startdate' => [
                 'type' => 'date',
@@ -88,25 +88,25 @@ class HouseIndexMapper extends IndexMapperAbstract
                 'type' => 'integer',
             ],
             'regioncode' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsfl' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'terrifnsul' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'buildnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'strucnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'normdoc' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'cadnum' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

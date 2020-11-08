@@ -37,10 +37,10 @@ class FlatTypeIndexMapper extends IndexMapperAbstract
                 'type' => 'keyword',
             ],
             'name' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'shortname' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ];
     }

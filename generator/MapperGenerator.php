@@ -155,7 +155,8 @@ class MapperGenerator extends AbstractGenerator
                 $returnHint = 'date';
                 break;
             default:
-                $returnHint = 'text';
+                $length = $field->getLength();
+                $returnHint = $length !== null && $length < 255 ? 'keyword' : 'text';
                 break;
         }
 
