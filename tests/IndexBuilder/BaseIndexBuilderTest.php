@@ -277,4 +277,60 @@ class BaseIndexBuilderTest extends BaseCase
         $this->expectException(IndexBuilderException::class);
         $builder->refresh($mapper);
     }
+
+    /**
+     * Проверяет, что объект удали индекс.
+     *
+     * @throws Throwable
+     */
+    public function testDeleteIndex()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
+        $indices->expects($this->once())
+            ->method('delete')
+            ->with(
+                $this->identicalTo(
+                    ['index' => $mapperName, 'ignore_unavailable' => true]
+                )
+            );
+
+        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
+        $client->method('indices')->will($this->returnValue($indices));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->returnValue($client));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+        $builder->delete($mapper);
+    }
+
+    /**
+     * Проверяет, что объект перехватит исключение при удалении индекса.
+     *
+     * @throws Throwable
+     */
+    public function testDeleteIndexException()
+    {
+        $mapperName = $this->createFakeData()->word;
+        $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
+
+        $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
+        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+
+        $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
+        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+
+        $builder = new BaseIndexBuilder($clientProvider);
+
+        $this->expectException(IndexBuilderException::class);
+        $builder->delete($mapper);
+    }
 }
