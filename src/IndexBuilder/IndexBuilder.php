@@ -47,4 +47,22 @@ interface IndexBuilder
      * @throws IndexBuilderException
      */
     public function refresh(IndexMapperInterface $indexMapper): void;
+
+    /**
+     * Удаляет индекс.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @throws IndexBuilderException
+     */
+    public function delete(IndexMapperInterface $indexMapper): void;
+
+    /**
+     * Возвращает правду, если указанный индекс существует в elasticsearch.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @return bool
+     */
+    public function hasIndex(IndexMapperInterface $indexMapper): bool;
 }

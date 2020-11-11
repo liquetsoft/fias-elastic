@@ -32,21 +32,25 @@ class BaseIndexBuilder implements IndexBuilder
         try {
             $client = $this->getClient();
             if ($this->hasIndex($indexMapper)) {
-                $client->indices()->putMapping([
-                    'index' => $indexMapper->getName(),
-                    'body' => [
-                        'properties' => $indexMapper->getMappingProperties(),
-                    ],
-                ]);
-            } else {
-                $client->indices()->create([
-                    'index' => $indexMapper->getName(),
-                    'body' => [
-                        'mappings' => [
+                $client->indices()->putMapping(
+                    [
+                        'index' => $indexMapper->getName(),
+                        'body' => [
                             'properties' => $indexMapper->getMappingProperties(),
                         ],
-                    ],
-                ]);
+                    ]
+                );
+            } else {
+                $client->indices()->create(
+                    [
+                        'index' => $indexMapper->getName(),
+                        'body' => [
+                            'mappings' => [
+                                'properties' => $indexMapper->getMappingProperties(),
+                            ],
+                        ],
+                    ]
+                );
             }
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
@@ -59,10 +63,12 @@ class BaseIndexBuilder implements IndexBuilder
     public function close(IndexMapperInterface $indexMapper): void
     {
         try {
-            $this->getClient()->indices()->close([
-                'index' => $indexMapper->getName(),
-                'ignore_unavailable' => true,
-            ]);
+            $this->getClient()->indices()->close(
+                [
+                    'index' => $indexMapper->getName(),
+                    'ignore_unavailable' => true,
+                ]
+            );
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -74,10 +80,12 @@ class BaseIndexBuilder implements IndexBuilder
     public function open(IndexMapperInterface $indexMapper): void
     {
         try {
-            $this->getClient()->indices()->open([
-                'index' => $indexMapper->getName(),
-                'ignore_unavailable' => true,
-            ]);
+            $this->getClient()->indices()->open(
+                [
+                    'index' => $indexMapper->getName(),
+                    'ignore_unavailable' => true,
+                ]
+            );
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -89,23 +97,38 @@ class BaseIndexBuilder implements IndexBuilder
     public function refresh(IndexMapperInterface $indexMapper): void
     {
         try {
-            $this->getClient()->indices()->refresh([
-                'index' => $indexMapper->getName(),
-                'ignore_unavailable' => true,
-            ]);
+            $this->getClient()->indices()->refresh(
+                [
+                    'index' => $indexMapper->getName(),
+                    'ignore_unavailable' => true,
+                ]
+            );
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
 
     /**
-     * Возвращает правду, если указанный индекс существует в elasticsearch.
-     *
-     * @param IndexMapperInterface $indexMapper
-     *
-     * @return bool
+     * @inheritDoc
      */
-    private function hasIndex(IndexMapperInterface $indexMapper): bool
+    public function delete(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->delete(
+                [
+                    'index' => $indexMapper->getName(),
+                    'ignore_unavailable' => true,
+                ]
+            );
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasIndex(IndexMapperInterface $indexMapper): bool
     {
         $indices = $this->getListOfIndices();
 
@@ -119,7 +142,11 @@ class BaseIndexBuilder implements IndexBuilder
      */
     private function getListOfIndices(): array
     {
-        return $this->getClient()->indices()->get(['index' => '_all']);
+        return $this->getClient()->indices()->get(
+            [
+                'index' => '_all',
+            ]
+        );
     }
 
     /**
