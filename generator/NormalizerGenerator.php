@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Generator;
 
-use DateTime;
 use Exception;
 use Liquetsoft\Fias\Component\EntityDescriptor\EntityDescriptor;
 use Liquetsoft\Fias\Component\Exception\EntityRegistryException;
@@ -16,20 +15,19 @@ use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
 use SplFileInfo;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Объект, который создает класс для сериализатора сущностей ФИАС.
  */
-class SerializerGenerator extends AbstractGenerator
+class NormalizerGenerator extends AbstractGenerator
 {
     /**
      * @inheritDoc
      */
     protected function generate(SplFileInfo $dir, string $namespace): void
     {
-        $name = 'CompiledFiasEntitiesDenormalizer';
+        $name = 'CompiledFiasEntitiesNormalizer';
         $fullPath = "{$dir->getPathname()}/{$name}.php";
 
         $phpFile = new PhpFile();
@@ -38,7 +36,7 @@ class SerializerGenerator extends AbstractGenerator
         $namespace = $phpFile->addNamespace($namespace);
         $this->decorateNamespace($namespace);
 
-        $class = $namespace->addClass($name)->addImplement(DenormalizerInterface::class);
+        $class = $namespace->addClass($name)->addImplement(NormalizerInterface::class);
         $this->decorateClass($class);
 
         file_put_contents($fullPath, (new PsrPrinter())->printFile($phpFile));
@@ -53,20 +51,13 @@ class SerializerGenerator extends AbstractGenerator
      */
     protected function decorateNamespace(PhpNamespace $namespace): void
     {
-        $namespace->addUse(DenormalizerInterface::class);
-        $namespace->addUse(AbstractNormalizer::class);
+        $namespace->addUse(NormalizerInterface::class);
         $namespace->addUse(InvalidArgumentException::class);
         $namespace->addUse(Exception::class);
 
         $descriptors = $this->registry->getDescriptors();
         foreach ($descriptors as $descriptor) {
             $namespace->addUse($this->createModelClass($descriptor));
-            foreach ($descriptor->getFields() as $field) {
-                if ($field->getSubType() === 'date') {
-                    $namespace->addUse(DateTime::class);
-                    break;
-                }
-            }
         }
     }
 
@@ -83,20 +74,17 @@ class SerializerGenerator extends AbstractGenerator
 
         $count = 0;
         $supportsBody = 'return ';
-        $denormalizeBody = '$data = is_array($data) ? $data : [];' . "\n";
-        $denormalizeBody .= '$type = trim($type, " \t\n\r\0\x0B\\\\/");' . "\n\n";
-        $denormalizeBody .= "\$entity = \$context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new \$type();\n\n";
+        $denormalizeBody = '';
         foreach ($descriptors as $descriptor) {
             $className = $this->unifyClassName($descriptor->getName());
-            $supports[] = $className;
             if ($count === 0) {
-                $denormalizeBody .= "if (\$entity instanceof {$className}) {\n";
-                $supportsBody .= "is_subclass_of(\$type, {$className}::class)";
+                $denormalizeBody .= "if (\$object instanceof {$className}) {\n";
+                $supportsBody .= "\$data instanceof {$className}";
             } else {
-                $denormalizeBody .= " elseif (\$entity instanceof {$className}) {\n";
-                $supportsBody .= "\n    || is_subclass_of(\$type, {$className}::class)";
+                $denormalizeBody .= " elseif (\$object instanceof {$className}) {\n";
+                $supportsBody .= "\n    || \$data instanceof {$className}";
             }
-            $denormalizeBody .= "    \$this->fill{$className}EntityWithData(\$entity, \$data);\n";
+            $denormalizeBody .= "    \$data = \$this->getDataFrom{$className}Entity(\$object);\n";
             $denormalizeBody .= '}';
             ++$count;
         }
@@ -104,77 +92,68 @@ class SerializerGenerator extends AbstractGenerator
         $denormalizeBody .= " else {\n";
         $denormalizeBody .= "    throw new Exception('Wrong entity object.');\n";
         $denormalizeBody .= "}\n\n";
-        $denormalizeBody .= 'return $entity;';
+        $denormalizeBody .= 'return $data;';
 
-        $class->addComment('Скомпилированный класс для денормализации сущностей ФИАС в модели для elasticsearch.');
+        $class->addComment('Скомпилированный класс для нормализации сущностей ФИАС в модели для elasticsearch.');
 
-        $supports = $class->addMethod('supportsDenormalization')
+        $supports = $class->addMethod('supportsNormalization')
             ->addComment("@inheritDoc\n")
             ->setVisibility('public')
             ->setBody($supportsBody);
         $supports->addParameter('data');
-        $supports->addParameter('type')->setType('string');
         $supports->addParameter('format', new PhpLiteral('null'))->setType('string');
 
-        $denormalize = $class->addMethod('denormalize')
+        $denormalize = $class->addMethod('normalize')
             ->addComment("{@inheritDoc}\n")
-            ->addComment("@psalm-suppress InvalidStringClass\n")
             ->addComment("\n")
             ->addComment("@throws Exception\n")
             ->setVisibility('public')
             ->setBody($denormalizeBody);
-        $denormalize->addParameter('data');
-        $denormalize->addParameter('type')->setType('string');
+        $denormalize->addParameter('object');
         $denormalize->addParameter('format', new PhpLiteral('null'))->setType('string');
         $denormalize->addParameter('context', new PhpLiteral('[]'))->setType('array');
 
         foreach ($descriptors as $descriptor) {
             $className = $this->unifyClassName($descriptor->getName());
-            $entityMethod = $class->addMethod("fill{$className}EntityWithData");
-            $this->decorateModelDataFiller($entityMethod, $descriptor);
+            $entityMethod = $class->addMethod("getDataFrom{$className}Entity");
+            $this->decorateModelDataGetter($entityMethod, $descriptor);
         }
     }
 
     /**
-     * Создает метод для денормализации одной конкретной модели.
+     * Создает метод для нормализации одной конкретной модели.
      *
      * @param Method           $method
      * @param EntityDescriptor $descriptor
      */
-    protected function decorateModelDataFiller(Method $method, EntityDescriptor $descriptor): void
+    protected function decorateModelDataGetter(Method $method, EntityDescriptor $descriptor): void
     {
         $className = $this->unifyClassName($descriptor->getName());
 
-        $body = '';
+        $body = "return [\n";
         foreach ($descriptor->getFields() as $field) {
             $column = $this->unifyColumnName($field->getName());
-            $xmlAttribute = '@' . strtoupper($column);
+            $getter = 'get' . ucfirst($column);
             $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
             switch ($type) {
-                case 'int':
-                    $varType = '(int) $value';
-                    break;
                 case 'string_date':
-                    $varType = 'new DateTime(trim($value))';
+                    $varType = "'{$column}' => (\$date = \$object->{$getter}()) ? \$date->format(DATE_ATOM) : null";
                     break;
                 default:
-                    $varType = 'trim($value)';
+                    $varType = "'{$column}' => \$object->{$getter}()";
                     break;
             }
-            $body .= "\n\nif ((\$value = \$data['{$xmlAttribute}'] ?? (\$data['{$column}'] ?? null)) !== null) {";
-            $body .= '    $entity->set' . ucfirst($column) . "($varType);";
-            $body .= '}';
+            $body .= "    {$varType},\n";
         }
+        $body .= '];';
 
-        $method->addComment("Задает все свойства модели '{$className}' из массива, полученного от ФИАС.\n");
-        $method->addComment("@param {$className} \$entity\n");
-        $method->addComment("@param array \$data\n");
+        $method->addComment("Возвращает все свойства модели '{$className}'.\n");
+        $method->addComment("@param {$className} \$object\n");
         $method->addComment("\n");
-        $method->addComment('@throws Exception');
-        $method->addParameter('entity')->setType($this->createModelClass($descriptor));
-        $method->addParameter('data')->setType('array');
+        $method->addComment('@return array');
+        $method->addParameter('object')->setType($this->createModelClass($descriptor));
         $method->setVisibility('protected');
-        $method->setReturnType('void');
+        $method->setReturnType('array');
         $method->setBody($body);
     }
 

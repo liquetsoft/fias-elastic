@@ -6,6 +6,7 @@ use Liquetsoft\Fias\Elastic\Generator\MapperGenerator;
 use Liquetsoft\Fias\Elastic\Generator\MapperTestGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelGenerator;
 use Liquetsoft\Fias\Elastic\Generator\ModelTestGenerator;
+use Liquetsoft\Fias\Elastic\Generator\NormalizerGenerator;
 use Liquetsoft\Fias\Elastic\Generator\SerializerGenerator;
 
 $root = dirname(__DIR__);
@@ -61,4 +62,6 @@ if (is_dir($dir)) {
 mkdir($dir, 0777, true);
 $namespace = 'Liquetsoft\\Fias\\Elastic\\Serializer';
 $generator = new SerializerGenerator($registry);
+$generator->run($dir, $namespace);
+$generator = new NormalizerGenerator($registry);
 $generator->run($dir, $namespace);
