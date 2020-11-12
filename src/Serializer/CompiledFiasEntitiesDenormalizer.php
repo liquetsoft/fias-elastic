@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * Скомпилированный класс для денормализации сущностей ФИАС в модели для elasticsearch.
  */
-class CompiledFiasEntitesDenormalizer implements DenormalizerInterface
+class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
 {
     /**
      * @inheritDoc
