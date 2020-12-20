@@ -13,7 +13,7 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 class RoomTypeTest extends EntityCase
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function createEntity()
     {
@@ -21,7 +21,7 @@ class RoomTypeTest extends EntityCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function accessorsProvider(): array
     {

@@ -15,7 +15,7 @@ use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 abstract class IndexMapperAbstract implements IndexMapperInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function extractPrimaryFromEntity(object $entity): string
     {
@@ -32,7 +32,7 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function extractDataFromEntity(object $entity): array
     {
@@ -49,7 +49,7 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasProperty(string $property): bool
     {
@@ -59,7 +59,7 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function query(): QueryBuilder
     {

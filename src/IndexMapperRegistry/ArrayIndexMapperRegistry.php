@@ -31,7 +31,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getAllMappers(): array
     {
@@ -39,7 +39,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasMapperForKey(string $key): bool
     {
@@ -49,7 +49,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getMapperForKey(string $key): IndexMapperInterface
     {
@@ -63,7 +63,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasMapperForObject(object $object): bool
     {
@@ -71,7 +71,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getMapperForObject(object $object): IndexMapperInterface
     {

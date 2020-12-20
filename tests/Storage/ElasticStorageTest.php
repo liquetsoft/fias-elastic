@@ -135,34 +135,13 @@ class ElasticStorageTest extends BaseCase
         $entity1->setPayload($this->createFakeData()->word);
 
         $client = $this->createClientMock();
-        $client->expects($this->at(0))->method('bulk')->with($this->equalTo([
-            'body' => [
-                [
-                    'index' => [
-                        '_index' => 'ElasticStorageTestEntity',
-                        '_id' => $entity->getId(),
-                    ],
-                ],
-                [
-                    'id' => $entity->getId(),
-                    'payload' => $entity->getPayload(),
-                ],
-            ],
-        ]));
-        $client->expects($this->at(1))->method('bulk')->with($this->equalTo([
-            'body' => [
-                [
-                    'index' => [
-                        '_index' => 'ElasticStorageTestEntity',
-                        '_id' => $entity1->getId(),
-                    ],
-                ],
-                [
-                    'id' => $entity1->getId(),
-                    'payload' => $entity1->getPayload(),
-                ],
-            ],
-        ]));
+        $insertedItems = [];
+        $client->method('bulk')->willReturnCallback(
+            function ($request) use (&$insertedItems) {
+                $insertedItems[] = $request;
+            }
+        );
+
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
@@ -171,6 +150,40 @@ class ElasticStorageTest extends BaseCase
         $storage->insert($entity);
         $storage->insert($entity1);
         $storage->stop();
+
+        $this->assertSame(
+            [
+                [
+                    'body' => [
+                        [
+                            'index' => [
+                                '_index' => 'ElasticStorageTestEntity',
+                                '_id' => $entity->getId(),
+                            ],
+                        ],
+                        [
+                            'id' => $entity->getId(),
+                            'payload' => $entity->getPayload(),
+                        ],
+                    ],
+                ],
+                [
+                    'body' => [
+                        [
+                            'index' => [
+                                '_index' => 'ElasticStorageTestEntity',
+                                '_id' => $entity1->getId(),
+                            ],
+                        ],
+                        [
+                            'id' => $entity1->getId(),
+                            'payload' => $entity1->getPayload(),
+                        ],
+                    ],
+                ],
+            ],
+            $insertedItems
+        );
     }
 
     /**

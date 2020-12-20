@@ -19,7 +19,7 @@ class DIProvider implements ClientProvider
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function provide(): Client
     {

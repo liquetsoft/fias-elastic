@@ -25,7 +25,7 @@ class OpenElasticIndicesTask implements Task
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function run(State $state): void
     {

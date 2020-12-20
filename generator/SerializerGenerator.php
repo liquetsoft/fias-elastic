@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class SerializerGenerator extends AbstractGenerator
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function generate(SplFileInfo $dir, string $namespace): void
     {
@@ -191,7 +191,7 @@ class SerializerGenerator extends AbstractGenerator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function generateClassByDescriptor(EntityDescriptor $descriptor, SplFileInfo $dir, string $namespace): void
     {

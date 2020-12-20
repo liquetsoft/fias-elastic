@@ -20,7 +20,7 @@ class MapperQueryBuilder extends ArrayQueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getQuery(): array
     {

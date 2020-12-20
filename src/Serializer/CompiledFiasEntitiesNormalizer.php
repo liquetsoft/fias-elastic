@@ -28,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CompiledFiasEntitiesNormalizer implements NormalizerInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supportsNormalization($data, string $format = null)
     {

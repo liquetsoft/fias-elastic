@@ -31,12 +31,24 @@ class RefreshElasticIndicesTaskTest extends BaseCase
         $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $indexBuilder->expects($this->at(0))->method('refresh')->with($this->identicalTo($mapper));
-        $indexBuilder->expects($this->at(1))->method('refresh')->with($this->identicalTo($mapper1));
+        $refreshedIndicies = [];
+        $indexBuilder->method('refresh')->willReturnCallback(
+            function ($index) use (&$refreshedIndicies) {
+                $refreshedIndicies[] = $index;
+            }
+        );
 
         $state = $this->getMockBuilder(State::class)->getMock();
 
         $task = new RefreshElasticIndicesTask($mapperRegistry, $indexBuilder);
         $task->run($state);
+
+        $this->assertSame(
+            [
+                $mapper,
+                $mapper1,
+            ],
+            $refreshedIndicies
+        );
     }
 }

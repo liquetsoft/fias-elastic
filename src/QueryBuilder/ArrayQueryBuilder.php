@@ -14,7 +14,7 @@ class ArrayQueryBuilder implements QueryBuilder
     private array $query = [];
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function match(string $property, $value): QueryBuilder
     {
@@ -30,7 +30,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function term(string $property, $value): QueryBuilder
     {
@@ -44,7 +44,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function notExist(string $property): QueryBuilder
     {
@@ -60,7 +60,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function sortAsc(string $property): QueryBuilder
     {
@@ -68,7 +68,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function sortDesc(string $property): QueryBuilder
     {
@@ -76,7 +76,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function sort(string $property, string $order = QueryBuilder::SORT_ORDER_ASC): QueryBuilder
     {
@@ -97,7 +97,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function size(int $size): QueryBuilder
     {
@@ -107,7 +107,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function from(int $from): QueryBuilder
     {
@@ -117,7 +117,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function searchAfter(array $values): QueryBuilder
     {
@@ -127,7 +127,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function merge(QueryBuilder $builder): QueryBuilder
     {
@@ -137,7 +137,7 @@ class ArrayQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getQuery(): array
     {
