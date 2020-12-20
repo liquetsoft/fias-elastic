@@ -31,12 +31,24 @@ class OpenElasticIndicesTaskTest extends BaseCase
         $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $indexBuilder->expects($this->at(0))->method('open')->with($this->identicalTo($mapper));
-        $indexBuilder->expects($this->at(1))->method('open')->with($this->identicalTo($mapper1));
+        $openedIndicies = [];
+        $indexBuilder->method('open')->willReturnCallback(
+            function ($index) use (&$openedIndicies) {
+                $openedIndicies[] = $index;
+            }
+        );
 
         $state = $this->getMockBuilder(State::class)->getMock();
 
         $task = new OpenElasticIndicesTask($mapperRegistry, $indexBuilder);
         $task->run($state);
+
+        $this->assertSame(
+            [
+                $mapper,
+                $mapper1,
+            ],
+            $openedIndicies
+        );
     }
 }

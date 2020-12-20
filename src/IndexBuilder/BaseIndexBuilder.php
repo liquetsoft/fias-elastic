@@ -25,7 +25,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function save(IndexMapperInterface $indexMapper): void
     {
@@ -58,7 +58,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function close(IndexMapperInterface $indexMapper): void
     {
@@ -75,7 +75,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function open(IndexMapperInterface $indexMapper): void
     {
@@ -92,7 +92,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function refresh(IndexMapperInterface $indexMapper): void
     {
@@ -109,7 +109,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete(IndexMapperInterface $indexMapper): void
     {
@@ -126,7 +126,7 @@ class BaseIndexBuilder implements IndexBuilder
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function hasIndex(IndexMapperInterface $indexMapper): bool
     {

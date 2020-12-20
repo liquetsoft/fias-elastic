@@ -31,12 +31,24 @@ class CreateElasticIndexesTaskTest extends BaseCase
         $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $indexBuilder->expects($this->at(0))->method('save')->with($this->identicalTo($mapper));
-        $indexBuilder->expects($this->at(1))->method('save')->with($this->identicalTo($mapper1));
+        $savedIndicies = [];
+        $indexBuilder->method('save')->willReturnCallback(
+            function ($index) use (&$savedIndicies) {
+                $savedIndicies[] = $index;
+            }
+        );
 
         $state = $this->getMockBuilder(State::class)->getMock();
 
         $task = new CreateElasticIndexesTask($mapperRegistry, $indexBuilder);
         $task->run($state);
+
+        $this->assertSame(
+            [
+                $mapper,
+                $mapper1,
+            ],
+            $savedIndicies
+        );
     }
 }

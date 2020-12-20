@@ -12,7 +12,7 @@ use Liquetsoft\Fias\Elastic\IndexMapperAbstract;
 class AddressObjectTypeIndexMapper extends IndexMapperAbstract
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName(): string
     {
@@ -20,7 +20,7 @@ class AddressObjectTypeIndexMapper extends IndexMapperAbstract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getPrimaryName(): string
     {
@@ -28,7 +28,7 @@ class AddressObjectTypeIndexMapper extends IndexMapperAbstract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getMappingProperties(): array
     {

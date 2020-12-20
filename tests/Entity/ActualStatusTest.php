@@ -13,7 +13,7 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 class ActualStatusTest extends EntityCase
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function createEntity()
     {
@@ -21,7 +21,7 @@ class ActualStatusTest extends EntityCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function accessorsProvider(): array
     {

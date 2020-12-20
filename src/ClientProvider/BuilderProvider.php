@@ -22,7 +22,7 @@ class BuilderProvider implements ClientProvider
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function provide(): Client
     {

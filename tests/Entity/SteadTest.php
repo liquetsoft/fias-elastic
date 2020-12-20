@@ -14,7 +14,7 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 class SteadTest extends EntityCase
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function createEntity()
     {
@@ -22,7 +22,7 @@ class SteadTest extends EntityCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function accessorsProvider(): array
     {

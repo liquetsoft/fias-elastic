@@ -48,14 +48,14 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function start(): void
     {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function stop(): void
     {
@@ -63,7 +63,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supports(object $entity): bool
     {
@@ -71,7 +71,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supportsClass(string $class): bool
     {
@@ -79,7 +79,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function insert(object $entity): void
     {
@@ -87,7 +87,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete(object $entity): void
     {
@@ -95,7 +95,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function upsert(object $entity): void
     {
@@ -103,7 +103,7 @@ class ElasticStorage implements Storage
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function truncate(string $entityClassName): void
     {

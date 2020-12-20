@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class NormalizerGenerator extends AbstractGenerator
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function generate(SplFileInfo $dir, string $namespace): void
     {
@@ -170,7 +170,7 @@ class NormalizerGenerator extends AbstractGenerator
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function generateClassByDescriptor(EntityDescriptor $descriptor, SplFileInfo $dir, string $namespace): void
     {
