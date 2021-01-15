@@ -7,6 +7,7 @@ namespace Liquetsoft\Fias\Elastic\Tests\Storage;
 use Elasticsearch\Client;
 use Liquetsoft\Fias\Component\Exception\StorageException;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
+use Liquetsoft\Fias\Elastic\IndexBuilder\IndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Storage\ElasticStorage;
@@ -39,7 +40,10 @@ class ElasticStorageTest extends BaseCase
             )
         );
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->assertTrue($storage->supports($entity));
         $this->assertFalse($storage->supports($this));
@@ -63,7 +67,10 @@ class ElasticStorageTest extends BaseCase
             )
         );
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->assertTrue($storage->supportsClass($key));
         $this->assertFalse($storage->supportsClass($key . '_test'));
@@ -112,7 +119,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
         $storage->insert($entity);
         $storage->insert($entity1);
@@ -145,7 +155,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry, 1);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder, 1);
         $storage->start();
         $storage->insert($entity);
         $storage->insert($entity1);
@@ -187,6 +200,61 @@ class ElasticStorageTest extends BaseCase
     }
 
     /**
+     * Проверяет, что замороженные индексы будут разморожены при вставке.
+     *
+     * @throws Throwable
+     */
+    public function testInsertToFrozenIndex()
+    {
+        $entity = new ElasticStorageTestEntity();
+        $entity->setId($this->createFakeData()->word);
+        $entity->setPayload($this->createFakeData()->word);
+
+        $entity1 = new ElasticStorageTestEntity();
+        $entity1->setId($this->createFakeData()->word);
+        $entity1->setPayload($this->createFakeData()->word);
+
+        $client = $this->createClientMock();
+        $client->expects($this->once())->method('bulk')->with($this->equalTo([
+            'body' => [
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity->getId(),
+                    'payload' => $entity->getPayload(),
+                ],
+                [
+                    'index' => [
+                        '_index' => 'ElasticStorageTestEntity',
+                        '_id' => $entity1->getId(),
+                    ],
+                ],
+                [
+                    'id' => $entity1->getId(),
+                    'payload' => $entity1->getPayload(),
+                ],
+            ],
+        ]));
+        $provider = $this->createClientProviderMock($client);
+        $registry = $this->createRegistryMock();
+
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->expects($this->once())->method('isFrozen')->willReturn(true);
+        $builder->expects($this->once())->method('unfreeze');
+        $builder->expects($this->once())->method('freeze');
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
+        $storage->start();
+        $storage->insert($entity);
+        $storage->insert($entity1);
+        $storage->stop();
+    }
+
+    /**
      * Проверяет, что исключение при добавлении документа будет перехвачено.
      *
      * @throws Throwable
@@ -200,7 +268,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -230,7 +301,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
         $storage->delete($entity);
         $storage->stop();
@@ -250,7 +324,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -285,7 +362,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
         $storage->upsert($entity);
         $storage->stop();
@@ -305,7 +385,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->expectException(StorageException::class);
         $storage->start();
@@ -337,7 +420,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
         $storage->truncate('ElasticStorageTestEntity');
         $storage->stop();
@@ -357,7 +443,10 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $storage = new ElasticStorage($provider, $registry);
+        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
+        $builder->method('isFrozen')->willReturn(false);
+
+        $storage = new ElasticStorage($provider, $registry, $builder);
 
         $this->expectException(StorageException::class);
         $storage->start();

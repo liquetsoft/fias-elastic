@@ -19,6 +19,8 @@ class BaseIndexBuilder implements IndexBuilder
 
     private ?Client $client = null;
 
+    private ?array $listOfIndicies = null;
+
     public function __construct(ClientProvider $clientProvider)
     {
         $this->clientProvider = $clientProvider;
@@ -152,6 +154,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'index' => $indexMapper->getName(),
                 ]
             );
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -168,6 +171,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'index' => $indexMapper->getName(),
                 ]
             );
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -203,11 +207,15 @@ class BaseIndexBuilder implements IndexBuilder
      */
     private function getListOfIndices(): array
     {
-        return $this->getClient()->indices()->get(
-            [
-                'index' => '_all',
-            ]
-        );
+        if ($this->listOfIndicies === null) {
+            $this->listOfIndicies = $this->getClient()->indices()->get(
+                [
+                    'index' => '_all',
+                ]
+            );
+        }
+
+        return $this->listOfIndicies;
     }
 
     /**
