@@ -10,6 +10,8 @@ use Liquetsoft\Fias\Component\Storage\Storage;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperException;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
+use Liquetsoft\Fias\Elastic\IndexBuilder\IndexBuilder;
+use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Throwable;
 
@@ -29,9 +31,19 @@ class ElasticStorage implements Storage
     private IndexMapperRegistry $registry;
 
     /**
+     * Объект для работы с снастройками индекса.
+     */
+    private IndexBuilder $indexBuilder;
+
+    /**
      * Количество элементов для множественной вставки.
      */
     private int $insertBatch;
+
+    /**
+     * Ссылка на объект клиента, если он уже был получен.
+     */
+    private ?Client $client = null;
 
     /**
      * Данные операций для множественной отправки.
@@ -40,10 +52,22 @@ class ElasticStorage implements Storage
      */
     private array $bulkOperations = [];
 
-    public function __construct(ClientProvider $clientProvider, IndexMapperRegistry $registry, int $insertBatch = 1000)
-    {
+    /**
+     * Список замороженных индексов, которые были разморожены для вставки.
+     *
+     * @var array<string, IndexMapperInterface>
+     */
+    private array $unfrozedIndicies = [];
+
+    public function __construct(
+        ClientProvider $clientProvider,
+        IndexMapperRegistry $registry,
+        IndexBuilder $indexBuilder,
+        int $insertBatch = 1000
+    ) {
         $this->clientProvider = $clientProvider;
         $this->registry = $registry;
+        $this->indexBuilder = $indexBuilder;
         $this->insertBatch = $insertBatch;
     }
 
@@ -60,6 +84,7 @@ class ElasticStorage implements Storage
     public function stop(): void
     {
         $this->flushBulk();
+        $this->freezeIndices();
     }
 
     /**
@@ -232,7 +257,7 @@ class ElasticStorage implements Storage
     {
         $operationArray = [];
 
-        $mapper = $this->registry->getMapperForObject($object);
+        $mapper = $this->getAndPrepareMapperForObject($object);
         $index = $mapper->getName();
         $id = $mapper->extractPrimaryFromEntity($object);
 
@@ -257,12 +282,51 @@ class ElasticStorage implements Storage
     }
 
     /**
+     * Получает и подготавливает маппер для указанного объекта.
+     *
+     * @param object $object
+     *
+     * @return IndexMapperInterface
+     *
+     * @throws IndexMapperRegistryException
+     * @throws IndexMapperException
+     */
+    private function getAndPrepareMapperForObject(object $object): IndexMapperInterface
+    {
+        $mapper = $this->registry->getMapperForObject($object);
+        $name = $mapper->getName();
+
+        if (!isset($this->unfrozedIndicies[$name]) && $this->indexBuilder->isFrozen($mapper)) {
+            $this->indexBuilder->unfreeze($mapper);
+            $this->unfrozedIndicies[$name] = $mapper;
+        }
+
+        return $mapper;
+    }
+
+    /**
+     * Замораживает все размороженные в процессе работы индексы.
+     */
+    private function freezeIndices(): void
+    {
+        foreach ($this->unfrozedIndicies as $mapper) {
+            $this->indexBuilder->freeze($mapper);
+        }
+
+        $this->unfrozedIndicies = [];
+    }
+
+    /**
      * Возвращает клиента из текущего провайдера клиента elasticsearch.
      *
      * @return Client
      */
     private function getClient(): Client
     {
-        return $this->clientProvider->provide();
+        if ($this->client === null) {
+            $this->client = $this->clientProvider->provide();
+        }
+
+        return $this->client;
     }
 }
