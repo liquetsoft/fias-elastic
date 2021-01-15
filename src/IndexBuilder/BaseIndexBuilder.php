@@ -128,11 +128,72 @@ class BaseIndexBuilder implements IndexBuilder
     /**
      * {@inheritDoc}
      */
+    public function isFrozen(IndexMapperInterface $indexMapper): bool
+    {
+        $description = $this->getIndexDescription($indexMapper);
+
+        if ($description === null) {
+            $message = sprintf("Index with name '%s' not found.", $indexMapper->getName());
+            throw new IndexBuilderException($message);
+        }
+
+        return !empty($description['settings']['index']['frozen'])
+            && $description['settings']['index']['frozen'] === 'true';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function freeze(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->freeze(
+                [
+                    'index' => $indexMapper->getName(),
+                ]
+            );
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unfreeze(IndexMapperInterface $indexMapper): void
+    {
+        try {
+            $this->getClient()->indices()->unfreeze(
+                [
+                    'index' => $indexMapper->getName(),
+                ]
+            );
+        } catch (Throwable $e) {
+            throw new IndexBuilderException($e->getMessage(), 0, $e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function hasIndex(IndexMapperInterface $indexMapper): bool
+    {
+        return $this->getIndexDescription($indexMapper) !== null;
+    }
+
+    /**
+     * Возвращает массив с описанием указанного индекса или null, если индекс
+     * не найден.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @return array|null
+     */
+    private function getIndexDescription(IndexMapperInterface $indexMapper): ?array
     {
         $indices = $this->getListOfIndices();
 
-        return isset($indices[$indexMapper->getName()]);
+        return $indices[$indexMapper->getName()] ?? null;
     }
 
     /**

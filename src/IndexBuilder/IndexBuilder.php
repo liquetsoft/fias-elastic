@@ -58,6 +58,35 @@ interface IndexBuilder
     public function delete(IndexMapperInterface $indexMapper): void;
 
     /**
+     * Возвращает правду, если индекс заморожен.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @return bool
+     *
+     * @throws IndexBuilderException
+     */
+    public function isFrozen(IndexMapperInterface $indexMapper): bool;
+
+    /**
+     * Замораживает индекс.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @throws IndexBuilderException
+     */
+    public function freeze(IndexMapperInterface $indexMapper): void;
+
+    /**
+     * Размораживает индекс.
+     *
+     * @param IndexMapperInterface $indexMapper
+     *
+     * @throws IndexBuilderException
+     */
+    public function unfreeze(IndexMapperInterface $indexMapper): void;
+
+    /**
      * Возвращает правду, если указанный индекс существует в elasticsearch.
      *
      * @param IndexMapperInterface $indexMapper
