@@ -54,6 +54,7 @@ class BaseIndexBuilder implements IndexBuilder
                     ]
                 );
             }
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -71,6 +72,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'ignore_unavailable' => true,
                 ]
             );
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -88,6 +90,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'ignore_unavailable' => true,
                 ]
             );
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
@@ -122,6 +125,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'ignore_unavailable' => true,
                 ]
             );
+            $this->listOfIndicies = null;
         } catch (Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
