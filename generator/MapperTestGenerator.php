@@ -211,7 +211,9 @@ class MapperTestGenerator extends AbstractGenerator
     {
         $entityName = $this->getTestedObjectName($descriptor);
 
-        $propertyName = $this->unifyColumnName(reset($descriptor->getFields())->getName());
+        $fields = $descriptor->getFields();
+        $firstField = reset($fields);
+        $propertyName = $this->unifyColumnName($firstField->getName());
 
         $method->addBody("\$mapper = new $entityName();");
         $method->addBody('');

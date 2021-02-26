@@ -88,7 +88,9 @@ class SerializerGenerator extends AbstractGenerator
         $denormalizeBody .= "\$entity = \$context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new \$type();\n\n";
         foreach ($descriptors as $descriptor) {
             $className = $this->unifyClassName($descriptor->getName());
-            $supports[] = $className;
+            $supports = [
+                $className,
+            ];
             if ($count === 0) {
                 $denormalizeBody .= "if (\$entity instanceof {$className}) {\n";
                 $supportsBody .= "is_subclass_of(\$type, {$className}::class)";
