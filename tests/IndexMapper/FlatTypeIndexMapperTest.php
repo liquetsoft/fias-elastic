@@ -11,24 +11,26 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Тип помещения'.
+ *
+ * @internal
  */
 class FlatTypeIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new FlatTypeIndexMapper();
 
         $this->assertSame('flattype', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new FlatTypeIndexMapper();
 
         $this->assertSame('fltypeid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new FlatTypeIndexMapper();
         $map = $mapper->getMappingProperties();
@@ -39,7 +41,7 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->fltypeid = 'primary_value';
@@ -49,7 +51,7 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->fltypeid = $this->createFakeData()->numberBetween(1, 100000);
@@ -68,7 +70,7 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new FlatTypeIndexMapper();
 
@@ -76,7 +78,7 @@ class FlatTypeIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('fltypeid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new FlatTypeIndexMapper();
         $query = $mapper->query();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Generator;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Liquetsoft\Fias\Component\EntityDescriptor\EntityDescriptor;
 use Liquetsoft\Fias\Component\Exception\EntityRegistryException;
@@ -15,7 +15,6 @@ use Nette\PhpGenerator\PhpLiteral;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
 use SplFileInfo;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -55,7 +54,6 @@ class SerializerGenerator extends AbstractGenerator
     {
         $namespace->addUse(DenormalizerInterface::class);
         $namespace->addUse(AbstractNormalizer::class);
-        $namespace->addUse(InvalidArgumentException::class);
         $namespace->addUse(Exception::class);
 
         $descriptors = $this->registry->getDescriptors();
@@ -63,7 +61,7 @@ class SerializerGenerator extends AbstractGenerator
             $namespace->addUse($this->createModelClass($descriptor));
             foreach ($descriptor->getFields() as $field) {
                 if ($field->getSubType() === 'date') {
-                    $namespace->addUse(DateTime::class);
+                    $namespace->addUse(DateTimeImmutable::class);
                     break;
                 }
             }
@@ -83,7 +81,7 @@ class SerializerGenerator extends AbstractGenerator
 
         $count = 0;
         $supportsBody = 'return ';
-        $denormalizeBody = '$data = is_array($data) ? $data : [];' . "\n";
+        $denormalizeBody = '$data = \\is_array($data) ? $data : [];' . "\n";
         $denormalizeBody .= '$type = trim($type, " \t\n\r\0\x0B\\\\/");' . "\n\n";
         $denormalizeBody .= "\$entity = \$context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new \$type();\n\n";
         foreach ($descriptors as $descriptor) {
@@ -111,7 +109,7 @@ class SerializerGenerator extends AbstractGenerator
         $class->addComment('Скомпилированный класс для денормализации сущностей ФИАС в модели для elasticsearch.');
 
         $supports = $class->addMethod('supportsDenormalization')
-            ->addComment("@inheritDoc\n")
+            ->addComment('{@inheritDoc}')
             ->setVisibility('public')
             ->setBody($supportsBody);
         $supports->addParameter('data');
@@ -121,8 +119,7 @@ class SerializerGenerator extends AbstractGenerator
         $denormalize = $class->addMethod('denormalize')
             ->addComment("{@inheritDoc}\n")
             ->addComment("@psalm-suppress InvalidStringClass\n")
-            ->addComment("\n")
-            ->addComment("@throws Exception\n")
+            ->addComment('@throws Exception')
             ->setVisibility('public')
             ->setBody($denormalizeBody);
         $denormalize->addParameter('data');
@@ -157,21 +154,20 @@ class SerializerGenerator extends AbstractGenerator
                     $varType = '(int) $value';
                     break;
                 case 'string_date':
-                    $varType = 'new DateTime(trim($value))';
+                    $varType = 'new DateTimeImmutable(trim($value))';
                     break;
                 default:
                     $varType = 'trim($value)';
                     break;
             }
-            $body .= "\n\nif ((\$value = \$data['{$xmlAttribute}'] ?? (\$data['{$column}'] ?? null)) !== null) {";
-            $body .= '    $entity->set' . ucfirst($column) . "($varType);";
+            $body .= "\n\nif ((\$value = \$data['{$xmlAttribute}'] ?? (\$data['{$column}'] ?? null)) !== null) {\n";
+            $body .= '    $entity->set' . ucfirst($column) . "($varType);\n";
             $body .= '}';
         }
 
         $method->addComment("Задает все свойства модели '{$className}' из массива, полученного от ФИАС.\n");
-        $method->addComment("@param {$className} \$entity\n");
+        $method->addComment("@param {$className} \$entity");
         $method->addComment("@param array \$data\n");
-        $method->addComment("\n");
         $method->addComment('@throws Exception');
         $method->addParameter('entity')->setType($this->createModelClass($descriptor));
         $method->addParameter('data')->setType('array');

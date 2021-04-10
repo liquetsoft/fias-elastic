@@ -9,11 +9,13 @@ use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
  * Тест для сущности 'Статус действия'.
+ *
+ * @internal
  */
 class OperationStatusTest extends EntityCase
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createEntity()
     {
@@ -21,7 +23,7 @@ class OperationStatusTest extends EntityCase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function accessorsProvider(): array
     {

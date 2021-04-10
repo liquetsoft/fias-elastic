@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Liquetsoft\Fias\Component\EntityRegistry\PhpArrayFileRegistry;
 use Liquetsoft\Fias\Elastic\Generator\MapperGenerator;
 use Liquetsoft\Fias\Elastic\Generator\MapperTestGenerator;

@@ -19,6 +19,8 @@ use Throwable;
 
 /**
  * Тест для хранилища, которое записывает данные в elastic search.
+ *
+ * @internal
  */
 class ElasticStorageTest extends BaseCase
 {
@@ -27,17 +29,15 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSupports()
+    public function testSupports(): void
     {
         $entity = new stdClass();
         $provider = $this->createClientProviderMock();
         $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $registry->method('hasMapperForObject')->will(
-            $this->returnCallback(
+        $registry->method('hasMapperForObject')->willReturnCallback(
                 function ($toTest) use ($entity) {
                     return $toTest === $entity;
                 }
-            )
         );
 
         $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
@@ -54,17 +54,15 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSupportsClass()
+    public function testSupportsClass(): void
     {
         $key = $this->createFakeData()->word;
         $provider = $this->createClientProviderMock();
         $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $registry->method('hasMapperForKey')->will(
-            $this->returnCallback(
+        $registry->method('hasMapperForKey')->willReturnCallback(
                 function ($toTest) use ($key) {
                     return $toTest === $key;
                 }
-            )
         );
 
         $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
@@ -81,7 +79,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testInsert()
+    public function testInsert(): void
     {
         $entity = new ElasticStorageTestEntity();
         $entity->setId($this->createFakeData()->word);
@@ -134,7 +132,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testInsertByOne()
+    public function testInsertByOne(): void
     {
         $entity = new ElasticStorageTestEntity();
         $entity->setId($this->createFakeData()->word);
@@ -147,7 +145,7 @@ class ElasticStorageTest extends BaseCase
         $client = $this->createClientMock();
         $insertedItems = [];
         $client->method('bulk')->willReturnCallback(
-            function ($request) use (&$insertedItems) {
+            function ($request) use (&$insertedItems): void {
                 $insertedItems[] = $request;
             }
         );
@@ -204,7 +202,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testInsertToFrozenIndex()
+    public function testInsertToFrozenIndex(): void
     {
         $entity = new ElasticStorageTestEntity();
         $entity->setId($this->createFakeData()->word);
@@ -259,7 +257,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testInsertException()
+    public function testInsertException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
@@ -284,7 +282,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $entity = new ElasticStorageTestEntity();
         $client = $this->createClientMock();
@@ -315,7 +313,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testDeleteException()
+    public function testDeleteException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
@@ -340,7 +338,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testUpsert()
+    public function testUpsert(): void
     {
         $entity = new ElasticStorageTestEntity();
         $client = $this->createClientMock();
@@ -376,7 +374,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testUpsertException()
+    public function testUpsertException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
@@ -401,7 +399,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testTruncate()
+    public function testTruncate(): void
     {
         $client = $this->createClientMock();
         $client->expects($this->once())->method('deleteByQuery')->with(
@@ -434,7 +432,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testTruncateException()
+    public function testTruncateException(): void
     {
         $client = $this->createClientMock();
         $client->method('deleteByQuery')->will(
@@ -468,7 +466,7 @@ class ElasticStorageTest extends BaseCase
         }
 
         $provider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $provider->method('provide')->will($this->returnValue($client));
+        $provider->method('provide')->willReturn($client);
 
         return $provider;
     }
@@ -493,20 +491,17 @@ class ElasticStorageTest extends BaseCase
     private function createRegistryMock(): MockObject
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will(
-            $this->returnValue('ElasticStorageTestEntity')
+        $mapper->method('getName')->willReturn(
+            'ElasticStorageTestEntity'
         );
-        $mapper->method('extractPrimaryFromEntity')->will(
-            $this->returnCallback(
+        $mapper->method('extractPrimaryFromEntity')->willReturnCallback(
                 function ($entity) {
                     return method_exists($entity, 'getId')
                         ? $entity->getId()
                         : null;
                 }
-            )
         );
-        $mapper->method('extractDataFromEntity')->will(
-            $this->returnCallback(
+        $mapper->method('extractDataFromEntity')->willReturnCallback(
                 function ($entity) {
                     return [
                         'id' => method_exists($entity, 'getId')
@@ -517,12 +512,10 @@ class ElasticStorageTest extends BaseCase
                             : null,
                     ];
                 }
-            )
         );
 
         $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $registry->method('getMapperForObject')->will(
-            $this->returnCallback(
+        $registry->method('getMapperForObject')->willReturnCallback(
                 function ($toTest) use ($mapper) {
                     if (!($toTest instanceof ElasticStorageTestEntity)) {
                         throw new RuntimeException("Can't find mapper.");
@@ -530,10 +523,8 @@ class ElasticStorageTest extends BaseCase
 
                     return $mapper;
                 }
-            )
         );
-        $registry->method('getMapperForKey')->will(
-            $this->returnCallback(
+        $registry->method('getMapperForKey')->willReturnCallback(
                 function ($toTest) use ($mapper) {
                     if ($toTest !== 'ElasticStorageTestEntity') {
                         throw new RuntimeException("Can't find mapper.");
@@ -541,7 +532,6 @@ class ElasticStorageTest extends BaseCase
 
                     return $mapper;
                 }
-            )
         );
 
         return $registry;

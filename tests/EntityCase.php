@@ -38,10 +38,10 @@ abstract class EntityCase extends BaseCase
     {
         $tests = $this->accessorsProvider();
         foreach ($tests as $testKey => $test) {
-            if (!is_array($test)) {
+            if (!\is_array($test)) {
                 $property = $testKey;
                 $input = $output = $test;
-            } elseif (count($test) === 2) {
+            } elseif (\count($test) === 2) {
                 list($property, $input) = $test;
                 $output = $input;
             } else {
@@ -65,11 +65,11 @@ abstract class EntityCase extends BaseCase
         $entity = $this->createEntity();
 
         if ($output instanceof Throwable) {
-            $this->expectException(get_class($output));
-            call_user_func([$entity, $setter], $input);
+            $this->expectException(\get_class($output));
+            \call_user_func([$entity, $setter], $input);
         } else {
-            call_user_func([$entity, $setter], $input);
-            $toTest = call_user_func([$entity, $getter]);
+            \call_user_func([$entity, $setter], $input);
+            $toTest = \call_user_func([$entity, $getter]);
             $this->assertSame(
                 $output,
                 $toTest,

@@ -13,6 +13,8 @@ use Throwable;
 
 /**
  * Тесты для конструктора запросов к elasticsearch.
+ *
+ * @internal
  */
 class MapperQueryBuilderTest extends BaseCase
 {
@@ -21,7 +23,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testMatch()
+    public function testMatch(): void
     {
         $param = $this->createFakeData()->word;
         $value = $this->createFakeData()->word;
@@ -59,7 +61,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testMatchWrongFieldException()
+    public function testMatchWrongFieldException(): void
     {
         $mapper = $this->getMapperMock();
 
@@ -75,7 +77,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testTerm()
+    public function testTerm(): void
     {
         $param = $this->createFakeData()->word;
         $value = $this->createFakeData()->word;
@@ -113,7 +115,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testNotExist()
+    public function testNotExist(): void
     {
         $param = $this->createFakeData()->word;
         $param1 = $this->createFakeData()->word;
@@ -149,7 +151,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSortAsc()
+    public function testSortAsc(): void
     {
         $param = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param]);
@@ -160,7 +162,7 @@ class MapperQueryBuilderTest extends BaseCase
 
         $this->assertArrayHasKey('body', $query);
         $this->assertArrayHasKey('sort', $query['body']);
-        $this->assertEquals(
+        $this->assertSame(
             [
                 [
                     $param => ['order' => 'asc'],
@@ -175,7 +177,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSortDesc()
+    public function testSortDesc(): void
     {
         $param = $this->createFakeData()->word;
         $mapper = $this->getMapperMock([$param]);
@@ -186,7 +188,7 @@ class MapperQueryBuilderTest extends BaseCase
 
         $this->assertArrayHasKey('body', $query);
         $this->assertArrayHasKey('sort', $query['body']);
-        $this->assertEquals(
+        $this->assertSame(
             [
                 [
                     $param => ['order' => 'desc'],
@@ -201,7 +203,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSize()
+    public function testSize(): void
     {
         $size = $this->createFakeData()->numberBetween(1, 10000);
         $mapper = $this->getMapperMock();
@@ -211,7 +213,7 @@ class MapperQueryBuilderTest extends BaseCase
         $query = $builder->getQuery();
 
         $this->assertArrayHasKey('size', $query);
-        $this->assertEquals($size, $query['size']);
+        $this->assertSame($size, $query['size']);
     }
 
     /**
@@ -219,7 +221,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testFrom()
+    public function testFrom(): void
     {
         $from = $this->createFakeData()->numberBetween(1, 10000);
         $mapper = $this->getMapperMock();
@@ -229,7 +231,7 @@ class MapperQueryBuilderTest extends BaseCase
         $query = $builder->getQuery();
 
         $this->assertArrayHasKey('from', $query);
-        $this->assertEquals($from, $query['from']);
+        $this->assertSame($from, $query['from']);
     }
 
     /**
@@ -237,7 +239,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSearchAfter()
+    public function testSearchAfter(): void
     {
         $searchAfter = [
             $this->createFakeData()->numberBetween(1, 1000),
@@ -252,7 +254,7 @@ class MapperQueryBuilderTest extends BaseCase
 
         $this->assertArrayHasKey('body', $query);
         $this->assertArrayHasKey('search_after', $query['body']);
-        $this->assertEquals($searchAfter, $query['body']['search_after']);
+        $this->assertSame($searchAfter, $query['body']['search_after']);
     }
 
     /**
@@ -260,7 +262,7 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testMerge()
+    public function testMerge(): void
     {
         $param1 = $this->createFakeData()->word;
         $value1 = $this->createFakeData()->word;
@@ -333,13 +335,11 @@ class MapperQueryBuilderTest extends BaseCase
     private function getMapperMock($allowedProperties = []): MockObject
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue('mock_index'));
-        $mapper->method('hasProperty')->will(
-            $this->returnCallback(
+        $mapper->method('getName')->willReturn('mock_index');
+        $mapper->method('hasProperty')->willReturnCallback(
                 function (string $property) use ($allowedProperties) {
-                    return in_array($property, $allowedProperties);
+                    return \in_array($property, $allowedProperties);
                 }
-            )
         );
 
         return $mapper;

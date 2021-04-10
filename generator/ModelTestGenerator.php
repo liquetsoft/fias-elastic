@@ -55,8 +55,7 @@ class ModelTestGenerator extends AbstractGenerator
         $namespace->addUse($baseNamespace . '\\' . $baseName);
         foreach ($descriptor->getFields() as $field) {
             if ($field->getSubType() === 'date') {
-                $namespace->addUse('DateTime');
-                $namespace->addUse('DateTimeInterface');
+                $namespace->addUse('DateTimeImmutable');
             }
         }
     }
@@ -72,7 +71,7 @@ class ModelTestGenerator extends AbstractGenerator
         $class->setExtends('Liquetsoft\\Fias\\Elastic\\Tests\\EntityCase');
         $description = trim($descriptor->getDescription(), " \t\n\r\0\x0B.");
         if ($description) {
-            $class->addComment("Тест для сущности '{$description}'.\n");
+            $class->addComment("Тест для сущности '{$description}'.\n\n@internal");
         }
     }
 
@@ -85,7 +84,7 @@ class ModelTestGenerator extends AbstractGenerator
     private function decorateCreateEntity(Method $createEntityMethod, EntityDescriptor $descriptor): void
     {
         $baseName = $this->unifyClassName($descriptor->getName());
-        $createEntityMethod->addComment("@inheritdoc\n");
+        $createEntityMethod->addComment("{@inheritDoc}\n");
         $createEntityMethod->setVisibility('protected');
         $createEntityMethod->setBody("return new {$baseName}();");
     }
@@ -106,7 +105,7 @@ class ModelTestGenerator extends AbstractGenerator
             if ($type === 'int') {
                 $value = '$this->createFakeData()->numberBetween(1, 1000000)';
             } elseif ($type === 'string_date') {
-                $value = 'new DateTime()';
+                $value = 'new DateTimeImmutable()';
             }
             $accessors .= "    '{$name}' => {$value},\n";
         }
@@ -115,6 +114,6 @@ class ModelTestGenerator extends AbstractGenerator
         $accessorsProviderMethod->setVisibility('protected');
         $accessorsProviderMethod->setReturnType('array');
         $accessorsProviderMethod->setBody($accessors);
-        $accessorsProviderMethod->addComment("@inheritdoc\n");
+        $accessorsProviderMethod->addComment("{@inheritDoc}\n");
     }
 }

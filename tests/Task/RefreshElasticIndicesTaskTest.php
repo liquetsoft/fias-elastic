@@ -14,6 +14,8 @@ use Throwable;
 
 /**
  * Тест для операции, которая обновляет индексы.
+ *
+ * @internal
  */
 class RefreshElasticIndicesTaskTest extends BaseCase
 {
@@ -22,18 +24,18 @@ class RefreshElasticIndicesTaskTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testRun()
+    public function testRun(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
         $mapperRegistry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
+        $mapperRegistry->method('getAllMappers')->willReturn([$mapper, $mapper1]);
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $refreshedIndicies = [];
         $indexBuilder->method('refresh')->willReturnCallback(
-            function ($index) use (&$refreshedIndicies) {
+            function ($index) use (&$refreshedIndicies): void {
                 $refreshedIndicies[] = $index;
             }
         );

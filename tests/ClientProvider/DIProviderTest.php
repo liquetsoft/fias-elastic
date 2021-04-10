@@ -11,6 +11,8 @@ use Throwable;
 
 /**
  * Тест для провайдера клиента, который возвращает клиента, переданного через DI.
+ *
+ * @internal
  */
 class DIProviderTest extends BaseCase
 {
@@ -19,7 +21,7 @@ class DIProviderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testProvide()
+    public function testProvide(): void
     {
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
 

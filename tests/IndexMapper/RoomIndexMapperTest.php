@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\RoomIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -12,24 +12,26 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Классификатор помещениях'.
+ *
+ * @internal
  */
 class RoomIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new RoomIndexMapper();
 
         $this->assertSame('room', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new RoomIndexMapper();
 
         $this->assertSame('roomid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new RoomIndexMapper();
         $map = $mapper->getMappingProperties();
@@ -56,7 +58,7 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('roomcadnum', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->roomid = 'primary_value';
@@ -66,7 +68,7 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->roomid = $this->createFakeData()->word;
@@ -76,9 +78,9 @@ class RoomIndexMapperTest extends BaseCase
         $entity->flatnumber = $this->createFakeData()->word;
         $entity->flattype = $this->createFakeData()->numberBetween(1, 100000);
         $entity->postalcode = $this->createFakeData()->word;
-        $entity->startdate = new DateTime();
-        $entity->enddate = new DateTime();
-        $entity->updatedate = new DateTime();
+        $entity->startdate = new DateTimeImmutable();
+        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new DateTimeImmutable();
         $entity->operstatus = $this->createFakeData()->numberBetween(1, 100000);
         $entity->livestatus = $this->createFakeData()->numberBetween(1, 100000);
         $entity->normdoc = $this->createFakeData()->word;
@@ -133,7 +135,7 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertSame($entity->roomcadnum, $dataForElastic['roomcadnum'], 'Test roomcadnum field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new RoomIndexMapper();
 
@@ -141,7 +143,7 @@ class RoomIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('roomid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new RoomIndexMapper();
         $query = $mapper->query();

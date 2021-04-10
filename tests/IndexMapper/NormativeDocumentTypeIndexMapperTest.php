@@ -11,24 +11,26 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Тип нормативного документа'.
+ *
+ * @internal
  */
 class NormativeDocumentTypeIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new NormativeDocumentTypeIndexMapper();
 
         $this->assertSame('normativedocumenttype', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new NormativeDocumentTypeIndexMapper();
 
         $this->assertSame('ndtypeid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new NormativeDocumentTypeIndexMapper();
         $map = $mapper->getMappingProperties();
@@ -38,7 +40,7 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('name', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->ndtypeid = 'primary_value';
@@ -48,7 +50,7 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->ndtypeid = $this->createFakeData()->numberBetween(1, 100000);
@@ -64,7 +66,7 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new NormativeDocumentTypeIndexMapper();
 
@@ -72,7 +74,7 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('ndtypeid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new NormativeDocumentTypeIndexMapper();
         $query = $mapper->query();

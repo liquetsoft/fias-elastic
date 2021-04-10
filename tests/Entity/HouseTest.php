@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\Entity\House;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
  * Тест для сущности 'Сведения по номерам домов улиц городов и населенных пунктов'.
+ *
+ * @internal
  */
 class HouseTest extends EntityCase
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createEntity()
     {
@@ -22,7 +24,7 @@ class HouseTest extends EntityCase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function accessorsProvider(): array
     {
@@ -39,9 +41,9 @@ class HouseTest extends EntityCase
             'okato' => $this->createFakeData()->word,
             'oktmo' => $this->createFakeData()->word,
             'postalcode' => $this->createFakeData()->word,
-            'startdate' => new DateTime(),
-            'enddate' => new DateTime(),
-            'updatedate' => new DateTime(),
+            'startdate' => new DateTimeImmutable(),
+            'enddate' => new DateTimeImmutable(),
+            'updatedate' => new DateTimeImmutable(),
             'counter' => $this->createFakeData()->numberBetween(1, 1000000),
             'divtype' => $this->createFakeData()->numberBetween(1, 1000000),
             'regioncode' => $this->createFakeData()->word,

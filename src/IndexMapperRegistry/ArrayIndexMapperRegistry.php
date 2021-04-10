@@ -67,7 +67,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
      */
     public function hasMapperForObject(object $object): bool
     {
-        return $this->hasMapperForKey(get_class($object));
+        return $this->hasMapperForKey(\get_class($object));
     }
 
     /**
@@ -75,7 +75,7 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
      */
     public function getMapperForObject(object $object): IndexMapperInterface
     {
-        return $this->getMapperForKey(get_class($object));
+        return $this->getMapperForKey(\get_class($object));
     }
 
     /**
