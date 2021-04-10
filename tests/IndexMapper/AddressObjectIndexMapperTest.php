@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\AddressObjectIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -12,29 +12,30 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Классификатор адресообразующих элементов'.
+ *
+ * @internal
  */
 class AddressObjectIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new AddressObjectIndexMapper();
 
         $this->assertSame('addressobject', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new AddressObjectIndexMapper();
 
         $this->assertSame('aoid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new AddressObjectIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('aoid', $map);
         $this->assertArrayHasKey('aoguid', $map);
         $this->assertArrayHasKey('parentguid', $map);
@@ -75,7 +76,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('normdoc', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->aoid = 'primary_value';
@@ -85,7 +86,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->aoid = $this->createFakeData()->word;
@@ -121,20 +122,19 @@ class AddressObjectIndexMapperTest extends BaseCase
         $entity->okato = $this->createFakeData()->word;
         $entity->oktmo = $this->createFakeData()->word;
         $entity->postalcode = $this->createFakeData()->word;
-        $entity->startdate = new DateTime();
-        $entity->enddate = new DateTime();
-        $entity->updatedate = new DateTime();
+        $entity->startdate = new DateTimeImmutable();
+        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new DateTimeImmutable();
         $entity->divtype = $this->createFakeData()->numberBetween(1, 100000);
         $entity->normdoc = $this->createFakeData()->word;
 
         $mapper = new AddressObjectIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('aoid', $dataForElastic);
-        $this->assertSame((string) $entity->aoid, $dataForElastic['aoid'], 'Test aoid field conversion.');
+        $this->assertSame($entity->aoid, $dataForElastic['aoid'], 'Test aoid field conversion.');
         $this->assertArrayHasKey('aoguid', $dataForElastic);
-        $this->assertSame((string) $entity->aoguid, $dataForElastic['aoguid'], 'Test aoguid field conversion.');
+        $this->assertSame($entity->aoguid, $dataForElastic['aoguid'], 'Test aoguid field conversion.');
         $this->assertArrayHasKey('parentguid', $dataForElastic);
         $this->assertSame($entity->parentguid, $dataForElastic['parentguid'], 'Test parentguid field conversion.');
         $this->assertArrayHasKey('previd', $dataForElastic);
@@ -209,7 +209,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertSame($entity->normdoc, $dataForElastic['normdoc'], 'Test normdoc field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new AddressObjectIndexMapper();
 
@@ -217,7 +217,7 @@ class AddressObjectIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('aoid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new AddressObjectIndexMapper();
         $query = $mapper->query();

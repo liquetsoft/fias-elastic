@@ -30,7 +30,7 @@ class MapperTestGenerator extends AbstractGenerator
         $phpFile->setStrictTypes();
 
         $namespace = $phpFile->addNamespace($namespace);
-        $this->decorateNamespace($namespace, 'Liquetsoft\\Fias\\Elastic\\IndexMapper', $baseName);
+        $this->decorateNamespace($descriptor, $namespace, 'Liquetsoft\\Fias\\Elastic\\IndexMapper', $baseName);
 
         $class = $namespace->addClass($name);
         $this->decorateClass($class, $descriptor);
@@ -53,12 +53,23 @@ class MapperTestGenerator extends AbstractGenerator
      * @param string       $baseNamespace
      * @param string       $baseName
      */
-    protected function decorateNamespace(PhpNamespace $namespace, string $baseNamespace, string $baseName): void
+    protected function decorateNamespace(EntityDescriptor $descriptor, PhpNamespace $namespace, string $baseNamespace, string $baseName): void
     {
+        $hasDateTime = false;
+        foreach ($descriptor->getFields() as $field) {
+            if ($field->getSubType() === 'date') {
+                $hasDateTime = true;
+                break;
+            }
+        }
+
+        if ($hasDateTime) {
+            $namespace->addUse('DateTimeImmutable');
+        }
+
         $namespace->addUse('Liquetsoft\\Fias\\Elastic\\Tests\\BaseCase');
-        $namespace->addUse('Liquetsoft\\Fias\\Elastic\\QueryBuilder\\QueryBuilder;');
+        $namespace->addUse('Liquetsoft\\Fias\\Elastic\\QueryBuilder\\QueryBuilder');
         $namespace->addUse('stdClass');
-        $namespace->addUse('DateTime');
         $namespace->addUse($baseNamespace . '\\' . $baseName);
     }
 
@@ -73,7 +84,7 @@ class MapperTestGenerator extends AbstractGenerator
         $class->setExtends('Liquetsoft\\Fias\\Elastic\\Tests\\BaseCase');
         $description = trim($descriptor->getDescription(), " \t\n\r\0\x0B.");
         if ($description) {
-            $class->addComment("Тест для описания индекса сущности '{$description}'.\n");
+            $class->addComment("Тест для описания индекса сущности '{$description}'.\n\n@internal");
         }
     }
 
@@ -85,6 +96,7 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateNameTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
         $name = $this->getTestedObjectName($descriptor);
         $lowerName = strtolower($descriptor->getName());
 
@@ -101,12 +113,12 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateMapTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
         $name = $this->getTestedObjectName($descriptor);
 
         $method->addBody("\$mapper = new $name();");
         $method->addBody('$map = $mapper->getMappingProperties();');
         $method->addBody('');
-        $method->addBody('$this->assertIsArray($map);');
         foreach ($descriptor->getFields() as $field) {
             $name = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$name}', \$map);");
@@ -121,6 +133,7 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateGetPrimaryNameTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
         $name = $this->getTestedObjectName($descriptor);
 
         $method->addBody("\$mapper = new $name();");
@@ -143,6 +156,8 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateExtractPrimaryFromEntityTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
+
         $entityName = $this->getTestedObjectName($descriptor);
 
         $primaryName = null;
@@ -169,13 +184,15 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateExtractDataFromEntityTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
+
         $entityName = $this->getTestedObjectName($descriptor);
 
         $method->addBody('$entity = new stdClass();');
         foreach ($descriptor->getFields() as $field) {
             $fieldName = $this->unifyColumnName($field->getName());
             if ($field->getSubType() === 'date') {
-                $method->addBody("\$entity->{$fieldName} = new DateTime();");
+                $method->addBody("\$entity->{$fieldName} = new DateTimeImmutable();");
             } elseif ($field->getType() === 'int') {
                 $method->addBody("\$entity->{$fieldName} = \$this->createFakeData()->numberBetween(1, 100000);");
             } else {
@@ -187,12 +204,13 @@ class MapperTestGenerator extends AbstractGenerator
         $method->addBody("\$mapper = new $entityName();");
         $method->addBody('$dataForElastic = $mapper->extractDataFromEntity($entity);');
         $method->addBody('');
-        $method->addBody('$this->assertIsArray($dataForElastic);');
         foreach ($descriptor->getFields() as $field) {
             $fieldName = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$fieldName}', \$dataForElastic);");
             if ($field->getSubType() === 'date') {
                 $method->addBody("\$this->assertSame(\$entity->{$fieldName}->format('Y-m-d\TH:i:s'), \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
+            } elseif ($field->getType() === 'string') {
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             } elseif ($field->isPrimary() || $field->isIndex()) {
                 $method->addBody("\$this->assertSame((string) \$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             } else {
@@ -209,6 +227,8 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateHasPropertyTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
+
         $entityName = $this->getTestedObjectName($descriptor);
 
         $fields = $descriptor->getFields();
@@ -229,6 +249,8 @@ class MapperTestGenerator extends AbstractGenerator
      */
     private function decorateQueryTest(Method $method, EntityDescriptor $descriptor): void
     {
+        $method->setReturnType('void');
+
         $entityName = $this->getTestedObjectName($descriptor);
 
         $method->addBody("\$mapper = new $entityName();");

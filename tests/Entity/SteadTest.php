@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\Entity\Stead;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
 /**
  * Тест для сущности 'Классификатор земельных участков'.
+ *
+ * @internal
  */
 class SteadTest extends EntityCase
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function createEntity()
     {
@@ -22,7 +24,7 @@ class SteadTest extends EntityCase
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function accessorsProvider(): array
     {
@@ -38,9 +40,9 @@ class SteadTest extends EntityCase
             'parentguid' => $this->createFakeData()->word,
             'steadid' => $this->createFakeData()->word,
             'operstatus' => $this->createFakeData()->numberBetween(1, 1000000),
-            'startdate' => new DateTime(),
-            'enddate' => new DateTime(),
-            'updatedate' => new DateTime(),
+            'startdate' => new DateTimeImmutable(),
+            'enddate' => new DateTimeImmutable(),
+            'updatedate' => new DateTimeImmutable(),
             'livestatus' => $this->createFakeData()->numberBetween(1, 1000000),
             'divtype' => $this->createFakeData()->numberBetween(1, 1000000),
             'normdoc' => $this->createFakeData()->word,

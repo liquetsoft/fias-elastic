@@ -11,34 +11,35 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Статус центра'.
+ *
+ * @internal
  */
 class CenterStatusIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new CenterStatusIndexMapper();
 
         $this->assertSame('centerstatus', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new CenterStatusIndexMapper();
 
         $this->assertSame('centerstid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new CenterStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('centerstid', $map);
         $this->assertArrayHasKey('name', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->centerstid = 'primary_value';
@@ -48,7 +49,7 @@ class CenterStatusIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->centerstid = $this->createFakeData()->numberBetween(1, 100000);
@@ -57,14 +58,13 @@ class CenterStatusIndexMapperTest extends BaseCase
         $mapper = new CenterStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('centerstid', $dataForElastic);
         $this->assertSame((string) $entity->centerstid, $dataForElastic['centerstid'], 'Test centerstid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new CenterStatusIndexMapper();
 
@@ -72,7 +72,7 @@ class CenterStatusIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('centerstid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new CenterStatusIndexMapper();
         $query = $mapper->query();

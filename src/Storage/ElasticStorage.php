@@ -165,7 +165,7 @@ class ElasticStorage implements Storage
         $itemsCount = array_reduce(
             $this->bulkOperations,
             function (int $carry, array $operationArray): int {
-                $carry += count($operationArray);
+                $carry += \count($operationArray);
 
                 return $carry;
             },

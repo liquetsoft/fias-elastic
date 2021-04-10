@@ -11,35 +11,36 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Признак строения'.
+ *
+ * @internal
  */
 class StructureStatusIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new StructureStatusIndexMapper();
 
         $this->assertSame('structurestatus', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new StructureStatusIndexMapper();
 
         $this->assertSame('strstatid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new StructureStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('strstatid', $map);
         $this->assertArrayHasKey('name', $map);
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->strstatid = 'primary_value';
@@ -49,7 +50,7 @@ class StructureStatusIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->strstatid = $this->createFakeData()->numberBetween(1, 100000);
@@ -59,7 +60,6 @@ class StructureStatusIndexMapperTest extends BaseCase
         $mapper = new StructureStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('strstatid', $dataForElastic);
         $this->assertSame((string) $entity->strstatid, $dataForElastic['strstatid'], 'Test strstatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
@@ -68,7 +68,7 @@ class StructureStatusIndexMapperTest extends BaseCase
         $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new StructureStatusIndexMapper();
 
@@ -76,7 +76,7 @@ class StructureStatusIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('strstatid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new StructureStatusIndexMapper();
         $query = $mapper->query();

@@ -11,35 +11,36 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Признак владения'.
+ *
+ * @internal
  */
 class EstateStatusIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new EstateStatusIndexMapper();
 
         $this->assertSame('estatestatus', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new EstateStatusIndexMapper();
 
         $this->assertSame('eststatid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new EstateStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('eststatid', $map);
         $this->assertArrayHasKey('name', $map);
         $this->assertArrayHasKey('shortname', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->eststatid = 'primary_value';
@@ -49,7 +50,7 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->eststatid = $this->createFakeData()->numberBetween(1, 100000);
@@ -59,7 +60,6 @@ class EstateStatusIndexMapperTest extends BaseCase
         $mapper = new EstateStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('eststatid', $dataForElastic);
         $this->assertSame((string) $entity->eststatid, $dataForElastic['eststatid'], 'Test eststatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
@@ -68,7 +68,7 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertSame($entity->shortname, $dataForElastic['shortname'], 'Test shortname field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new EstateStatusIndexMapper();
 
@@ -76,7 +76,7 @@ class EstateStatusIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('eststatid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new EstateStatusIndexMapper();
         $query = $mapper->query();

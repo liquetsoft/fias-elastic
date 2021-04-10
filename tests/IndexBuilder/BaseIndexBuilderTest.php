@@ -16,6 +16,8 @@ use Throwable;
 
 /**
  * Тест для объекта, который строит индексы в elasticsearch.
+ *
+ * @internal
  */
 class BaseIndexBuilderTest extends BaseCase
 {
@@ -24,17 +26,17 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSaveNewIndex()
+    public function testSaveNewIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
-        $indices->method('get')->will($this->returnValue([]));
+        $indices->method('get')->willReturn([]);
         $indices->expects($this->once())
             ->method('create')
             ->with(
@@ -44,10 +46,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->save($mapper);
@@ -58,17 +60,17 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSaveExistedIndex()
+    public function testSaveExistedIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
-        $indices->method('get')->will($this->returnValue([$mapperName => ['aliases' => []]]));
+        $indices->method('get')->willReturn([$mapperName => ['aliases' => []]]);
         $indices->expects($this->once())
             ->method('putMapping')
             ->with(
@@ -78,10 +80,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->save($mapper);
@@ -92,14 +94,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testSaveException()
+    public function testSaveException(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -115,14 +117,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testCloseIndex()
+    public function testCloseIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -134,10 +136,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->close($mapper);
@@ -148,14 +150,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testCloseException()
+    public function testCloseException(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -171,14 +173,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testOpenIndex()
+    public function testOpenIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -190,10 +192,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->open($mapper);
@@ -204,14 +206,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testOpenException()
+    public function testOpenException(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -227,14 +229,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testRefreshIndex()
+    public function testRefreshIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -246,10 +248,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->refresh($mapper);
@@ -260,14 +262,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testRefreshException()
+    public function testRefreshException(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -283,14 +285,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testDeleteIndex()
+    public function testDeleteIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -302,10 +304,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->delete($mapper);
@@ -316,14 +318,14 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testDeleteIndexException()
+    public function testDeleteIndexException(): void
     {
         $mapperName = $this->createFakeData()->word;
         $mapperMap = [$this->createFakeData()->word => $this->createFakeData()->word];
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
-        $mapper->method('getMappingProperties')->will($this->returnValue($mapperMap));
+        $mapper->method('getName')->willReturn($mapperName);
+        $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -339,12 +341,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testIsFrozen()
+    public function testIsFrozen(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->method('get')->willReturn(
@@ -361,10 +363,10 @@ class BaseIndexBuilderTest extends BaseCase
         );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -376,12 +378,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testIsNotFrozen()
+    public function testIsNotFrozen(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->method('get')->willReturn(
@@ -398,10 +400,10 @@ class BaseIndexBuilderTest extends BaseCase
         );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -413,21 +415,21 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testIsFrozenException()
+    public function testIsFrozenException(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->method('get')->willReturn([]);
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -440,12 +442,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testFreezeIndex()
+    public function testFreezeIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -455,10 +457,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->freeze($mapper);
@@ -469,12 +471,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testFreezeIndexException()
+    public function testFreezeIndexException(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
@@ -490,12 +492,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testUnfreezeIndex()
+    public function testUnfreezeIndex(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $indices = $this->getMockBuilder(IndicesNamespace::class)->disableOriginalConstructor()->getMock();
         $indices->expects($this->once())
@@ -505,10 +507,10 @@ class BaseIndexBuilderTest extends BaseCase
             );
 
         $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-        $client->method('indices')->will($this->returnValue($indices));
+        $client->method('indices')->willReturn($indices);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->returnValue($client));
+        $clientProvider->method('provide')->willReturn($client);
 
         $builder = new BaseIndexBuilder($clientProvider);
         $builder->unfreeze($mapper);
@@ -519,12 +521,12 @@ class BaseIndexBuilderTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testUnfreezeIndexException()
+    public function testUnfreezeIndexException(): void
     {
         $mapperName = $this->createFakeData()->word;
 
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
-        $mapper->method('getName')->will($this->returnValue($mapperName));
+        $mapper->method('getName')->willReturn($mapperName);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));

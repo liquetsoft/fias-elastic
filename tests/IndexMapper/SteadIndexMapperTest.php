@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\SteadIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -12,29 +12,30 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Классификатор земельных участков'.
+ *
+ * @internal
  */
 class SteadIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new SteadIndexMapper();
 
         $this->assertSame('stead', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new SteadIndexMapper();
 
         $this->assertSame('steadid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new SteadIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('steadguid', $map);
         $this->assertArrayHasKey('number', $map);
         $this->assertArrayHasKey('regioncode', $map);
@@ -59,7 +60,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('cadnum', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->steadid = 'primary_value';
@@ -69,7 +70,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->steadguid = $this->createFakeData()->word;
@@ -83,9 +84,9 @@ class SteadIndexMapperTest extends BaseCase
         $entity->parentguid = $this->createFakeData()->word;
         $entity->steadid = $this->createFakeData()->word;
         $entity->operstatus = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->startdate = new DateTime();
-        $entity->enddate = new DateTime();
-        $entity->updatedate = new DateTime();
+        $entity->startdate = new DateTimeImmutable();
+        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new DateTimeImmutable();
         $entity->livestatus = $this->createFakeData()->numberBetween(1, 100000);
         $entity->divtype = $this->createFakeData()->numberBetween(1, 100000);
         $entity->normdoc = $this->createFakeData()->word;
@@ -98,7 +99,6 @@ class SteadIndexMapperTest extends BaseCase
         $mapper = new SteadIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('steadguid', $dataForElastic);
         $this->assertSame($entity->steadguid, $dataForElastic['steadguid'], 'Test steadguid field conversion.');
         $this->assertArrayHasKey('number', $dataForElastic);
@@ -118,7 +118,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('parentguid', $dataForElastic);
         $this->assertSame($entity->parentguid, $dataForElastic['parentguid'], 'Test parentguid field conversion.');
         $this->assertArrayHasKey('steadid', $dataForElastic);
-        $this->assertSame((string) $entity->steadid, $dataForElastic['steadid'], 'Test steadid field conversion.');
+        $this->assertSame($entity->steadid, $dataForElastic['steadid'], 'Test steadid field conversion.');
         $this->assertArrayHasKey('operstatus', $dataForElastic);
         $this->assertSame($entity->operstatus, $dataForElastic['operstatus'], 'Test operstatus field conversion.');
         $this->assertArrayHasKey('startdate', $dataForElastic);
@@ -145,7 +145,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertSame($entity->cadnum, $dataForElastic['cadnum'], 'Test cadnum field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new SteadIndexMapper();
 
@@ -153,7 +153,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('steadguid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new SteadIndexMapper();
         $query = $mapper->query();

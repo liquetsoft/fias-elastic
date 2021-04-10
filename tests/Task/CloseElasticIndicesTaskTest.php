@@ -14,6 +14,8 @@ use Throwable;
 
 /**
  * Тест для операции, которая помечает индексы закрытыми для записи.
+ *
+ * @internal
  */
 class CloseElasticIndicesTaskTest extends BaseCase
 {
@@ -22,18 +24,18 @@ class CloseElasticIndicesTaskTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testRun()
+    public function testRun(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
         $mapperRegistry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
+        $mapperRegistry->method('getAllMappers')->willReturn([$mapper, $mapper1]);
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $closedIndicies = [];
         $indexBuilder->method('close')->willReturnCallback(
-            function ($index) use (&$closedIndicies) {
+            function (IndexMapperInterface $index) use (&$closedIndicies): void {
                 $closedIndicies[] = $index;
             }
         );

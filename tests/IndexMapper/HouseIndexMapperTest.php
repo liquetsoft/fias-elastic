@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\HouseIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -12,29 +12,30 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по номерам домов улиц городов и населенных пунктов'.
+ *
+ * @internal
  */
 class HouseIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new HouseIndexMapper();
 
         $this->assertSame('house', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new HouseIndexMapper();
 
         $this->assertSame('houseid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new HouseIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('houseid', $map);
         $this->assertArrayHasKey('houseguid', $map);
         $this->assertArrayHasKey('aoguid', $map);
@@ -61,7 +62,7 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('cadnum', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->houseid = 'primary_value';
@@ -71,7 +72,7 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->houseid = $this->createFakeData()->word;
@@ -86,9 +87,9 @@ class HouseIndexMapperTest extends BaseCase
         $entity->okato = $this->createFakeData()->word;
         $entity->oktmo = $this->createFakeData()->word;
         $entity->postalcode = $this->createFakeData()->word;
-        $entity->startdate = new DateTime();
-        $entity->enddate = new DateTime();
-        $entity->updatedate = new DateTime();
+        $entity->startdate = new DateTimeImmutable();
+        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new DateTimeImmutable();
         $entity->counter = $this->createFakeData()->numberBetween(1, 100000);
         $entity->divtype = $this->createFakeData()->numberBetween(1, 100000);
         $entity->regioncode = $this->createFakeData()->word;
@@ -102,9 +103,8 @@ class HouseIndexMapperTest extends BaseCase
         $mapper = new HouseIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('houseid', $dataForElastic);
-        $this->assertSame((string) $entity->houseid, $dataForElastic['houseid'], 'Test houseid field conversion.');
+        $this->assertSame($entity->houseid, $dataForElastic['houseid'], 'Test houseid field conversion.');
         $this->assertArrayHasKey('houseguid', $dataForElastic);
         $this->assertSame($entity->houseguid, $dataForElastic['houseguid'], 'Test houseguid field conversion.');
         $this->assertArrayHasKey('aoguid', $dataForElastic);
@@ -153,7 +153,7 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertSame($entity->cadnum, $dataForElastic['cadnum'], 'Test cadnum field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new HouseIndexMapper();
 
@@ -161,7 +161,7 @@ class HouseIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('houseid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new HouseIndexMapper();
         $query = $mapper->query();

@@ -11,34 +11,35 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Статус актуальности КЛАДР 4.0'.
+ *
+ * @internal
  */
 class CurrentStatusIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new CurrentStatusIndexMapper();
 
         $this->assertSame('currentstatus', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new CurrentStatusIndexMapper();
 
         $this->assertSame('curentstid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new CurrentStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('curentstid', $map);
         $this->assertArrayHasKey('name', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->curentstid = 'primary_value';
@@ -48,7 +49,7 @@ class CurrentStatusIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->curentstid = $this->createFakeData()->numberBetween(1, 100000);
@@ -57,14 +58,13 @@ class CurrentStatusIndexMapperTest extends BaseCase
         $mapper = new CurrentStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('curentstid', $dataForElastic);
         $this->assertSame((string) $entity->curentstid, $dataForElastic['curentstid'], 'Test curentstid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);
         $this->assertSame($entity->name, $dataForElastic['name'], 'Test name field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new CurrentStatusIndexMapper();
 
@@ -72,7 +72,7 @@ class CurrentStatusIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('curentstid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new CurrentStatusIndexMapper();
         $query = $mapper->query();

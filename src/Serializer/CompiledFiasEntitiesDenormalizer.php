@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Serializer;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Liquetsoft\Fias\Elastic\Entity\ActualStatus;
 use Liquetsoft\Fias\Elastic\Entity\AddressObject;
@@ -60,7 +60,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
-        $data = is_array($data) ? $data : [];
+        $data = \is_array($data) ? $data : [];
         $type = trim($type, " \t\n\r\0\x0B\\/");
 
         $entity = $context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new $type();
@@ -202,15 +202,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($value)));
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($value)));
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($value)));
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
@@ -355,15 +355,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($value)));
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($value)));
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($value)));
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
@@ -437,7 +437,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@DOCDATE'] ?? ($data['docdate'] ?? null)) !== null) {
-            $entity->setDocdate(new DateTime(trim($value)));
+            $entity->setDocdate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@DOCNUM'] ?? ($data['docnum'] ?? null)) !== null) {
@@ -657,15 +657,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($value)));
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($value)));
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($value)));
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
@@ -736,15 +736,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTime(trim($value)));
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTime(trim($value)));
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTime(trim($value)));
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@COUNTER'] ?? ($data['counter'] ?? null)) !== null) {

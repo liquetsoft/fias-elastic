@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTime;
+use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocumentIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
@@ -12,29 +12,30 @@ use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по нормативному документу, являющемуся основанием присвоения адресному элементу наименования'.
+ *
+ * @internal
  */
 class NormativeDocumentIndexMapperTest extends BaseCase
 {
-    public function testGetName()
+    public function testGetName(): void
     {
         $mapper = new NormativeDocumentIndexMapper();
 
         $this->assertSame('normativedocument', $mapper->getName());
     }
 
-    public function testGetPrimaryName()
+    public function testGetPrimaryName(): void
     {
         $mapper = new NormativeDocumentIndexMapper();
 
         $this->assertSame('normdocid', $mapper->getPrimaryName());
     }
 
-    public function testGetMappingProperties()
+    public function testGetMappingProperties(): void
     {
         $mapper = new NormativeDocumentIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('normdocid', $map);
         $this->assertArrayHasKey('docname', $map);
         $this->assertArrayHasKey('docdate', $map);
@@ -43,7 +44,7 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('docimgid', $map);
     }
 
-    public function testExtractPrimaryFromEntity()
+    public function testExtractPrimaryFromEntity(): void
     {
         $entity = new stdClass();
         $entity->normdocid = 'primary_value';
@@ -53,12 +54,12 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame('primary_value', $mapper->extractPrimaryFromEntity($entity));
     }
 
-    public function testExtractDataFromEntity()
+    public function testExtractDataFromEntity(): void
     {
         $entity = new stdClass();
         $entity->normdocid = $this->createFakeData()->word;
         $entity->docname = $this->createFakeData()->word;
-        $entity->docdate = new DateTime();
+        $entity->docdate = new DateTimeImmutable();
         $entity->docnum = $this->createFakeData()->word;
         $entity->doctype = $this->createFakeData()->numberBetween(1, 100000);
         $entity->docimgid = $this->createFakeData()->word;
@@ -66,9 +67,8 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $mapper = new NormativeDocumentIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('normdocid', $dataForElastic);
-        $this->assertSame((string) $entity->normdocid, $dataForElastic['normdocid'], 'Test normdocid field conversion.');
+        $this->assertSame($entity->normdocid, $dataForElastic['normdocid'], 'Test normdocid field conversion.');
         $this->assertArrayHasKey('docname', $dataForElastic);
         $this->assertSame($entity->docname, $dataForElastic['docname'], 'Test docname field conversion.');
         $this->assertArrayHasKey('docdate', $dataForElastic);
@@ -81,7 +81,7 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertSame($entity->docimgid, $dataForElastic['docimgid'], 'Test docimgid field conversion.');
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $mapper = new NormativeDocumentIndexMapper();
 
@@ -89,7 +89,7 @@ class NormativeDocumentIndexMapperTest extends BaseCase
         $this->assertFalse($mapper->hasProperty('normdocid_tested_value'));
     }
 
-    public function testQuery()
+    public function testQuery(): void
     {
         $mapper = new NormativeDocumentIndexMapper();
         $query = $mapper->query();

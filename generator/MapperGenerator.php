@@ -78,7 +78,7 @@ class MapperGenerator extends AbstractGenerator
     {
         $name = strtolower($this->unifyClassName($descriptor->getName()));
 
-        $method->addComment('@inheritDoc');
+        $method->addComment('{@inheritDoc}');
         $method->setVisibility('public');
         $method->setReturnType('string');
         $method->setBody("return '{$name}';");
@@ -92,7 +92,7 @@ class MapperGenerator extends AbstractGenerator
      */
     private function decorateMapGetter(Method $method, EntityDescriptor $descriptor): void
     {
-        $method->addComment('@inheritDoc');
+        $method->addComment('{@inheritDoc}');
         $method->setVisibility('public');
         $method->setReturnType('array');
 
@@ -120,7 +120,7 @@ class MapperGenerator extends AbstractGenerator
      */
     private function decoratePrimaryNameGetter(Method $method, EntityDescriptor $descriptor): void
     {
-        $method->addComment('@inheritDoc');
+        $method->addComment('{@inheritDoc}');
         $method->setVisibility('public');
         $method->setReturnType('string');
 

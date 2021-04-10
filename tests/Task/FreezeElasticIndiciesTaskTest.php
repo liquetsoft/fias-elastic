@@ -14,6 +14,8 @@ use Throwable;
 
 /**
  * Тест для операции, которая помечает индексы заморожеными.
+ *
+ * @internal
  */
 class FreezeElasticIndiciesTaskTest extends BaseCase
 {
@@ -22,19 +24,19 @@ class FreezeElasticIndiciesTaskTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testRun()
+    public function testRun(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
         $mapperRegistry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
-        $mapperRegistry->method('getAllMappers')->will($this->returnValue([$mapper, $mapper1]));
+        $mapperRegistry->method('getAllMappers')->willReturn([$mapper, $mapper1]);
 
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $indexBuilder->method('isFrozen')->willReturn(false);
         $freezedIndicies = [];
         $indexBuilder->method('freeze')->willReturnCallback(
-            function ($index) use (&$freezedIndicies) {
+            function (IndexMapperInterface $index) use (&$freezedIndicies): void {
                 $freezedIndicies[] = $index;
             }
         );

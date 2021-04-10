@@ -14,7 +14,6 @@ use Nette\PhpGenerator\PhpLiteral;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
 use SplFileInfo;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -52,7 +51,6 @@ class NormalizerGenerator extends AbstractGenerator
     protected function decorateNamespace(PhpNamespace $namespace): void
     {
         $namespace->addUse(NormalizerInterface::class);
-        $namespace->addUse(InvalidArgumentException::class);
         $namespace->addUse(Exception::class);
 
         $descriptors = $this->registry->getDescriptors();
@@ -97,7 +95,7 @@ class NormalizerGenerator extends AbstractGenerator
         $class->addComment('Скомпилированный класс для нормализации сущностей ФИАС в модели для elasticsearch.');
 
         $supports = $class->addMethod('supportsNormalization')
-            ->addComment("@inheritDoc\n")
+            ->addComment('{@inheritDoc}')
             ->setVisibility('public')
             ->setBody($supportsBody);
         $supports->addParameter('data');
@@ -105,8 +103,7 @@ class NormalizerGenerator extends AbstractGenerator
 
         $denormalize = $class->addMethod('normalize')
             ->addComment("{@inheritDoc}\n")
-            ->addComment("\n")
-            ->addComment("@throws Exception\n")
+            ->addComment('@throws Exception')
             ->setVisibility('public')
             ->setBody($denormalizeBody);
         $denormalize->addParameter('object');
@@ -137,7 +134,7 @@ class NormalizerGenerator extends AbstractGenerator
             $type = trim($field->getType() . '_' . $field->getSubType(), ' _');
             switch ($type) {
                 case 'string_date':
-                    $varType = "'{$column}' => (\$date = \$object->{$getter}()) ? \$date->format(DATE_ATOM) : null";
+                    $varType = "'{$column}' => (\$date = \$object->{$getter}()) ? \$date->format(\DATE_ATOM) : null";
                     break;
                 default:
                     $varType = "'{$column}' => \$object->{$getter}()";
@@ -149,7 +146,6 @@ class NormalizerGenerator extends AbstractGenerator
 
         $method->addComment("Возвращает все свойства модели '{$className}'.\n");
         $method->addComment("@param {$className} \$object\n");
-        $method->addComment("\n");
         $method->addComment('@return array');
         $method->addParameter('object')->setType($this->createModelClass($descriptor));
         $method->setVisibility('protected');

@@ -14,6 +14,8 @@ use Throwable;
 
 /**
  * Тесты для объекта, который содержит описания индексов во внутреннем массиве.
+ *
+ * @internal
  */
 class ArrayIndexMapperRegistryTest extends BaseCase
 {
@@ -22,7 +24,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testConstructorNotARegistryException()
+    public function testConstructorNotARegistryException(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
@@ -35,7 +37,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testHasMapperForKey()
+    public function testHasMapperForKey(): void
     {
         $key = $this->createFakeData()->word;
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
@@ -51,7 +53,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testGetMapperForKey()
+    public function testGetMapperForKey(): void
     {
         $key = $this->createFakeData()->word;
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
@@ -67,7 +69,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testGetMapperForKeyException()
+    public function testGetMapperForKeyException(): void
     {
         $key = $this->createFakeData()->word;
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
@@ -83,12 +85,12 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testHasMapperForObject()
+    public function testHasMapperForObject(): void
     {
         $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
-        $registry = new ArrayIndexMapperRegistry([get_class($object) => $mapper]);
+        $registry = new ArrayIndexMapperRegistry([\get_class($object) => $mapper]);
 
         $this->assertTrue($registry->hasMapperForObject($object));
         $this->assertFalse($registry->hasMapperForObject($this));
@@ -99,13 +101,13 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testGetMapperForObject()
+    public function testGetMapperForObject(): void
     {
         $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
-        $registry = new ArrayIndexMapperRegistry([$mapper1, get_class($object) => $mapper]);
+        $registry = new ArrayIndexMapperRegistry([$mapper1, \get_class($object) => $mapper]);
 
         $this->assertSame($mapper, $registry->getMapperForObject($object));
     }
@@ -115,7 +117,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testGetMapperForObjectException()
+    public function testGetMapperForObjectException(): void
     {
         $object = new stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
@@ -131,7 +133,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
      *
      * @throws Throwable
      */
-    public function testGetAllMappers()
+    public function testGetAllMappers(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
