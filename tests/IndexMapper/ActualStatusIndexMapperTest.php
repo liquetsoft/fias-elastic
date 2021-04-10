@@ -35,7 +35,6 @@ class ActualStatusIndexMapperTest extends BaseCase
         $mapper = new ActualStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('actstatid', $map);
         $this->assertArrayHasKey('name', $map);
     }
@@ -59,7 +58,6 @@ class ActualStatusIndexMapperTest extends BaseCase
         $mapper = new ActualStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('actstatid', $dataForElastic);
         $this->assertSame((string) $entity->actstatid, $dataForElastic['actstatid'], 'Test actstatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\QueryBuilder\MapperQueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 /**
@@ -328,18 +327,18 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Создает мок для описания индекса.
      *
-     * @param array
+     * @param array $allowedProperties
      *
-     * @return MockObject
+     * @return IndexMapperInterface
      */
-    private function getMapperMock($allowedProperties = []): MockObject
+    private function getMapperMock(array $allowedProperties = []): IndexMapperInterface
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper->method('getName')->willReturn('mock_index');
         $mapper->method('hasProperty')->willReturnCallback(
-                function (string $property) use ($allowedProperties) {
-                    return \in_array($property, $allowedProperties);
-                }
+            function (string $property) use ($allowedProperties) {
+                return \in_array($property, $allowedProperties);
+            }
         );
 
         return $mapper;

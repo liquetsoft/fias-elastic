@@ -17,7 +17,8 @@
     "friendsofphp/php-cs-fixer": "^2.11",
     "sebastian/phpcpd": "^6.0",
     "vimeo/psalm": "^4.0",
-    "nette/php-generator": "^3.2"
+    "nette/php-generator": "^3.2",
+    "psalm/plugin-phpunit": "^0.15.1"
   },
   "autoload": {
     "psr-4": {

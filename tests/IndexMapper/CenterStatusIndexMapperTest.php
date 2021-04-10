@@ -35,7 +35,6 @@ class CenterStatusIndexMapperTest extends BaseCase
         $mapper = new CenterStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('centerstid', $map);
         $this->assertArrayHasKey('name', $map);
     }
@@ -59,7 +58,6 @@ class CenterStatusIndexMapperTest extends BaseCase
         $mapper = new CenterStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('centerstid', $dataForElastic);
         $this->assertSame((string) $entity->centerstid, $dataForElastic['centerstid'], 'Test centerstid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

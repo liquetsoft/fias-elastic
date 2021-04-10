@@ -36,7 +36,6 @@ class AddressObjectIndexMapperTest extends BaseCase
         $mapper = new AddressObjectIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('aoid', $map);
         $this->assertArrayHasKey('aoguid', $map);
         $this->assertArrayHasKey('parentguid', $map);
@@ -132,11 +131,10 @@ class AddressObjectIndexMapperTest extends BaseCase
         $mapper = new AddressObjectIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('aoid', $dataForElastic);
-        $this->assertSame((string) $entity->aoid, $dataForElastic['aoid'], 'Test aoid field conversion.');
+        $this->assertSame($entity->aoid, $dataForElastic['aoid'], 'Test aoid field conversion.');
         $this->assertArrayHasKey('aoguid', $dataForElastic);
-        $this->assertSame((string) $entity->aoguid, $dataForElastic['aoguid'], 'Test aoguid field conversion.');
+        $this->assertSame($entity->aoguid, $dataForElastic['aoguid'], 'Test aoguid field conversion.');
         $this->assertArrayHasKey('parentguid', $dataForElastic);
         $this->assertSame($entity->parentguid, $dataForElastic['parentguid'], 'Test parentguid field conversion.');
         $this->assertArrayHasKey('previd', $dataForElastic);

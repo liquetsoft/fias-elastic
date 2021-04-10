@@ -35,7 +35,6 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $mapper = new NormativeDocumentTypeIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('ndtypeid', $map);
         $this->assertArrayHasKey('name', $map);
     }
@@ -59,7 +58,6 @@ class NormativeDocumentTypeIndexMapperTest extends BaseCase
         $mapper = new NormativeDocumentTypeIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('ndtypeid', $dataForElastic);
         $this->assertSame((string) $entity->ndtypeid, $dataForElastic['ndtypeid'], 'Test ndtypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

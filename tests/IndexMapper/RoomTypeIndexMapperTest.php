@@ -35,7 +35,6 @@ class RoomTypeIndexMapperTest extends BaseCase
         $mapper = new RoomTypeIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('rmtypeid', $map);
         $this->assertArrayHasKey('name', $map);
         $this->assertArrayHasKey('shortname', $map);
@@ -61,7 +60,6 @@ class RoomTypeIndexMapperTest extends BaseCase
         $mapper = new RoomTypeIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('rmtypeid', $dataForElastic);
         $this->assertSame((string) $entity->rmtypeid, $dataForElastic['rmtypeid'], 'Test rmtypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

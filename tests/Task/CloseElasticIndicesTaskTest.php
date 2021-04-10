@@ -35,7 +35,7 @@ class CloseElasticIndicesTaskTest extends BaseCase
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $closedIndicies = [];
         $indexBuilder->method('close')->willReturnCallback(
-            function ($index) use (&$closedIndicies): void {
+            function (IndexMapperInterface $index) use (&$closedIndicies): void {
                 $closedIndicies[] = $index;
             }
         );

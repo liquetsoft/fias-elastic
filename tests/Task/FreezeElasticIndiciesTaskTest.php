@@ -36,7 +36,7 @@ class FreezeElasticIndiciesTaskTest extends BaseCase
         $indexBuilder->method('isFrozen')->willReturn(false);
         $freezedIndicies = [];
         $indexBuilder->method('freeze')->willReturnCallback(
-            function ($index) use (&$freezedIndicies): void {
+            function (IndexMapperInterface $index) use (&$freezedIndicies): void {
                 $freezedIndicies[] = $index;
             }
         );

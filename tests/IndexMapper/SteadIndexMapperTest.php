@@ -36,7 +36,6 @@ class SteadIndexMapperTest extends BaseCase
         $mapper = new SteadIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('steadguid', $map);
         $this->assertArrayHasKey('number', $map);
         $this->assertArrayHasKey('regioncode', $map);
@@ -100,7 +99,6 @@ class SteadIndexMapperTest extends BaseCase
         $mapper = new SteadIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('steadguid', $dataForElastic);
         $this->assertSame($entity->steadguid, $dataForElastic['steadguid'], 'Test steadguid field conversion.');
         $this->assertArrayHasKey('number', $dataForElastic);
@@ -120,7 +118,7 @@ class SteadIndexMapperTest extends BaseCase
         $this->assertArrayHasKey('parentguid', $dataForElastic);
         $this->assertSame($entity->parentguid, $dataForElastic['parentguid'], 'Test parentguid field conversion.');
         $this->assertArrayHasKey('steadid', $dataForElastic);
-        $this->assertSame((string) $entity->steadid, $dataForElastic['steadid'], 'Test steadid field conversion.');
+        $this->assertSame($entity->steadid, $dataForElastic['steadid'], 'Test steadid field conversion.');
         $this->assertArrayHasKey('operstatus', $dataForElastic);
         $this->assertSame($entity->operstatus, $dataForElastic['operstatus'], 'Test operstatus field conversion.');
         $this->assertArrayHasKey('startdate', $dataForElastic);

@@ -35,7 +35,7 @@ class RefreshElasticIndicesTaskTest extends BaseCase
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $refreshedIndicies = [];
         $indexBuilder->method('refresh')->willReturnCallback(
-            function ($index) use (&$refreshedIndicies): void {
+            function (IndexMapperInterface $index) use (&$refreshedIndicies): void {
                 $refreshedIndicies[] = $index;
             }
         );

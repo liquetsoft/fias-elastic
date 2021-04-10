@@ -35,7 +35,6 @@ class EstateStatusIndexMapperTest extends BaseCase
         $mapper = new EstateStatusIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('eststatid', $map);
         $this->assertArrayHasKey('name', $map);
         $this->assertArrayHasKey('shortname', $map);
@@ -61,7 +60,6 @@ class EstateStatusIndexMapperTest extends BaseCase
         $mapper = new EstateStatusIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('eststatid', $dataForElastic);
         $this->assertSame((string) $entity->eststatid, $dataForElastic['eststatid'], 'Test eststatid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

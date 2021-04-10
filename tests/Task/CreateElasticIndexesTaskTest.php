@@ -35,7 +35,7 @@ class CreateElasticIndexesTaskTest extends BaseCase
         $indexBuilder = $this->getMockBuilder(IndexBuilder::class)->getMock();
         $savedIndicies = [];
         $indexBuilder->method('save')->willReturnCallback(
-            function ($index) use (&$savedIndicies): void {
+            function (IndexMapperInterface $index) use (&$savedIndicies): void {
                 $savedIndicies[] = $index;
             }
         );

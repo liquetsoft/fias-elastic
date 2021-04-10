@@ -35,7 +35,6 @@ class FlatTypeIndexMapperTest extends BaseCase
         $mapper = new FlatTypeIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('fltypeid', $map);
         $this->assertArrayHasKey('name', $map);
         $this->assertArrayHasKey('shortname', $map);
@@ -61,7 +60,6 @@ class FlatTypeIndexMapperTest extends BaseCase
         $mapper = new FlatTypeIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('fltypeid', $dataForElastic);
         $this->assertSame((string) $entity->fltypeid, $dataForElastic['fltypeid'], 'Test fltypeid field conversion.');
         $this->assertArrayHasKey('name', $dataForElastic);

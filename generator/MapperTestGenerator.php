@@ -119,7 +119,6 @@ class MapperTestGenerator extends AbstractGenerator
         $method->addBody("\$mapper = new $name();");
         $method->addBody('$map = $mapper->getMappingProperties();');
         $method->addBody('');
-        $method->addBody('$this->assertIsArray($map);');
         foreach ($descriptor->getFields() as $field) {
             $name = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$name}', \$map);");
@@ -205,12 +204,13 @@ class MapperTestGenerator extends AbstractGenerator
         $method->addBody("\$mapper = new $entityName();");
         $method->addBody('$dataForElastic = $mapper->extractDataFromEntity($entity);');
         $method->addBody('');
-        $method->addBody('$this->assertIsArray($dataForElastic);');
         foreach ($descriptor->getFields() as $field) {
             $fieldName = $this->unifyColumnName($field->getName());
             $method->addBody("\$this->assertArrayHasKey('{$fieldName}', \$dataForElastic);");
             if ($field->getSubType() === 'date') {
                 $method->addBody("\$this->assertSame(\$entity->{$fieldName}->format('Y-m-d\TH:i:s'), \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
+            } elseif ($field->getType() === 'string') {
+                $method->addBody("\$this->assertSame(\$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             } elseif ($field->isPrimary() || $field->isIndex()) {
                 $method->addBody("\$this->assertSame((string) \$entity->{$fieldName}, \$dataForElastic['{$fieldName}'], 'Test {$fieldName} field conversion.');");
             } else {

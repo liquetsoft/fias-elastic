@@ -36,7 +36,6 @@ class HouseIndexMapperTest extends BaseCase
         $mapper = new HouseIndexMapper();
         $map = $mapper->getMappingProperties();
 
-        $this->assertIsArray($map);
         $this->assertArrayHasKey('houseid', $map);
         $this->assertArrayHasKey('houseguid', $map);
         $this->assertArrayHasKey('aoguid', $map);
@@ -104,9 +103,8 @@ class HouseIndexMapperTest extends BaseCase
         $mapper = new HouseIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);
 
-        $this->assertIsArray($dataForElastic);
         $this->assertArrayHasKey('houseid', $dataForElastic);
-        $this->assertSame((string) $entity->houseid, $dataForElastic['houseid'], 'Test houseid field conversion.');
+        $this->assertSame($entity->houseid, $dataForElastic['houseid'], 'Test houseid field conversion.');
         $this->assertArrayHasKey('houseguid', $dataForElastic);
         $this->assertSame($entity->houseguid, $dataForElastic['houseguid'], 'Test houseguid field conversion.');
         $this->assertArrayHasKey('aoguid', $dataForElastic);
