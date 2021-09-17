@@ -6,21 +6,28 @@ namespace Liquetsoft\Fias\Elastic\Serializer;
 
 use DateTimeImmutable;
 use Exception;
-use Liquetsoft\Fias\Elastic\Entity\ActualStatus;
-use Liquetsoft\Fias\Elastic\Entity\AddressObject;
-use Liquetsoft\Fias\Elastic\Entity\AddressObjectType;
-use Liquetsoft\Fias\Elastic\Entity\CenterStatus;
-use Liquetsoft\Fias\Elastic\Entity\CurrentStatus;
-use Liquetsoft\Fias\Elastic\Entity\EstateStatus;
-use Liquetsoft\Fias\Elastic\Entity\FlatType;
-use Liquetsoft\Fias\Elastic\Entity\House;
-use Liquetsoft\Fias\Elastic\Entity\NormativeDocument;
-use Liquetsoft\Fias\Elastic\Entity\NormativeDocumentType;
-use Liquetsoft\Fias\Elastic\Entity\OperationStatus;
-use Liquetsoft\Fias\Elastic\Entity\Room;
-use Liquetsoft\Fias\Elastic\Entity\RoomType;
-use Liquetsoft\Fias\Elastic\Entity\Stead;
-use Liquetsoft\Fias\Elastic\Entity\StructureStatus;
+use Liquetsoft\Fias\Elastic\Entity\AddrObj;
+use Liquetsoft\Fias\Elastic\Entity\AddrObjDivision;
+use Liquetsoft\Fias\Elastic\Entity\AddrObjTypes;
+use Liquetsoft\Fias\Elastic\Entity\AdmHierarchy;
+use Liquetsoft\Fias\Elastic\Entity\Apartments;
+use Liquetsoft\Fias\Elastic\Entity\ApartmentTypes;
+use Liquetsoft\Fias\Elastic\Entity\Carplaces;
+use Liquetsoft\Fias\Elastic\Entity\ChangeHistory;
+use Liquetsoft\Fias\Elastic\Entity\Houses;
+use Liquetsoft\Fias\Elastic\Entity\HouseTypes;
+use Liquetsoft\Fias\Elastic\Entity\MunHierarchy;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocs;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocsKinds;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocsTypes;
+use Liquetsoft\Fias\Elastic\Entity\ObjectLevels;
+use Liquetsoft\Fias\Elastic\Entity\OperationTypes;
+use Liquetsoft\Fias\Elastic\Entity\Param;
+use Liquetsoft\Fias\Elastic\Entity\ParamTypes;
+use Liquetsoft\Fias\Elastic\Entity\ReestrObjects;
+use Liquetsoft\Fias\Elastic\Entity\Rooms;
+use Liquetsoft\Fias\Elastic\Entity\RoomTypes;
+use Liquetsoft\Fias\Elastic\Entity\Steads;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -34,21 +41,28 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, string $type, string $format = null)
     {
-        return is_subclass_of($type, FlatType::class)
-            || is_subclass_of($type, ActualStatus::class)
-            || is_subclass_of($type, OperationStatus::class)
-            || is_subclass_of($type, Room::class)
-            || is_subclass_of($type, AddressObjectType::class)
-            || is_subclass_of($type, RoomType::class)
-            || is_subclass_of($type, Stead::class)
-            || is_subclass_of($type, CenterStatus::class)
-            || is_subclass_of($type, NormativeDocument::class)
-            || is_subclass_of($type, CurrentStatus::class)
-            || is_subclass_of($type, NormativeDocumentType::class)
-            || is_subclass_of($type, EstateStatus::class)
-            || is_subclass_of($type, AddressObject::class)
-            || is_subclass_of($type, House::class)
-            || is_subclass_of($type, StructureStatus::class);
+        return is_subclass_of($type, Rooms::class)
+            || is_subclass_of($type, AddrObjTypes::class)
+            || is_subclass_of($type, Param::class)
+            || is_subclass_of($type, Steads::class)
+            || is_subclass_of($type, Carplaces::class)
+            || is_subclass_of($type, MunHierarchy::class)
+            || is_subclass_of($type, NormativeDocsTypes::class)
+            || is_subclass_of($type, ApartmentTypes::class)
+            || is_subclass_of($type, OperationTypes::class)
+            || is_subclass_of($type, Houses::class)
+            || is_subclass_of($type, ChangeHistory::class)
+            || is_subclass_of($type, Apartments::class)
+            || is_subclass_of($type, HouseTypes::class)
+            || is_subclass_of($type, NormativeDocsKinds::class)
+            || is_subclass_of($type, ParamTypes::class)
+            || is_subclass_of($type, RoomTypes::class)
+            || is_subclass_of($type, NormativeDocs::class)
+            || is_subclass_of($type, ObjectLevels::class)
+            || is_subclass_of($type, AdmHierarchy::class)
+            || is_subclass_of($type, AddrObjDivision::class)
+            || is_subclass_of($type, ReestrObjects::class)
+            || is_subclass_of($type, AddrObj::class);
     }
 
     /**
@@ -65,36 +79,50 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
 
         $entity = $context[AbstractNormalizer::OBJECT_TO_POPULATE] ?? new $type();
 
-        if ($entity instanceof FlatType) {
-            $this->fillFlatTypeEntityWithData($entity, $data);
-        } elseif ($entity instanceof ActualStatus) {
-            $this->fillActualStatusEntityWithData($entity, $data);
-        } elseif ($entity instanceof OperationStatus) {
-            $this->fillOperationStatusEntityWithData($entity, $data);
-        } elseif ($entity instanceof Room) {
-            $this->fillRoomEntityWithData($entity, $data);
-        } elseif ($entity instanceof AddressObjectType) {
-            $this->fillAddressObjectTypeEntityWithData($entity, $data);
-        } elseif ($entity instanceof RoomType) {
-            $this->fillRoomTypeEntityWithData($entity, $data);
-        } elseif ($entity instanceof Stead) {
-            $this->fillSteadEntityWithData($entity, $data);
-        } elseif ($entity instanceof CenterStatus) {
-            $this->fillCenterStatusEntityWithData($entity, $data);
-        } elseif ($entity instanceof NormativeDocument) {
-            $this->fillNormativeDocumentEntityWithData($entity, $data);
-        } elseif ($entity instanceof CurrentStatus) {
-            $this->fillCurrentStatusEntityWithData($entity, $data);
-        } elseif ($entity instanceof NormativeDocumentType) {
-            $this->fillNormativeDocumentTypeEntityWithData($entity, $data);
-        } elseif ($entity instanceof EstateStatus) {
-            $this->fillEstateStatusEntityWithData($entity, $data);
-        } elseif ($entity instanceof AddressObject) {
-            $this->fillAddressObjectEntityWithData($entity, $data);
-        } elseif ($entity instanceof House) {
-            $this->fillHouseEntityWithData($entity, $data);
-        } elseif ($entity instanceof StructureStatus) {
-            $this->fillStructureStatusEntityWithData($entity, $data);
+        if ($entity instanceof Rooms) {
+            $this->fillRoomsEntityWithData($entity, $data);
+        } elseif ($entity instanceof AddrObjTypes) {
+            $this->fillAddrObjTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof Param) {
+            $this->fillParamEntityWithData($entity, $data);
+        } elseif ($entity instanceof Steads) {
+            $this->fillSteadsEntityWithData($entity, $data);
+        } elseif ($entity instanceof Carplaces) {
+            $this->fillCarplacesEntityWithData($entity, $data);
+        } elseif ($entity instanceof MunHierarchy) {
+            $this->fillMunHierarchyEntityWithData($entity, $data);
+        } elseif ($entity instanceof NormativeDocsTypes) {
+            $this->fillNormativeDocsTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof ApartmentTypes) {
+            $this->fillApartmentTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof OperationTypes) {
+            $this->fillOperationTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof Houses) {
+            $this->fillHousesEntityWithData($entity, $data);
+        } elseif ($entity instanceof ChangeHistory) {
+            $this->fillChangeHistoryEntityWithData($entity, $data);
+        } elseif ($entity instanceof Apartments) {
+            $this->fillApartmentsEntityWithData($entity, $data);
+        } elseif ($entity instanceof HouseTypes) {
+            $this->fillHouseTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof NormativeDocsKinds) {
+            $this->fillNormativeDocsKindsEntityWithData($entity, $data);
+        } elseif ($entity instanceof ParamTypes) {
+            $this->fillParamTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof RoomTypes) {
+            $this->fillRoomTypesEntityWithData($entity, $data);
+        } elseif ($entity instanceof NormativeDocs) {
+            $this->fillNormativeDocsEntityWithData($entity, $data);
+        } elseif ($entity instanceof ObjectLevels) {
+            $this->fillObjectLevelsEntityWithData($entity, $data);
+        } elseif ($entity instanceof AdmHierarchy) {
+            $this->fillAdmHierarchyEntityWithData($entity, $data);
+        } elseif ($entity instanceof AddrObjDivision) {
+            $this->fillAddrObjDivisionEntityWithData($entity, $data);
+        } elseif ($entity instanceof ReestrObjects) {
+            $this->fillReestrObjectsEntityWithData($entity, $data);
+        } elseif ($entity instanceof AddrObj) {
+            $this->fillAddrObjEntityWithData($entity, $data);
         } else {
             throw new Exception('Wrong entity object.');
         }
@@ -103,255 +131,53 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
     }
 
     /**
-     * Задает все свойства модели 'FlatType' из массива, полученного от ФИАС.
+     * Задает все свойства модели 'Rooms' из массива, полученного от ФИАС.
      *
-     * @param FlatType $entity
-     * @param array    $data
-     *
-     * @throws Exception
-     */
-    protected function fillFlatTypeEntityWithData(FlatType $entity, array $data): void
-    {
-        if (($value = $data['@FLTYPEID'] ?? ($data['fltypeid'] ?? null)) !== null) {
-            $entity->setFltypeid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-
-        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'ActualStatus' из массива, полученного от ФИАС.
-     *
-     * @param ActualStatus $entity
-     * @param array        $data
-     *
-     * @throws Exception
-     */
-    protected function fillActualStatusEntityWithData(ActualStatus $entity, array $data): void
-    {
-        if (($value = $data['@ACTSTATID'] ?? ($data['actstatid'] ?? null)) !== null) {
-            $entity->setActstatid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'OperationStatus' из массива, полученного от ФИАС.
-     *
-     * @param OperationStatus $entity
-     * @param array           $data
-     *
-     * @throws Exception
-     */
-    protected function fillOperationStatusEntityWithData(OperationStatus $entity, array $data): void
-    {
-        if (($value = $data['@OPERSTATID'] ?? ($data['operstatid'] ?? null)) !== null) {
-            $entity->setOperstatid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'Room' из массива, полученного от ФИАС.
-     *
-     * @param Room  $entity
+     * @param Rooms $entity
      * @param array $data
      *
      * @throws Exception
      */
-    protected function fillRoomEntityWithData(Room $entity, array $data): void
+    protected function fillRoomsEntityWithData(Rooms $entity, array $data): void
     {
-        if (($value = $data['@ROOMID'] ?? ($data['roomid'] ?? null)) !== null) {
-            $entity->setRoomid(trim($value));
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
         }
 
-        if (($value = $data['@ROOMGUID'] ?? ($data['roomguid'] ?? null)) !== null) {
-            $entity->setRoomguid(trim($value));
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
         }
 
-        if (($value = $data['@HOUSEGUID'] ?? ($data['houseguid'] ?? null)) !== null) {
-            $entity->setHouseguid(trim($value));
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
         }
 
-        if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($value));
-        }
-
-        if (($value = $data['@FLATNUMBER'] ?? ($data['flatnumber'] ?? null)) !== null) {
-            $entity->setFlatnumber(trim($value));
-        }
-
-        if (($value = $data['@FLATTYPE'] ?? ($data['flattype'] ?? null)) !== null) {
-            $entity->setFlattype((int) $value);
-        }
-
-        if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($value));
-        }
-
-        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $value);
-        }
-
-        if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $value);
-        }
-
-        if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($value));
-        }
-
-        if (($value = $data['@ROOMNUMBER'] ?? ($data['roomnumber'] ?? null)) !== null) {
-            $entity->setRoomnumber(trim($value));
-        }
-
-        if (($value = $data['@ROOMTYPE'] ?? ($data['roomtype'] ?? null)) !== null) {
-            $entity->setRoomtype((int) $value);
-        }
-
-        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($value));
-        }
-
-        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($value));
-        }
-
-        if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($value));
-        }
-
-        if (($value = $data['@ROOMCADNUM'] ?? ($data['roomcadnum'] ?? null)) !== null) {
-            $entity->setRoomcadnum(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'AddressObjectType' из массива, полученного от ФИАС.
-     *
-     * @param AddressObjectType $entity
-     * @param array             $data
-     *
-     * @throws Exception
-     */
-    protected function fillAddressObjectTypeEntityWithData(AddressObjectType $entity, array $data): void
-    {
-        if (($value = $data['@KODTST'] ?? ($data['kodtst'] ?? null)) !== null) {
-            $entity->setKodtst(trim($value));
-        }
-
-        if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
-            $entity->setLevel((int) $value);
-        }
-
-        if (($value = $data['@SOCRNAME'] ?? ($data['socrname'] ?? null)) !== null) {
-            $entity->setSocrname(trim($value));
-        }
-
-        if (($value = $data['@SCNAME'] ?? ($data['scname'] ?? null)) !== null) {
-            $entity->setScname(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'RoomType' из массива, полученного от ФИАС.
-     *
-     * @param RoomType $entity
-     * @param array    $data
-     *
-     * @throws Exception
-     */
-    protected function fillRoomTypeEntityWithData(RoomType $entity, array $data): void
-    {
-        if (($value = $data['@RMTYPEID'] ?? ($data['rmtypeid'] ?? null)) !== null) {
-            $entity->setRmtypeid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-
-        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'Stead' из массива, полученного от ФИАС.
-     *
-     * @param Stead $entity
-     * @param array $data
-     *
-     * @throws Exception
-     */
-    protected function fillSteadEntityWithData(Stead $entity, array $data): void
-    {
-        if (($value = $data['@STEADGUID'] ?? ($data['steadguid'] ?? null)) !== null) {
-            $entity->setSteadguid(trim($value));
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
             $entity->setNumber(trim($value));
         }
 
-        if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($value));
+        if (($value = $data['@ROOMTYPE'] ?? ($data['roomtype'] ?? null)) !== null) {
+            $entity->setRoomtype((int) $value);
         }
 
-        if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($value));
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
         }
 
-        if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($value));
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
         }
 
-        if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($value));
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
         }
 
-        if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($value));
-        }
-
-        if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($value));
-        }
-
-        if (($value = $data['@PARENTGUID'] ?? ($data['parentguid'] ?? null)) !== null) {
-            $entity->setParentguid(trim($value));
-        }
-
-        if (($value = $data['@STEADID'] ?? ($data['steadid'] ?? null)) !== null) {
-            $entity->setSteadid(trim($value));
-        }
-
-        if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $value);
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
@@ -362,147 +188,329 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
             $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'AddrObjTypes' из массива, полученного от ФИАС.
+     *
+     * @param AddrObjTypes $entity
+     * @param array        $data
+     *
+     * @throws Exception
+     */
+    protected function fillAddrObjTypesEntityWithData(AddrObjTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
+            $entity->setLevel((int) $value);
+        }
+
+        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
+            $entity->setShortname(trim($value));
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
+        }
+
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
             $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
-        if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $value);
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
-        if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $value);
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
-        if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($value));
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'Param' из массива, полученного от ФИАС.
+     *
+     * @param Param $entity
+     * @param array $data
+     *
+     * @throws Exception
+     */
+    protected function fillParamEntityWithData(Param $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
         }
 
-        if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($value));
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
         }
 
-        if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($value));
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@CHANGEIDEND'] ?? ($data['changeidend'] ?? null)) !== null) {
+            $entity->setChangeidend((int) $value);
+        }
+
+        if (($value = $data['@TYPEID'] ?? ($data['typeid'] ?? null)) !== null) {
+            $entity->setTypeid((int) $value);
+        }
+
+        if (($value = $data['@VALUE'] ?? ($data['value'] ?? null)) !== null) {
+            $entity->setValue(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'Steads' из массива, полученного от ФИАС.
+     *
+     * @param Steads $entity
+     * @param array  $data
+     *
+     * @throws Exception
+     */
+    protected function fillSteadsEntityWithData(Steads $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
+            $entity->setNumber(trim($value));
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid(trim($value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($value));
+            $entity->setPrevid((int) $value);
         }
 
         if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($value));
+            $entity->setNextid((int) $value);
         }
 
-        if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($value));
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
         }
     }
 
     /**
-     * Задает все свойства модели 'CenterStatus' из массива, полученного от ФИАС.
+     * Задает все свойства модели 'Carplaces' из массива, полученного от ФИАС.
      *
-     * @param CenterStatus $entity
+     * @param Carplaces $entity
+     * @param array     $data
+     *
+     * @throws Exception
+     */
+    protected function fillCarplacesEntityWithData(Carplaces $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
+            $entity->setNumber(trim($value));
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
+        }
+
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
+        }
+
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'MunHierarchy' из массива, полученного от ФИАС.
+     *
+     * @param MunHierarchy $entity
      * @param array        $data
      *
      * @throws Exception
      */
-    protected function fillCenterStatusEntityWithData(CenterStatus $entity, array $data): void
+    protected function fillMunHierarchyEntityWithData(MunHierarchy $entity, array $data): void
     {
-        if (($value = $data['@CENTERSTID'] ?? ($data['centerstid'] ?? null)) !== null) {
-            $entity->setCenterstid((int) $value);
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@PARENTOBJID'] ?? ($data['parentobjid'] ?? null)) !== null) {
+            $entity->setParentobjid((int) $value);
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
+            $entity->setOktmo(trim($value));
+        }
+
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
+        }
+
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'NormativeDocsTypes' из массива, полученного от ФИАС.
+     *
+     * @param NormativeDocsTypes $entity
+     * @param array              $data
+     *
+     * @throws Exception
+     */
+    protected function fillNormativeDocsTypesEntityWithData(NormativeDocsTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
             $entity->setName(trim($value));
         }
-    }
 
-    /**
-     * Задает все свойства модели 'NormativeDocument' из массива, полученного от ФИАС.
-     *
-     * @param NormativeDocument $entity
-     * @param array             $data
-     *
-     * @throws Exception
-     */
-    protected function fillNormativeDocumentEntityWithData(NormativeDocument $entity, array $data): void
-    {
-        if (($value = $data['@NORMDOCID'] ?? ($data['normdocid'] ?? null)) !== null) {
-            $entity->setNormdocid(trim($value));
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
         }
 
-        if (($value = $data['@DOCNAME'] ?? ($data['docname'] ?? null)) !== null) {
-            $entity->setDocname(trim($value));
-        }
-
-        if (($value = $data['@DOCDATE'] ?? ($data['docdate'] ?? null)) !== null) {
-            $entity->setDocdate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@DOCNUM'] ?? ($data['docnum'] ?? null)) !== null) {
-            $entity->setDocnum(trim($value));
-        }
-
-        if (($value = $data['@DOCTYPE'] ?? ($data['doctype'] ?? null)) !== null) {
-            $entity->setDoctype((int) $value);
-        }
-
-        if (($value = $data['@DOCIMGID'] ?? ($data['docimgid'] ?? null)) !== null) {
-            $entity->setDocimgid(trim($value));
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
     }
 
     /**
-     * Задает все свойства модели 'CurrentStatus' из массива, полученного от ФИАС.
+     * Задает все свойства модели 'ApartmentTypes' из массива, полученного от ФИАС.
      *
-     * @param CurrentStatus $entity
-     * @param array         $data
-     *
-     * @throws Exception
-     */
-    protected function fillCurrentStatusEntityWithData(CurrentStatus $entity, array $data): void
-    {
-        if (($value = $data['@CURENTSTID'] ?? ($data['curentstid'] ?? null)) !== null) {
-            $entity->setCurentstid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'NormativeDocumentType' из массива, полученного от ФИАС.
-     *
-     * @param NormativeDocumentType $entity
-     * @param array                 $data
+     * @param ApartmentTypes $entity
+     * @param array          $data
      *
      * @throws Exception
      */
-    protected function fillNormativeDocumentTypeEntityWithData(NormativeDocumentType $entity, array $data): void
+    protected function fillApartmentTypesEntityWithData(ApartmentTypes $entity, array $data): void
     {
-        if (($value = $data['@NDTYPEID'] ?? ($data['ndtypeid'] ?? null)) !== null) {
-            $entity->setNdtypeid((int) $value);
-        }
-
-        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'EstateStatus' из массива, полученного от ФИАС.
-     *
-     * @param EstateStatus $entity
-     * @param array        $data
-     *
-     * @throws Exception
-     */
-    protected function fillEstateStatusEntityWithData(EstateStatus $entity, array $data): void
-    {
-        if (($value = $data['@ESTSTATID'] ?? ($data['eststatid'] ?? null)) !== null) {
-            $entity->setEststatid((int) $value);
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
@@ -512,56 +520,526 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
             $entity->setShortname(trim($value));
         }
+
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
     }
 
     /**
-     * Задает все свойства модели 'AddressObject' из массива, полученного от ФИАС.
+     * Задает все свойства модели 'OperationTypes' из массива, полученного от ФИАС.
      *
-     * @param AddressObject $entity
+     * @param OperationTypes $entity
+     * @param array          $data
+     *
+     * @throws Exception
+     */
+    protected function fillOperationTypesEntityWithData(OperationTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+
+        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
+            $entity->setShortname(trim($value));
+        }
+
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'Houses' из массива, полученного от ФИАС.
+     *
+     * @param Houses $entity
+     * @param array  $data
+     *
+     * @throws Exception
+     */
+    protected function fillHousesEntityWithData(Houses $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@HOUSENUM'] ?? ($data['housenum'] ?? null)) !== null) {
+            $entity->setHousenum(trim($value));
+        }
+
+        if (($value = $data['@ADDNUM1'] ?? ($data['addnum1'] ?? null)) !== null) {
+            $entity->setAddnum1(trim($value));
+        }
+
+        if (($value = $data['@ADDNUM2'] ?? ($data['addnum2'] ?? null)) !== null) {
+            $entity->setAddnum2(trim($value));
+        }
+
+        if (($value = $data['@HOUSETYPE'] ?? ($data['housetype'] ?? null)) !== null) {
+            $entity->setHousetype((int) $value);
+        }
+
+        if (($value = $data['@ADDTYPE1'] ?? ($data['addtype1'] ?? null)) !== null) {
+            $entity->setAddtype1((int) $value);
+        }
+
+        if (($value = $data['@ADDTYPE2'] ?? ($data['addtype2'] ?? null)) !== null) {
+            $entity->setAddtype2((int) $value);
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
+        }
+
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
+        }
+
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'ChangeHistory' из массива, полученного от ФИАС.
+     *
+     * @param ChangeHistory $entity
      * @param array         $data
      *
      * @throws Exception
      */
-    protected function fillAddressObjectEntityWithData(AddressObject $entity, array $data): void
+    protected function fillChangeHistoryEntityWithData(ChangeHistory $entity, array $data): void
     {
-        if (($value = $data['@AOID'] ?? ($data['aoid'] ?? null)) !== null) {
-            $entity->setAoid(trim($value));
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
         }
 
-        if (($value = $data['@AOGUID'] ?? ($data['aoguid'] ?? null)) !== null) {
-            $entity->setAoguid(trim($value));
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
         }
 
-        if (($value = $data['@PARENTGUID'] ?? ($data['parentguid'] ?? null)) !== null) {
-            $entity->setParentguid(trim($value));
+        if (($value = $data['@ADROBJECTID'] ?? ($data['adrobjectid'] ?? null)) !== null) {
+            $entity->setAdrobjectid(trim($value));
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
+        }
+
+        if (($value = $data['@NDOCID'] ?? ($data['ndocid'] ?? null)) !== null) {
+            $entity->setNdocid((int) $value);
+        }
+
+        if (($value = $data['@CHANGEDATE'] ?? ($data['changedate'] ?? null)) !== null) {
+            $entity->setChangedate(new DateTimeImmutable(trim($value)));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'Apartments' из массива, полученного от ФИАС.
+     *
+     * @param Apartments $entity
+     * @param array      $data
+     *
+     * @throws Exception
+     */
+    protected function fillApartmentsEntityWithData(Apartments $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
+            $entity->setNumber(trim($value));
+        }
+
+        if (($value = $data['@APARTTYPE'] ?? ($data['aparttype'] ?? null)) !== null) {
+            $entity->setAparttype((int) $value);
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
-            $entity->setPrevid(trim($value));
+            $entity->setPrevid((int) $value);
         }
 
         if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
-            $entity->setNextid(trim($value));
+            $entity->setNextid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'HouseTypes' из массива, полученного от ФИАС.
+     *
+     * @param HouseTypes $entity
+     * @param array      $data
+     *
+     * @throws Exception
+     */
+    protected function fillHouseTypesEntityWithData(HouseTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+
+        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
+            $entity->setShortname(trim($value));
+        }
+
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'NormativeDocsKinds' из массива, полученного от ФИАС.
+     *
+     * @param NormativeDocsKinds $entity
+     * @param array              $data
+     *
+     * @throws Exception
+     */
+    protected function fillNormativeDocsKindsEntityWithData(NormativeDocsKinds $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'ParamTypes' из массива, полученного от ФИАС.
+     *
+     * @param ParamTypes $entity
+     * @param array      $data
+     *
+     * @throws Exception
+     */
+    protected function fillParamTypesEntityWithData(ParamTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@CODE'] ?? ($data['code'] ?? null)) !== null) {
             $entity->setCode(trim($value));
         }
 
-        if (($value = $data['@FORMALNAME'] ?? ($data['formalname'] ?? null)) !== null) {
-            $entity->setFormalname(trim($value));
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
         }
 
-        if (($value = $data['@OFFNAME'] ?? ($data['offname'] ?? null)) !== null) {
-            $entity->setOffname(trim($value));
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'RoomTypes' из массива, полученного от ФИАС.
+     *
+     * @param RoomTypes $entity
+     * @param array     $data
+     *
+     * @throws Exception
+     */
+    protected function fillRoomTypesEntityWithData(RoomTypes $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
             $entity->setShortname(trim($value));
         }
 
-        if (($value = $data['@AOLEVEL'] ?? ($data['aolevel'] ?? null)) !== null) {
-            $entity->setAolevel((int) $value);
+        if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
+            $entity->setDesc(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'NormativeDocs' из массива, полученного от ФИАС.
+     *
+     * @param NormativeDocs $entity
+     * @param array         $data
+     *
+     * @throws Exception
+     */
+    protected function fillNormativeDocsEntityWithData(NormativeDocs $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+
+        if (($value = $data['@DATE'] ?? ($data['date'] ?? null)) !== null) {
+            $entity->setDate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
+            $entity->setNumber(trim($value));
+        }
+
+        if (($value = $data['@TYPE'] ?? ($data['type'] ?? null)) !== null) {
+            $entity->setType((int) $value);
+        }
+
+        if (($value = $data['@KIND'] ?? ($data['kind'] ?? null)) !== null) {
+            $entity->setKind((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ORGNAME'] ?? ($data['orgname'] ?? null)) !== null) {
+            $entity->setOrgname(trim($value));
+        }
+
+        if (($value = $data['@REGNUM'] ?? ($data['regnum'] ?? null)) !== null) {
+            $entity->setRegnum(trim($value));
+        }
+
+        if (($value = $data['@REGDATE'] ?? ($data['regdate'] ?? null)) !== null) {
+            $entity->setRegdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ACCDATE'] ?? ($data['accdate'] ?? null)) !== null) {
+            $entity->setAccdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@COMMENT'] ?? ($data['comment'] ?? null)) !== null) {
+            $entity->setComment(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'ObjectLevels' из массива, полученного от ФИАС.
+     *
+     * @param ObjectLevels $entity
+     * @param array        $data
+     *
+     * @throws Exception
+     */
+    protected function fillObjectLevelsEntityWithData(ObjectLevels $entity, array $data): void
+    {
+        if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
+            $entity->setLevel((int) $value);
+        }
+
+        if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
+            $entity->setName(trim($value));
+        }
+
+        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
+            $entity->setShortname(trim($value));
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive(trim($value));
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'AdmHierarchy' из массива, полученного от ФИАС.
+     *
+     * @param AdmHierarchy $entity
+     * @param array        $data
+     *
+     * @throws Exception
+     */
+    protected function fillAdmHierarchyEntityWithData(AdmHierarchy $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@PARENTOBJID'] ?? ($data['parentobjid'] ?? null)) !== null) {
+            $entity->setParentobjid((int) $value);
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
@@ -572,16 +1050,8 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
             $entity->setAreacode(trim($value));
         }
 
-        if (($value = $data['@AUTOCODE'] ?? ($data['autocode'] ?? null)) !== null) {
-            $entity->setAutocode(trim($value));
-        }
-
         if (($value = $data['@CITYCODE'] ?? ($data['citycode'] ?? null)) !== null) {
             $entity->setCitycode(trim($value));
-        }
-
-        if (($value = $data['@CTARCODE'] ?? ($data['ctarcode'] ?? null)) !== null) {
-            $entity->setCtarcode(trim($value));
         }
 
         if (($value = $data['@PLACECODE'] ?? ($data['placecode'] ?? null)) !== null) {
@@ -596,64 +1066,16 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
             $entity->setStreetcode(trim($value));
         }
 
-        if (($value = $data['@EXTRCODE'] ?? ($data['extrcode'] ?? null)) !== null) {
-            $entity->setExtrcode(trim($value));
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
         }
 
-        if (($value = $data['@SEXTCODE'] ?? ($data['sextcode'] ?? null)) !== null) {
-            $entity->setSextcode(trim($value));
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
         }
 
-        if (($value = $data['@PLAINCODE'] ?? ($data['plaincode'] ?? null)) !== null) {
-            $entity->setPlaincode(trim($value));
-        }
-
-        if (($value = $data['@CURRSTATUS'] ?? ($data['currstatus'] ?? null)) !== null) {
-            $entity->setCurrstatus((int) $value);
-        }
-
-        if (($value = $data['@ACTSTATUS'] ?? ($data['actstatus'] ?? null)) !== null) {
-            $entity->setActstatus((int) $value);
-        }
-
-        if (($value = $data['@LIVESTATUS'] ?? ($data['livestatus'] ?? null)) !== null) {
-            $entity->setLivestatus((int) $value);
-        }
-
-        if (($value = $data['@CENTSTATUS'] ?? ($data['centstatus'] ?? null)) !== null) {
-            $entity->setCentstatus((int) $value);
-        }
-
-        if (($value = $data['@OPERSTATUS'] ?? ($data['operstatus'] ?? null)) !== null) {
-            $entity->setOperstatus((int) $value);
-        }
-
-        if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($value));
-        }
-
-        if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($value));
-        }
-
-        if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($value));
-        }
-
-        if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($value));
-        }
-
-        if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($value));
-        }
-
-        if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($value));
-        }
-
-        if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($value));
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
@@ -664,146 +1086,145 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
             $entity->setEnddate(new DateTimeImmutable(trim($value)));
         }
 
-        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $value);
-        }
-
-        if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($value));
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
         }
     }
 
     /**
-     * Задает все свойства модели 'House' из массива, полученного от ФИАС.
+     * Задает все свойства модели 'AddrObjDivision' из массива, полученного от ФИАС.
      *
-     * @param House $entity
-     * @param array $data
-     *
-     * @throws Exception
-     */
-    protected function fillHouseEntityWithData(House $entity, array $data): void
-    {
-        if (($value = $data['@HOUSEID'] ?? ($data['houseid'] ?? null)) !== null) {
-            $entity->setHouseid(trim($value));
-        }
-
-        if (($value = $data['@HOUSEGUID'] ?? ($data['houseguid'] ?? null)) !== null) {
-            $entity->setHouseguid(trim($value));
-        }
-
-        if (($value = $data['@AOGUID'] ?? ($data['aoguid'] ?? null)) !== null) {
-            $entity->setAoguid(trim($value));
-        }
-
-        if (($value = $data['@HOUSENUM'] ?? ($data['housenum'] ?? null)) !== null) {
-            $entity->setHousenum(trim($value));
-        }
-
-        if (($value = $data['@STRSTATUS'] ?? ($data['strstatus'] ?? null)) !== null) {
-            $entity->setStrstatus((int) $value);
-        }
-
-        if (($value = $data['@ESTSTATUS'] ?? ($data['eststatus'] ?? null)) !== null) {
-            $entity->setEststatus((int) $value);
-        }
-
-        if (($value = $data['@STATSTATUS'] ?? ($data['statstatus'] ?? null)) !== null) {
-            $entity->setStatstatus((int) $value);
-        }
-
-        if (($value = $data['@IFNSFL'] ?? ($data['ifnsfl'] ?? null)) !== null) {
-            $entity->setIfnsfl(trim($value));
-        }
-
-        if (($value = $data['@IFNSUL'] ?? ($data['ifnsul'] ?? null)) !== null) {
-            $entity->setIfnsul(trim($value));
-        }
-
-        if (($value = $data['@OKATO'] ?? ($data['okato'] ?? null)) !== null) {
-            $entity->setOkato(trim($value));
-        }
-
-        if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($value));
-        }
-
-        if (($value = $data['@POSTALCODE'] ?? ($data['postalcode'] ?? null)) !== null) {
-            $entity->setPostalcode(trim($value));
-        }
-
-        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
-        }
-
-        if (($value = $data['@COUNTER'] ?? ($data['counter'] ?? null)) !== null) {
-            $entity->setCounter((int) $value);
-        }
-
-        if (($value = $data['@DIVTYPE'] ?? ($data['divtype'] ?? null)) !== null) {
-            $entity->setDivtype((int) $value);
-        }
-
-        if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($value));
-        }
-
-        if (($value = $data['@TERRIFNSFL'] ?? ($data['terrifnsfl'] ?? null)) !== null) {
-            $entity->setTerrifnsfl(trim($value));
-        }
-
-        if (($value = $data['@TERRIFNSUL'] ?? ($data['terrifnsul'] ?? null)) !== null) {
-            $entity->setTerrifnsul(trim($value));
-        }
-
-        if (($value = $data['@BUILDNUM'] ?? ($data['buildnum'] ?? null)) !== null) {
-            $entity->setBuildnum(trim($value));
-        }
-
-        if (($value = $data['@STRUCNUM'] ?? ($data['strucnum'] ?? null)) !== null) {
-            $entity->setStrucnum(trim($value));
-        }
-
-        if (($value = $data['@NORMDOC'] ?? ($data['normdoc'] ?? null)) !== null) {
-            $entity->setNormdoc(trim($value));
-        }
-
-        if (($value = $data['@CADNUM'] ?? ($data['cadnum'] ?? null)) !== null) {
-            $entity->setCadnum(trim($value));
-        }
-    }
-
-    /**
-     * Задает все свойства модели 'StructureStatus' из массива, полученного от ФИАС.
-     *
-     * @param StructureStatus $entity
+     * @param AddrObjDivision $entity
      * @param array           $data
      *
      * @throws Exception
      */
-    protected function fillStructureStatusEntityWithData(StructureStatus $entity, array $data): void
+    protected function fillAddrObjDivisionEntityWithData(AddrObjDivision $entity, array $data): void
     {
-        if (($value = $data['@STRSTATID'] ?? ($data['strstatid'] ?? null)) !== null) {
-            $entity->setStrstatid((int) $value);
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@PARENTID'] ?? ($data['parentid'] ?? null)) !== null) {
+            $entity->setParentid((int) $value);
+        }
+
+        if (($value = $data['@CHILDID'] ?? ($data['childid'] ?? null)) !== null) {
+            $entity->setChildid((int) $value);
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'ReestrObjects' из массива, полученного от ФИАС.
+     *
+     * @param ReestrObjects $entity
+     * @param array         $data
+     *
+     * @throws Exception
+     */
+    protected function fillReestrObjectsEntityWithData(ReestrObjects $entity, array $data): void
+    {
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@CREATEDATE'] ?? ($data['createdate'] ?? null)) !== null) {
+            $entity->setCreatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
+        }
+
+        if (($value = $data['@LEVELID'] ?? ($data['levelid'] ?? null)) !== null) {
+            $entity->setLevelid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
+        }
+    }
+
+    /**
+     * Задает все свойства модели 'AddrObj' из массива, полученного от ФИАС.
+     *
+     * @param AddrObj $entity
+     * @param array   $data
+     *
+     * @throws Exception
+     */
+    protected function fillAddrObjEntityWithData(AddrObj $entity, array $data): void
+    {
+        if (($value = $data['@ID'] ?? ($data['id'] ?? null)) !== null) {
+            $entity->setId((int) $value);
+        }
+
+        if (($value = $data['@OBJECTID'] ?? ($data['objectid'] ?? null)) !== null) {
+            $entity->setObjectid((int) $value);
+        }
+
+        if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
+            $entity->setObjectguid(trim($value));
+        }
+
+        if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
+            $entity->setChangeid((int) $value);
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
             $entity->setName(trim($value));
         }
 
-        if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+        if (($value = $data['@TYPENAME'] ?? ($data['typename'] ?? null)) !== null) {
+            $entity->setTypename(trim($value));
+        }
+
+        if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
+            $entity->setLevel(trim($value));
+        }
+
+        if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
+            $entity->setOpertypeid((int) $value);
+        }
+
+        if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
+            $entity->setPrevid((int) $value);
+        }
+
+        if (($value = $data['@NEXTID'] ?? ($data['nextid'] ?? null)) !== null) {
+            $entity->setNextid((int) $value);
+        }
+
+        if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
+            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
+            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
+            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+        }
+
+        if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
+            $entity->setIsactual((int) $value);
+        }
+
+        if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
+            $entity->setIsactive((int) $value);
         }
     }
 }

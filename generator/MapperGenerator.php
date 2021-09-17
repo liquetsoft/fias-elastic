@@ -76,7 +76,7 @@ class MapperGenerator extends AbstractGenerator
      */
     private function decorateNameGetter(Method $method, EntityDescriptor $descriptor): void
     {
-        $name = strtolower($this->unifyClassName($descriptor->getName()));
+        $name = strtolower($descriptor->getName());
 
         $method->addComment('{@inheritDoc}');
         $method->setVisibility('public');

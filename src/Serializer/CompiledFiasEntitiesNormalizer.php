@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace Liquetsoft\Fias\Elastic\Serializer;
 
 use Exception;
-use Liquetsoft\Fias\Elastic\Entity\ActualStatus;
-use Liquetsoft\Fias\Elastic\Entity\AddressObject;
-use Liquetsoft\Fias\Elastic\Entity\AddressObjectType;
-use Liquetsoft\Fias\Elastic\Entity\CenterStatus;
-use Liquetsoft\Fias\Elastic\Entity\CurrentStatus;
-use Liquetsoft\Fias\Elastic\Entity\EstateStatus;
-use Liquetsoft\Fias\Elastic\Entity\FlatType;
-use Liquetsoft\Fias\Elastic\Entity\House;
-use Liquetsoft\Fias\Elastic\Entity\NormativeDocument;
-use Liquetsoft\Fias\Elastic\Entity\NormativeDocumentType;
-use Liquetsoft\Fias\Elastic\Entity\OperationStatus;
-use Liquetsoft\Fias\Elastic\Entity\Room;
-use Liquetsoft\Fias\Elastic\Entity\RoomType;
-use Liquetsoft\Fias\Elastic\Entity\Stead;
-use Liquetsoft\Fias\Elastic\Entity\StructureStatus;
+use Liquetsoft\Fias\Elastic\Entity\AddrObj;
+use Liquetsoft\Fias\Elastic\Entity\AddrObjDivision;
+use Liquetsoft\Fias\Elastic\Entity\AddrObjTypes;
+use Liquetsoft\Fias\Elastic\Entity\AdmHierarchy;
+use Liquetsoft\Fias\Elastic\Entity\Apartments;
+use Liquetsoft\Fias\Elastic\Entity\ApartmentTypes;
+use Liquetsoft\Fias\Elastic\Entity\Carplaces;
+use Liquetsoft\Fias\Elastic\Entity\ChangeHistory;
+use Liquetsoft\Fias\Elastic\Entity\Houses;
+use Liquetsoft\Fias\Elastic\Entity\HouseTypes;
+use Liquetsoft\Fias\Elastic\Entity\MunHierarchy;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocs;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocsKinds;
+use Liquetsoft\Fias\Elastic\Entity\NormativeDocsTypes;
+use Liquetsoft\Fias\Elastic\Entity\ObjectLevels;
+use Liquetsoft\Fias\Elastic\Entity\OperationTypes;
+use Liquetsoft\Fias\Elastic\Entity\Param;
+use Liquetsoft\Fias\Elastic\Entity\ParamTypes;
+use Liquetsoft\Fias\Elastic\Entity\ReestrObjects;
+use Liquetsoft\Fias\Elastic\Entity\Rooms;
+use Liquetsoft\Fias\Elastic\Entity\RoomTypes;
+use Liquetsoft\Fias\Elastic\Entity\Steads;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -32,21 +39,28 @@ class CompiledFiasEntitiesNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, string $format = null)
     {
-        return $data instanceof FlatType
-            || $data instanceof ActualStatus
-            || $data instanceof OperationStatus
-            || $data instanceof Room
-            || $data instanceof AddressObjectType
-            || $data instanceof RoomType
-            || $data instanceof Stead
-            || $data instanceof CenterStatus
-            || $data instanceof NormativeDocument
-            || $data instanceof CurrentStatus
-            || $data instanceof NormativeDocumentType
-            || $data instanceof EstateStatus
-            || $data instanceof AddressObject
-            || $data instanceof House
-            || $data instanceof StructureStatus;
+        return $data instanceof Rooms
+            || $data instanceof AddrObjTypes
+            || $data instanceof Param
+            || $data instanceof Steads
+            || $data instanceof Carplaces
+            || $data instanceof MunHierarchy
+            || $data instanceof NormativeDocsTypes
+            || $data instanceof ApartmentTypes
+            || $data instanceof OperationTypes
+            || $data instanceof Houses
+            || $data instanceof ChangeHistory
+            || $data instanceof Apartments
+            || $data instanceof HouseTypes
+            || $data instanceof NormativeDocsKinds
+            || $data instanceof ParamTypes
+            || $data instanceof RoomTypes
+            || $data instanceof NormativeDocs
+            || $data instanceof ObjectLevels
+            || $data instanceof AdmHierarchy
+            || $data instanceof AddrObjDivision
+            || $data instanceof ReestrObjects
+            || $data instanceof AddrObj;
     }
 
     /**
@@ -56,36 +70,50 @@ class CompiledFiasEntitiesNormalizer implements NormalizerInterface
      */
     public function normalize($object, string $format = null, array $context = [])
     {
-        if ($object instanceof FlatType) {
-            $data = $this->getDataFromFlatTypeEntity($object);
-        } elseif ($object instanceof ActualStatus) {
-            $data = $this->getDataFromActualStatusEntity($object);
-        } elseif ($object instanceof OperationStatus) {
-            $data = $this->getDataFromOperationStatusEntity($object);
-        } elseif ($object instanceof Room) {
-            $data = $this->getDataFromRoomEntity($object);
-        } elseif ($object instanceof AddressObjectType) {
-            $data = $this->getDataFromAddressObjectTypeEntity($object);
-        } elseif ($object instanceof RoomType) {
-            $data = $this->getDataFromRoomTypeEntity($object);
-        } elseif ($object instanceof Stead) {
-            $data = $this->getDataFromSteadEntity($object);
-        } elseif ($object instanceof CenterStatus) {
-            $data = $this->getDataFromCenterStatusEntity($object);
-        } elseif ($object instanceof NormativeDocument) {
-            $data = $this->getDataFromNormativeDocumentEntity($object);
-        } elseif ($object instanceof CurrentStatus) {
-            $data = $this->getDataFromCurrentStatusEntity($object);
-        } elseif ($object instanceof NormativeDocumentType) {
-            $data = $this->getDataFromNormativeDocumentTypeEntity($object);
-        } elseif ($object instanceof EstateStatus) {
-            $data = $this->getDataFromEstateStatusEntity($object);
-        } elseif ($object instanceof AddressObject) {
-            $data = $this->getDataFromAddressObjectEntity($object);
-        } elseif ($object instanceof House) {
-            $data = $this->getDataFromHouseEntity($object);
-        } elseif ($object instanceof StructureStatus) {
-            $data = $this->getDataFromStructureStatusEntity($object);
+        if ($object instanceof Rooms) {
+            $data = $this->getDataFromRoomsEntity($object);
+        } elseif ($object instanceof AddrObjTypes) {
+            $data = $this->getDataFromAddrObjTypesEntity($object);
+        } elseif ($object instanceof Param) {
+            $data = $this->getDataFromParamEntity($object);
+        } elseif ($object instanceof Steads) {
+            $data = $this->getDataFromSteadsEntity($object);
+        } elseif ($object instanceof Carplaces) {
+            $data = $this->getDataFromCarplacesEntity($object);
+        } elseif ($object instanceof MunHierarchy) {
+            $data = $this->getDataFromMunHierarchyEntity($object);
+        } elseif ($object instanceof NormativeDocsTypes) {
+            $data = $this->getDataFromNormativeDocsTypesEntity($object);
+        } elseif ($object instanceof ApartmentTypes) {
+            $data = $this->getDataFromApartmentTypesEntity($object);
+        } elseif ($object instanceof OperationTypes) {
+            $data = $this->getDataFromOperationTypesEntity($object);
+        } elseif ($object instanceof Houses) {
+            $data = $this->getDataFromHousesEntity($object);
+        } elseif ($object instanceof ChangeHistory) {
+            $data = $this->getDataFromChangeHistoryEntity($object);
+        } elseif ($object instanceof Apartments) {
+            $data = $this->getDataFromApartmentsEntity($object);
+        } elseif ($object instanceof HouseTypes) {
+            $data = $this->getDataFromHouseTypesEntity($object);
+        } elseif ($object instanceof NormativeDocsKinds) {
+            $data = $this->getDataFromNormativeDocsKindsEntity($object);
+        } elseif ($object instanceof ParamTypes) {
+            $data = $this->getDataFromParamTypesEntity($object);
+        } elseif ($object instanceof RoomTypes) {
+            $data = $this->getDataFromRoomTypesEntity($object);
+        } elseif ($object instanceof NormativeDocs) {
+            $data = $this->getDataFromNormativeDocsEntity($object);
+        } elseif ($object instanceof ObjectLevels) {
+            $data = $this->getDataFromObjectLevelsEntity($object);
+        } elseif ($object instanceof AdmHierarchy) {
+            $data = $this->getDataFromAdmHierarchyEntity($object);
+        } elseif ($object instanceof AddrObjDivision) {
+            $data = $this->getDataFromAddrObjDivisionEntity($object);
+        } elseif ($object instanceof ReestrObjects) {
+            $data = $this->getDataFromReestrObjectsEntity($object);
+        } elseif ($object instanceof AddrObj) {
+            $data = $this->getDataFromAddrObjEntity($object);
         } else {
             throw new Exception('Wrong entity object.');
         }
@@ -94,332 +122,502 @@ class CompiledFiasEntitiesNormalizer implements NormalizerInterface
     }
 
     /**
-     * Возвращает все свойства модели 'FlatType'.
+     * Возвращает все свойства модели 'Rooms'.
      *
-     * @param FlatType $object
-     *
-     * @return array
-     */
-    protected function getDataFromFlatTypeEntity(FlatType $object): array
-    {
-        return [
-            'fltypeid' => $object->getFltypeid(),
-            'name' => $object->getName(),
-            'shortname' => $object->getShortname(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'ActualStatus'.
-     *
-     * @param ActualStatus $object
+     * @param Rooms $object
      *
      * @return array
      */
-    protected function getDataFromActualStatusEntity(ActualStatus $object): array
+    protected function getDataFromRoomsEntity(Rooms $object): array
     {
         return [
-            'actstatid' => $object->getActstatid(),
-            'name' => $object->getName(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'OperationStatus'.
-     *
-     * @param OperationStatus $object
-     *
-     * @return array
-     */
-    protected function getDataFromOperationStatusEntity(OperationStatus $object): array
-    {
-        return [
-            'operstatid' => $object->getOperstatid(),
-            'name' => $object->getName(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'Room'.
-     *
-     * @param Room $object
-     *
-     * @return array
-     */
-    protected function getDataFromRoomEntity(Room $object): array
-    {
-        return [
-            'roomid' => $object->getRoomid(),
-            'roomguid' => $object->getRoomguid(),
-            'houseguid' => $object->getHouseguid(),
-            'regioncode' => $object->getRegioncode(),
-            'flatnumber' => $object->getFlatnumber(),
-            'flattype' => $object->getFlattype(),
-            'postalcode' => $object->getPostalcode(),
-            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
-            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
-            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
-            'operstatus' => $object->getOperstatus(),
-            'livestatus' => $object->getLivestatus(),
-            'normdoc' => $object->getNormdoc(),
-            'roomnumber' => $object->getRoomnumber(),
-            'roomtype' => $object->getRoomtype(),
-            'previd' => $object->getPrevid(),
-            'nextid' => $object->getNextid(),
-            'cadnum' => $object->getCadnum(),
-            'roomcadnum' => $object->getRoomcadnum(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'AddressObjectType'.
-     *
-     * @param AddressObjectType $object
-     *
-     * @return array
-     */
-    protected function getDataFromAddressObjectTypeEntity(AddressObjectType $object): array
-    {
-        return [
-            'kodtst' => $object->getKodtst(),
-            'level' => $object->getLevel(),
-            'socrname' => $object->getSocrname(),
-            'scname' => $object->getScname(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'RoomType'.
-     *
-     * @param RoomType $object
-     *
-     * @return array
-     */
-    protected function getDataFromRoomTypeEntity(RoomType $object): array
-    {
-        return [
-            'rmtypeid' => $object->getRmtypeid(),
-            'name' => $object->getName(),
-            'shortname' => $object->getShortname(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'Stead'.
-     *
-     * @param Stead $object
-     *
-     * @return array
-     */
-    protected function getDataFromSteadEntity(Stead $object): array
-    {
-        return [
-            'steadguid' => $object->getSteadguid(),
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
             'number' => $object->getNumber(),
-            'regioncode' => $object->getRegioncode(),
-            'postalcode' => $object->getPostalcode(),
-            'ifnsfl' => $object->getIfnsfl(),
-            'ifnsul' => $object->getIfnsul(),
-            'okato' => $object->getOkato(),
-            'oktmo' => $object->getOktmo(),
-            'parentguid' => $object->getParentguid(),
-            'steadid' => $object->getSteadid(),
-            'operstatus' => $object->getOperstatus(),
+            'roomtype' => $object->getRoomtype(),
+            'opertypeid' => $object->getOpertypeid(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
             'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
             'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'AddrObjTypes'.
+     *
+     * @param AddrObjTypes $object
+     *
+     * @return array
+     */
+    protected function getDataFromAddrObjTypesEntity(AddrObjTypes $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'level' => $object->getLevel(),
+            'shortname' => $object->getShortname(),
+            'name' => $object->getName(),
+            'desc' => $object->getDesc(),
             'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
-            'livestatus' => $object->getLivestatus(),
-            'divtype' => $object->getDivtype(),
-            'normdoc' => $object->getNormdoc(),
-            'terrifnsfl' => $object->getTerrifnsfl(),
-            'terrifnsul' => $object->getTerrifnsul(),
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'Param'.
+     *
+     * @param Param $object
+     *
+     * @return array
+     */
+    protected function getDataFromParamEntity(Param $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'changeid' => $object->getChangeid(),
+            'changeidend' => $object->getChangeidend(),
+            'typeid' => $object->getTypeid(),
+            'value' => $object->getValue(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'Steads'.
+     *
+     * @param Steads $object
+     *
+     * @return array
+     */
+    protected function getDataFromSteadsEntity(Steads $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
+            'number' => $object->getNumber(),
+            'opertypeid' => $object->getOpertypeid(),
             'previd' => $object->getPrevid(),
             'nextid' => $object->getNextid(),
-            'cadnum' => $object->getCadnum(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
         ];
     }
 
     /**
-     * Возвращает все свойства модели 'CenterStatus'.
+     * Возвращает все свойства модели 'Carplaces'.
      *
-     * @param CenterStatus $object
+     * @param Carplaces $object
      *
      * @return array
      */
-    protected function getDataFromCenterStatusEntity(CenterStatus $object): array
+    protected function getDataFromCarplacesEntity(Carplaces $object): array
     {
         return [
-            'centerstid' => $object->getCenterstid(),
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
+            'number' => $object->getNumber(),
+            'opertypeid' => $object->getOpertypeid(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'MunHierarchy'.
+     *
+     * @param MunHierarchy $object
+     *
+     * @return array
+     */
+    protected function getDataFromMunHierarchyEntity(MunHierarchy $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'parentobjid' => $object->getParentobjid(),
+            'changeid' => $object->getChangeid(),
+            'oktmo' => $object->getOktmo(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'NormativeDocsTypes'.
+     *
+     * @param NormativeDocsTypes $object
+     *
+     * @return array
+     */
+    protected function getDataFromNormativeDocsTypesEntity(NormativeDocsTypes $object): array
+    {
+        return [
+            'id' => $object->getId(),
             'name' => $object->getName(),
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
         ];
     }
 
     /**
-     * Возвращает все свойства модели 'NormativeDocument'.
+     * Возвращает все свойства модели 'ApartmentTypes'.
      *
-     * @param NormativeDocument $object
-     *
-     * @return array
-     */
-    protected function getDataFromNormativeDocumentEntity(NormativeDocument $object): array
-    {
-        return [
-            'normdocid' => $object->getNormdocid(),
-            'docname' => $object->getDocname(),
-            'docdate' => ($date = $object->getDocdate()) ? $date->format(\DATE_ATOM) : null,
-            'docnum' => $object->getDocnum(),
-            'doctype' => $object->getDoctype(),
-            'docimgid' => $object->getDocimgid(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'CurrentStatus'.
-     *
-     * @param CurrentStatus $object
+     * @param ApartmentTypes $object
      *
      * @return array
      */
-    protected function getDataFromCurrentStatusEntity(CurrentStatus $object): array
+    protected function getDataFromApartmentTypesEntity(ApartmentTypes $object): array
     {
         return [
-            'curentstid' => $object->getCurentstid(),
-            'name' => $object->getName(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'NormativeDocumentType'.
-     *
-     * @param NormativeDocumentType $object
-     *
-     * @return array
-     */
-    protected function getDataFromNormativeDocumentTypeEntity(NormativeDocumentType $object): array
-    {
-        return [
-            'ndtypeid' => $object->getNdtypeid(),
-            'name' => $object->getName(),
-        ];
-    }
-
-    /**
-     * Возвращает все свойства модели 'EstateStatus'.
-     *
-     * @param EstateStatus $object
-     *
-     * @return array
-     */
-    protected function getDataFromEstateStatusEntity(EstateStatus $object): array
-    {
-        return [
-            'eststatid' => $object->getEststatid(),
+            'id' => $object->getId(),
             'name' => $object->getName(),
             'shortname' => $object->getShortname(),
+            'desc' => $object->getDesc(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
         ];
     }
 
     /**
-     * Возвращает все свойства модели 'AddressObject'.
+     * Возвращает все свойства модели 'OperationTypes'.
      *
-     * @param AddressObject $object
+     * @param OperationTypes $object
      *
      * @return array
      */
-    protected function getDataFromAddressObjectEntity(AddressObject $object): array
+    protected function getDataFromOperationTypesEntity(OperationTypes $object): array
     {
         return [
-            'aoid' => $object->getAoid(),
-            'aoguid' => $object->getAoguid(),
-            'parentguid' => $object->getParentguid(),
+            'id' => $object->getId(),
+            'name' => $object->getName(),
+            'shortname' => $object->getShortname(),
+            'desc' => $object->getDesc(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'Houses'.
+     *
+     * @param Houses $object
+     *
+     * @return array
+     */
+    protected function getDataFromHousesEntity(Houses $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
+            'housenum' => $object->getHousenum(),
+            'addnum1' => $object->getAddnum1(),
+            'addnum2' => $object->getAddnum2(),
+            'housetype' => $object->getHousetype(),
+            'addtype1' => $object->getAddtype1(),
+            'addtype2' => $object->getAddtype2(),
+            'opertypeid' => $object->getOpertypeid(),
             'previd' => $object->getPrevid(),
             'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'ChangeHistory'.
+     *
+     * @param ChangeHistory $object
+     *
+     * @return array
+     */
+    protected function getDataFromChangeHistoryEntity(ChangeHistory $object): array
+    {
+        return [
+            'changeid' => $object->getChangeid(),
+            'objectid' => $object->getObjectid(),
+            'adrobjectid' => $object->getAdrobjectid(),
+            'opertypeid' => $object->getOpertypeid(),
+            'ndocid' => $object->getNdocid(),
+            'changedate' => ($date = $object->getChangedate()) ? $date->format(\DATE_ATOM) : null,
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'Apartments'.
+     *
+     * @param Apartments $object
+     *
+     * @return array
+     */
+    protected function getDataFromApartmentsEntity(Apartments $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
+            'number' => $object->getNumber(),
+            'aparttype' => $object->getAparttype(),
+            'opertypeid' => $object->getOpertypeid(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'HouseTypes'.
+     *
+     * @param HouseTypes $object
+     *
+     * @return array
+     */
+    protected function getDataFromHouseTypesEntity(HouseTypes $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'name' => $object->getName(),
+            'shortname' => $object->getShortname(),
+            'desc' => $object->getDesc(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'NormativeDocsKinds'.
+     *
+     * @param NormativeDocsKinds $object
+     *
+     * @return array
+     */
+    protected function getDataFromNormativeDocsKindsEntity(NormativeDocsKinds $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'name' => $object->getName(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'ParamTypes'.
+     *
+     * @param ParamTypes $object
+     *
+     * @return array
+     */
+    protected function getDataFromParamTypesEntity(ParamTypes $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'name' => $object->getName(),
             'code' => $object->getCode(),
-            'formalname' => $object->getFormalname(),
-            'offname' => $object->getOffname(),
+            'desc' => $object->getDesc(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'RoomTypes'.
+     *
+     * @param RoomTypes $object
+     *
+     * @return array
+     */
+    protected function getDataFromRoomTypesEntity(RoomTypes $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'name' => $object->getName(),
             'shortname' => $object->getShortname(),
-            'aolevel' => $object->getAolevel(),
+            'desc' => $object->getDesc(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'NormativeDocs'.
+     *
+     * @param NormativeDocs $object
+     *
+     * @return array
+     */
+    protected function getDataFromNormativeDocsEntity(NormativeDocs $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'name' => $object->getName(),
+            'date' => ($date = $object->getDate()) ? $date->format(\DATE_ATOM) : null,
+            'number' => $object->getNumber(),
+            'type' => $object->getType(),
+            'kind' => $object->getKind(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'orgname' => $object->getOrgname(),
+            'regnum' => $object->getRegnum(),
+            'regdate' => ($date = $object->getRegdate()) ? $date->format(\DATE_ATOM) : null,
+            'accdate' => ($date = $object->getAccdate()) ? $date->format(\DATE_ATOM) : null,
+            'comment' => $object->getComment(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'ObjectLevels'.
+     *
+     * @param ObjectLevels $object
+     *
+     * @return array
+     */
+    protected function getDataFromObjectLevelsEntity(ObjectLevels $object): array
+    {
+        return [
+            'level' => $object->getLevel(),
+            'name' => $object->getName(),
+            'shortname' => $object->getShortname(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'AdmHierarchy'.
+     *
+     * @param AdmHierarchy $object
+     *
+     * @return array
+     */
+    protected function getDataFromAdmHierarchyEntity(AdmHierarchy $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'parentobjid' => $object->getParentobjid(),
+            'changeid' => $object->getChangeid(),
             'regioncode' => $object->getRegioncode(),
             'areacode' => $object->getAreacode(),
-            'autocode' => $object->getAutocode(),
             'citycode' => $object->getCitycode(),
-            'ctarcode' => $object->getCtarcode(),
             'placecode' => $object->getPlacecode(),
             'plancode' => $object->getPlancode(),
             'streetcode' => $object->getStreetcode(),
-            'extrcode' => $object->getExtrcode(),
-            'sextcode' => $object->getSextcode(),
-            'plaincode' => $object->getPlaincode(),
-            'currstatus' => $object->getCurrstatus(),
-            'actstatus' => $object->getActstatus(),
-            'livestatus' => $object->getLivestatus(),
-            'centstatus' => $object->getCentstatus(),
-            'operstatus' => $object->getOperstatus(),
-            'ifnsfl' => $object->getIfnsfl(),
-            'ifnsul' => $object->getIfnsul(),
-            'terrifnsfl' => $object->getTerrifnsfl(),
-            'terrifnsul' => $object->getTerrifnsul(),
-            'okato' => $object->getOkato(),
-            'oktmo' => $object->getOktmo(),
-            'postalcode' => $object->getPostalcode(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
             'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
             'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
-            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
-            'divtype' => $object->getDivtype(),
-            'normdoc' => $object->getNormdoc(),
+            'isactive' => $object->getIsactive(),
         ];
     }
 
     /**
-     * Возвращает все свойства модели 'House'.
+     * Возвращает все свойства модели 'AddrObjDivision'.
      *
-     * @param House $object
+     * @param AddrObjDivision $object
      *
      * @return array
      */
-    protected function getDataFromHouseEntity(House $object): array
+    protected function getDataFromAddrObjDivisionEntity(AddrObjDivision $object): array
     {
         return [
-            'houseid' => $object->getHouseid(),
-            'houseguid' => $object->getHouseguid(),
-            'aoguid' => $object->getAoguid(),
-            'housenum' => $object->getHousenum(),
-            'strstatus' => $object->getStrstatus(),
-            'eststatus' => $object->getEststatus(),
-            'statstatus' => $object->getStatstatus(),
-            'ifnsfl' => $object->getIfnsfl(),
-            'ifnsul' => $object->getIfnsul(),
-            'okato' => $object->getOkato(),
-            'oktmo' => $object->getOktmo(),
-            'postalcode' => $object->getPostalcode(),
-            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
-            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
-            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
-            'counter' => $object->getCounter(),
-            'divtype' => $object->getDivtype(),
-            'regioncode' => $object->getRegioncode(),
-            'terrifnsfl' => $object->getTerrifnsfl(),
-            'terrifnsul' => $object->getTerrifnsul(),
-            'buildnum' => $object->getBuildnum(),
-            'strucnum' => $object->getStrucnum(),
-            'normdoc' => $object->getNormdoc(),
-            'cadnum' => $object->getCadnum(),
+            'id' => $object->getId(),
+            'parentid' => $object->getParentid(),
+            'childid' => $object->getChildid(),
+            'changeid' => $object->getChangeid(),
         ];
     }
 
     /**
-     * Возвращает все свойства модели 'StructureStatus'.
+     * Возвращает все свойства модели 'ReestrObjects'.
      *
-     * @param StructureStatus $object
+     * @param ReestrObjects $object
      *
      * @return array
      */
-    protected function getDataFromStructureStatusEntity(StructureStatus $object): array
+    protected function getDataFromReestrObjectsEntity(ReestrObjects $object): array
     {
         return [
-            'strstatid' => $object->getStrstatid(),
+            'objectid' => $object->getObjectid(),
+            'createdate' => ($date = $object->getCreatedate()) ? $date->format(\DATE_ATOM) : null,
+            'changeid' => $object->getChangeid(),
+            'levelid' => $object->getLevelid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'objectguid' => $object->getObjectguid(),
+            'isactive' => $object->getIsactive(),
+        ];
+    }
+
+    /**
+     * Возвращает все свойства модели 'AddrObj'.
+     *
+     * @param AddrObj $object
+     *
+     * @return array
+     */
+    protected function getDataFromAddrObjEntity(AddrObj $object): array
+    {
+        return [
+            'id' => $object->getId(),
+            'objectid' => $object->getObjectid(),
+            'objectguid' => $object->getObjectguid(),
+            'changeid' => $object->getChangeid(),
             'name' => $object->getName(),
-            'shortname' => $object->getShortname(),
+            'typename' => $object->getTypename(),
+            'level' => $object->getLevel(),
+            'opertypeid' => $object->getOpertypeid(),
+            'previd' => $object->getPrevid(),
+            'nextid' => $object->getNextid(),
+            'updatedate' => ($date = $object->getUpdatedate()) ? $date->format(\DATE_ATOM) : null,
+            'startdate' => ($date = $object->getStartdate()) ? $date->format(\DATE_ATOM) : null,
+            'enddate' => ($date = $object->getEnddate()) ? $date->format(\DATE_ATOM) : null,
+            'isactual' => $object->getIsactual(),
+            'isactive' => $object->getIsactive(),
         ];
     }
 }
