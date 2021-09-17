@@ -95,9 +95,11 @@ abstract class AbstractGenerator
      *
      * @return string
      */
-    protected function unifyClassName(string $namespace): string
+    protected function unifyClassName(string $name): string
     {
-        return ucfirst(trim($namespace, " \t\n\r\0\x0B\\"));
+        $arName = array_map('ucfirst', array_map('strtolower', explode('_', $name)));
+
+        return implode('', $arName);
     }
 
     /**
