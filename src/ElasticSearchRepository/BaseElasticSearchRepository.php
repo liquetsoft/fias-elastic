@@ -9,7 +9,6 @@ use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\Exception\ElasticSearchRepositoryException;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Throwable;
 
 /**
  * Объект, который отправляет запросы на поиск в elasticsearch
@@ -47,7 +46,7 @@ class BaseElasticSearchRepository implements ElasticSearchRepository
     {
         try {
             $result = $this->runSearchRequest($queryBuilder, $entityClass);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new ElasticSearchRepositoryException($e->getMessage(), 0, $e);
         }
 
@@ -71,7 +70,9 @@ class BaseElasticSearchRepository implements ElasticSearchRepository
 
         $result = [];
         foreach ($hits as $hit) {
-            $result[] = $this->denormalizeHit($hit, $entityClass);
+            if (\is_array($hit)) {
+                $result[] = $this->denormalizeHit($hit, $entityClass);
+            }
         }
 
         return $result;

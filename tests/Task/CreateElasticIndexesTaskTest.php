@@ -10,7 +10,6 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Task\CreateElasticIndexesTask;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
 
 /**
  * Тест для операции, которая создает индексы в elasticsearch.
@@ -22,7 +21,7 @@ class CreateElasticIndexesTaskTest extends BaseCase
     /**
      * Проверяет, что операция создаст все индексы.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRun(): void
     {

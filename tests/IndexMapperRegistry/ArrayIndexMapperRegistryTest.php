@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapperRegistry;
 
-use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\ArrayIndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
-use Throwable;
 
 /**
  * Тесты для объекта, который содержит описания индексов во внутреннем массиве.
@@ -22,20 +19,20 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект выбросит исклбчение, если предоставить в конструктор неверный объект.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testConstructorNotARegistryException(): void
     {
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new ArrayIndexMapperRegistry([$mapper, 'test']);
     }
 
     /**
      * Проверяет, что объект правильно находит соответствие для строкового ключа.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testHasMapperForKey(): void
     {
@@ -51,7 +48,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект правильно вернет соответствие для исени класса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testGetMapperForKey(): void
     {
@@ -67,7 +64,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект выбросит исключение, если не найдет соответствие.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testGetMapperForKeyException(): void
     {
@@ -83,11 +80,11 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект правильно находит соответствие для объекта.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testHasMapperForObject(): void
     {
-        $object = new stdClass();
+        $object = new \stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
         $registry = new ArrayIndexMapperRegistry([\get_class($object) => $mapper]);
@@ -99,11 +96,11 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект правильно вернет соответствие для объекта.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testGetMapperForObject(): void
     {
-        $object = new stdClass();
+        $object = new \stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper1 = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
@@ -115,11 +112,11 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект выбросит исключение, если не найдет соответствие.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testGetMapperForObjectException(): void
     {
-        $object = new stdClass();
+        $object = new \stdClass();
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
 
         $registry = new ArrayIndexMapperRegistry([$mapper]);
@@ -131,7 +128,7 @@ class ArrayIndexMapperRegistryTest extends BaseCase
     /**
      * Проверяет, что объект вернет список всех опианий.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testGetAllMappers(): void
     {

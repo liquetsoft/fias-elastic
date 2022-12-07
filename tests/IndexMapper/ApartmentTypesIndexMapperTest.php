@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\ApartmentTypesIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по типам помещений'.
@@ -48,7 +46,7 @@ class ApartmentTypesIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new ApartmentTypesIndexMapper();
@@ -58,14 +56,14 @@ class ApartmentTypesIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
         $entity->shortname = $this->createFakeData()->word;
         $entity->desc = $this->createFakeData()->word;
-        $entity->updatedate = new DateTimeImmutable();
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
         $entity->isactive = $this->createFakeData()->word;
 
         $mapper = new ApartmentTypesIndexMapper();

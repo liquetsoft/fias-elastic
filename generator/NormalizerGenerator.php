@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Generator;
 
-use Exception;
 use Liquetsoft\Fias\Component\EntityDescriptor\EntityDescriptor;
 use Liquetsoft\Fias\Component\Exception\EntityRegistryException;
 use Nette\PhpGenerator\ClassType;
@@ -13,7 +12,6 @@ use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PhpLiteral;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
-use SplFileInfo;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,7 +22,7 @@ class NormalizerGenerator extends AbstractGenerator
     /**
      * {@inheritDoc}
      */
-    protected function generate(SplFileInfo $dir, string $namespace): void
+    protected function generate(\SplFileInfo $dir, string $namespace): void
     {
         $name = 'CompiledFiasEntitiesNormalizer';
         $fullPath = "{$dir->getPathname()}/{$name}.php";
@@ -51,7 +49,7 @@ class NormalizerGenerator extends AbstractGenerator
     protected function decorateNamespace(PhpNamespace $namespace): void
     {
         $namespace->addUse(NormalizerInterface::class);
-        $namespace->addUse(Exception::class);
+        $namespace->addUse(\Exception::class);
 
         $descriptors = $this->registry->getDescriptors();
         foreach ($descriptors as $descriptor) {
@@ -168,7 +166,7 @@ class NormalizerGenerator extends AbstractGenerator
     /**
      * {@inheritDoc}
      */
-    protected function generateClassByDescriptor(EntityDescriptor $descriptor, SplFileInfo $dir, string $namespace): void
+    protected function generateClassByDescriptor(EntityDescriptor $descriptor, \SplFileInfo $dir, string $namespace): void
     {
     }
 }

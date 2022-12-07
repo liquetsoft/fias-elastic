@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\ParamIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения о классификаторе параметров адресообразующих элементов и объектов недвижимости'.
@@ -49,7 +47,7 @@ class ParamIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new ParamIndexMapper();
@@ -59,16 +57,16 @@ class ParamIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->objectid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->changeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->changeidend = $this->createFakeData()->numberBetween(1, 100000);
         $entity->typeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->value = $this->createFakeData()->word;
-        $entity->updatedate = new DateTimeImmutable();
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
 
         $mapper = new ParamIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);

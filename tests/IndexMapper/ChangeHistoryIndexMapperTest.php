@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\ChangeHistoryIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по истории изменений'.
@@ -46,7 +44,7 @@ class ChangeHistoryIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->changeid = 'primary_value';
 
         $mapper = new ChangeHistoryIndexMapper();
@@ -56,13 +54,13 @@ class ChangeHistoryIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->changeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->objectid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->adrobjectid = $this->createFakeData()->word;
         $entity->opertypeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->ndocid = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->changedate = new DateTimeImmutable();
+        $entity->changedate = new \DateTimeImmutable();
 
         $mapper = new ChangeHistoryIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);

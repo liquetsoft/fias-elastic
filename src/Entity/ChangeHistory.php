@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use DateTimeInterface;
-
 /**
  * Сведения по истории изменений.
  */
@@ -39,7 +37,7 @@ class ChangeHistory
     /**
      * Дата изменения.
      */
-    protected ?DateTimeInterface $changedate = null;
+    protected ?\DateTimeInterface $changedate = null;
 
     public function setChangeid(int $changeid): self
     {
@@ -101,14 +99,14 @@ class ChangeHistory
         return $this->ndocid;
     }
 
-    public function setChangedate(DateTimeInterface $changedate): self
+    public function setChangedate(\DateTimeInterface $changedate): self
     {
         $this->changedate = $changedate;
 
         return $this;
     }
 
-    public function getChangedate(): ?DateTimeInterface
+    public function getChangedate(): ?\DateTimeInterface
     {
         return $this->changedate;
     }

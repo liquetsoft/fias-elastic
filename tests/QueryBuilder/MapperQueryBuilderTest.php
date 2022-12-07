@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\QueryBuilder;
 
-use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\QueryBuilder\MapperQueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Тесты для конструктора запросов к elasticsearch.
@@ -20,7 +19,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст условие для поиска.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testMatch(): void
     {
@@ -58,7 +57,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект выбросит исключение, если поле указано неверно.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testMatchWrongFieldException(): void
     {
@@ -66,7 +65,7 @@ class MapperQueryBuilderTest extends BaseCase
 
         $builder = new MapperQueryBuilder($mapper);
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $builder->match('test', 'test');
     }
 
@@ -74,7 +73,7 @@ class MapperQueryBuilderTest extends BaseCase
      * Проверяет, что объект правильно задаст условие для поиска
      * по полному соответствию.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testTerm(): void
     {
@@ -112,7 +111,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст условие для отсутствия значения.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testNotExist(): void
     {
@@ -148,7 +147,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст сортировку.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSortAsc(): void
     {
@@ -160,6 +159,7 @@ class MapperQueryBuilderTest extends BaseCase
         $query = $builder->getQuery();
 
         $this->assertArrayHasKey('body', $query);
+        $this->assertIsArray($query['body']);
         $this->assertArrayHasKey('sort', $query['body']);
         $this->assertSame(
             [
@@ -174,7 +174,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст сортировку.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSortDesc(): void
     {
@@ -186,6 +186,7 @@ class MapperQueryBuilderTest extends BaseCase
         $query = $builder->getQuery();
 
         $this->assertArrayHasKey('body', $query);
+        $this->assertIsArray($query['body']);
         $this->assertArrayHasKey('sort', $query['body']);
         $this->assertSame(
             [
@@ -200,7 +201,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно ограничит количество документов.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSize(): void
     {
@@ -218,7 +219,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст смещение элементов.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testFrom(): void
     {
@@ -236,7 +237,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно задаст search_after.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSearchAfter(): void
     {
@@ -252,6 +253,7 @@ class MapperQueryBuilderTest extends BaseCase
         $query = $builder->getQuery();
 
         $this->assertArrayHasKey('body', $query);
+        $this->assertIsArray($query['body']);
         $this->assertArrayHasKey('search_after', $query['body']);
         $this->assertSame($searchAfter, $query['body']['search_after']);
     }
@@ -259,7 +261,7 @@ class MapperQueryBuilderTest extends BaseCase
     /**
      * Проверяет, что объект верно объединит свои данные со внешним объектом.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testMerge(): void
     {
@@ -329,10 +331,11 @@ class MapperQueryBuilderTest extends BaseCase
      *
      * @param array $allowedProperties
      *
-     * @return IndexMapperInterface
+     * @return IndexMapperInterface&MockObject
      */
     private function getMapperMock(array $allowedProperties = []): IndexMapperInterface
     {
+        /** @var IndexMapperInterface&MockObject */
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper->method('getName')->willReturn('mock_index');
         $mapper->method('hasProperty')->willReturnCallback(

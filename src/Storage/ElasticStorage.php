@@ -13,7 +13,6 @@ use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexBuilder\IndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
-use Throwable;
 
 /**
  * Объект, который сохраняет данные ФИАС с помощью elastic search.
@@ -48,7 +47,7 @@ class ElasticStorage implements Storage
     /**
      * Данные операций для множественной отправки.
      *
-     * @var array<string, array>
+     * @var array<string, object[]>
      */
     private array $bulkOperations = [];
 
@@ -145,7 +144,7 @@ class ElasticStorage implements Storage
                     ],
                 ]
             );
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
     }
@@ -187,7 +186,7 @@ class ElasticStorage implements Storage
         try {
             $this->runBulkQuery();
             $this->bulkOperations = [];
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new StorageException($e->getMessage(), 0, $e);
         }
     }
@@ -223,7 +222,7 @@ class ElasticStorage implements Storage
     /**
      * Конвертирует операции в массив для отправки запроса.
      *
-     * @param array $operations
+     * @param array<string, object[]> $operations
      *
      * @return array
      *

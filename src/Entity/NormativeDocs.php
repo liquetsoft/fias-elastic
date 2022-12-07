@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use DateTimeInterface;
-
 /**
  * Сведения о нормативном документе, являющемся основанием присвоения адресному элементу наименования.
  */
@@ -24,7 +22,7 @@ class NormativeDocs
     /**
      * Дата документа.
      */
-    protected ?DateTimeInterface $date = null;
+    protected ?\DateTimeInterface $date = null;
 
     /**
      * Номер документа.
@@ -44,7 +42,7 @@ class NormativeDocs
     /**
      * Дата обновления.
      */
-    protected ?DateTimeInterface $updatedate = null;
+    protected ?\DateTimeInterface $updatedate = null;
 
     /**
      * Наименование органа создвшего нормативный документ.
@@ -59,12 +57,12 @@ class NormativeDocs
     /**
      * Дата государственной регистрации.
      */
-    protected ?DateTimeInterface $regdate = null;
+    protected ?\DateTimeInterface $regdate = null;
 
     /**
      * Дата вступления в силу нормативного документа.
      */
-    protected ?DateTimeInterface $accdate = null;
+    protected ?\DateTimeInterface $accdate = null;
 
     /**
      * Комментарий.
@@ -95,14 +93,14 @@ class NormativeDocs
         return $this->name;
     }
 
-    public function setDate(DateTimeInterface $date): self
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
@@ -143,14 +141,14 @@ class NormativeDocs
         return $this->kind;
     }
 
-    public function setUpdatedate(DateTimeInterface $updatedate): self
+    public function setUpdatedate(\DateTimeInterface $updatedate): self
     {
         $this->updatedate = $updatedate;
 
         return $this;
     }
 
-    public function getUpdatedate(): ?DateTimeInterface
+    public function getUpdatedate(): ?\DateTimeInterface
     {
         return $this->updatedate;
     }
@@ -179,26 +177,26 @@ class NormativeDocs
         return $this->regnum;
     }
 
-    public function setRegdate(?DateTimeInterface $regdate): self
+    public function setRegdate(?\DateTimeInterface $regdate): self
     {
         $this->regdate = $regdate;
 
         return $this;
     }
 
-    public function getRegdate(): ?DateTimeInterface
+    public function getRegdate(): ?\DateTimeInterface
     {
         return $this->regdate;
     }
 
-    public function setAccdate(?DateTimeInterface $accdate): self
+    public function setAccdate(?\DateTimeInterface $accdate): self
     {
         $this->accdate = $accdate;
 
         return $this;
     }
 
-    public function getAccdate(): ?DateTimeInterface
+    public function getAccdate(): ?\DateTimeInterface
     {
         return $this->accdate;
     }

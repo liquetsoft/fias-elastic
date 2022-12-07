@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\Entity\ChangeHistory;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
@@ -34,7 +33,7 @@ class ChangeHistoryTest extends EntityCase
             'adrobjectid' => $this->createFakeData()->word,
             'opertypeid' => $this->createFakeData()->numberBetween(1, 1000000),
             'ndocid' => $this->createFakeData()->numberBetween(1, 1000000),
-            'changedate' => new DateTimeImmutable(),
+            'changedate' => new \DateTimeImmutable(),
         ];
     }
 }

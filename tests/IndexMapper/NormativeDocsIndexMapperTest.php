@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocsIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения о нормативном документе, являющемся основанием присвоения адресному элементу наименования'.
@@ -52,7 +50,7 @@ class NormativeDocsIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new NormativeDocsIndexMapper();
@@ -62,18 +60,18 @@ class NormativeDocsIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
-        $entity->date = new DateTimeImmutable();
+        $entity->date = new \DateTimeImmutable();
         $entity->number = $this->createFakeData()->word;
         $entity->type = $this->createFakeData()->numberBetween(1, 100000);
         $entity->kind = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->updatedate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
         $entity->orgname = $this->createFakeData()->word;
         $entity->regnum = $this->createFakeData()->word;
-        $entity->regdate = new DateTimeImmutable();
-        $entity->accdate = new DateTimeImmutable();
+        $entity->regdate = new \DateTimeImmutable();
+        $entity->accdate = new \DateTimeImmutable();
         $entity->comment = $this->createFakeData()->word;
 
         $mapper = new NormativeDocsIndexMapper();

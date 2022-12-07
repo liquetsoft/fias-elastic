@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\QueryBuilder;
 
-use InvalidArgumentException;
-
 /**
  * Объект, который строит запрос во внутреннем массиве.
+ *
+ * @psalm-suppress MixedArrayAccess
  */
 class ArrayQueryBuilder implements QueryBuilder
 {
@@ -82,7 +82,7 @@ class ArrayQueryBuilder implements QueryBuilder
     {
         if ($order !== QueryBuilder::SORT_ORDER_ASC && $order !== QueryBuilder::SORT_ORDER_DESC) {
             $message = sprintf("Wrong sort order '%s'.", $order);
-            throw new InvalidArgumentException($message);
+            throw new \InvalidArgumentException($message);
         }
 
         $this->isPropertyAllowed($property);
@@ -149,7 +149,7 @@ class ArrayQueryBuilder implements QueryBuilder
      *
      * @param string $property
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function isPropertyAllowed(string $property): void
     {

@@ -7,7 +7,6 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocsKindsIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по видам нормативных документов'.
@@ -41,7 +40,7 @@ class NormativeDocsKindsIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new NormativeDocsKindsIndexMapper();
@@ -51,7 +50,7 @@ class NormativeDocsKindsIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
 

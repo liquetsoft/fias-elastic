@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\ReestrObjectsIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения об адресном элементе в части его идентификаторов'.
@@ -47,7 +45,7 @@ class ReestrObjectsIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->objectid = 'primary_value';
 
         $mapper = new ReestrObjectsIndexMapper();
@@ -57,12 +55,12 @@ class ReestrObjectsIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->objectid = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->createdate = new DateTimeImmutable();
+        $entity->createdate = new \DateTimeImmutable();
         $entity->changeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->levelid = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->updatedate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
         $entity->objectguid = $this->createFakeData()->word;
         $entity->isactive = $this->createFakeData()->numberBetween(1, 100000);
 

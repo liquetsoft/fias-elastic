@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use DateTimeInterface;
-
 /**
  * Сведения по типам адресных объектов.
  */
@@ -39,17 +37,17 @@ class AddrObjTypes
     /**
      * Дата внесения (обновления) записи.
      */
-    protected ?DateTimeInterface $updatedate = null;
+    protected ?\DateTimeInterface $updatedate = null;
 
     /**
      * Начало действия записи.
      */
-    protected ?DateTimeInterface $startdate = null;
+    protected ?\DateTimeInterface $startdate = null;
 
     /**
      * Окончание действия записи.
      */
-    protected ?DateTimeInterface $enddate = null;
+    protected ?\DateTimeInterface $enddate = null;
 
     /**
      * Статус активности.
@@ -116,38 +114,38 @@ class AddrObjTypes
         return $this->desc;
     }
 
-    public function setUpdatedate(DateTimeInterface $updatedate): self
+    public function setUpdatedate(\DateTimeInterface $updatedate): self
     {
         $this->updatedate = $updatedate;
 
         return $this;
     }
 
-    public function getUpdatedate(): ?DateTimeInterface
+    public function getUpdatedate(): ?\DateTimeInterface
     {
         return $this->updatedate;
     }
 
-    public function setStartdate(DateTimeInterface $startdate): self
+    public function setStartdate(\DateTimeInterface $startdate): self
     {
         $this->startdate = $startdate;
 
         return $this;
     }
 
-    public function getStartdate(): ?DateTimeInterface
+    public function getStartdate(): ?\DateTimeInterface
     {
         return $this->startdate;
     }
 
-    public function setEnddate(DateTimeInterface $enddate): self
+    public function setEnddate(\DateTimeInterface $enddate): self
     {
         $this->enddate = $enddate;
 
         return $this;
     }
 
-    public function getEnddate(): ?DateTimeInterface
+    public function getEnddate(): ?\DateTimeInterface
     {
         return $this->enddate;
     }

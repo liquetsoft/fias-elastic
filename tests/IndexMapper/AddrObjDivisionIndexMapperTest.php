@@ -7,7 +7,6 @@ namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 use Liquetsoft\Fias\Elastic\IndexMapper\AddrObjDivisionIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по операциям переподчинения'.
@@ -43,7 +42,7 @@ class AddrObjDivisionIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new AddrObjDivisionIndexMapper();
@@ -53,7 +52,7 @@ class AddrObjDivisionIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->parentid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->childid = $this->createFakeData()->numberBetween(1, 100000);

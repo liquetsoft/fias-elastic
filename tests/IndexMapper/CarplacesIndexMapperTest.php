@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\CarplacesIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по машино-местам'.
@@ -53,7 +51,7 @@ class CarplacesIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new CarplacesIndexMapper();
@@ -63,7 +61,7 @@ class CarplacesIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->objectid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->objectguid = $this->createFakeData()->word;
@@ -72,9 +70,9 @@ class CarplacesIndexMapperTest extends BaseCase
         $entity->opertypeid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->previd = $this->createFakeData()->numberBetween(1, 100000);
         $entity->nextid = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->updatedate = new DateTimeImmutable();
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
         $entity->isactual = $this->createFakeData()->numberBetween(1, 100000);
         $entity->isactive = $this->createFakeData()->numberBetween(1, 100000);
 
