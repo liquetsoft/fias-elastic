@@ -10,7 +10,6 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Task\RefreshElasticIndicesTask;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
 
 /**
  * Тест для операции, которая обновляет индексы.
@@ -22,7 +21,7 @@ class RefreshElasticIndicesTaskTest extends BaseCase
     /**
      * Проверяет, что операция обновит все индексы.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRun(): void
     {

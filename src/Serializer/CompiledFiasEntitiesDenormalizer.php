@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Serializer;
 
-use DateTimeImmutable;
-use Exception;
 use Liquetsoft\Fias\Elastic\Entity\AddrObj;
 use Liquetsoft\Fias\Elastic\Entity\AddrObjDivision;
 use Liquetsoft\Fias\Elastic\Entity\AddrObjTypes;
@@ -70,7 +68,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      *
      * @psalm-suppress InvalidStringClass
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
@@ -124,7 +122,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         } elseif ($entity instanceof AddrObj) {
             $this->fillAddrObjEntityWithData($entity, $data);
         } else {
-            throw new Exception('Wrong entity object.');
+            throw new \Exception('Wrong entity object.');
         }
 
         return $entity;
@@ -136,7 +134,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Rooms $entity
      * @param array $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillRoomsEntityWithData(Rooms $entity, array $data): void
     {
@@ -149,7 +147,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -157,7 +155,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($value));
+            $entity->setNumber(trim((string) $value));
         }
 
         if (($value = $data['@ROOMTYPE'] ?? ($data['roomtype'] ?? null)) !== null) {
@@ -177,15 +175,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
@@ -203,7 +201,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param AddrObjTypes $entity
      * @param array        $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillAddrObjTypesEntityWithData(AddrObjTypes $entity, array $data): void
     {
@@ -216,31 +214,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -250,7 +248,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Param $entity
      * @param array $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillParamEntityWithData(Param $entity, array $data): void
     {
@@ -275,19 +273,19 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@VALUE'] ?? ($data['value'] ?? null)) !== null) {
-            $entity->setValue(trim($value));
+            $entity->setValue(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
     }
 
@@ -297,7 +295,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Steads $entity
      * @param array  $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillSteadsEntityWithData(Steads $entity, array $data): void
     {
@@ -310,7 +308,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -318,11 +316,11 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($value));
+            $entity->setNumber(trim((string) $value));
         }
 
         if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
-            $entity->setOpertypeid(trim($value));
+            $entity->setOpertypeid(trim((string) $value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
@@ -334,15 +332,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
@@ -360,7 +358,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Carplaces $entity
      * @param array     $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillCarplacesEntityWithData(Carplaces $entity, array $data): void
     {
@@ -373,7 +371,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -381,7 +379,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($value));
+            $entity->setNumber(trim((string) $value));
         }
 
         if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
@@ -397,15 +395,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
@@ -423,7 +421,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param MunHierarchy $entity
      * @param array        $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillMunHierarchyEntityWithData(MunHierarchy $entity, array $data): void
     {
@@ -444,7 +442,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OKTMO'] ?? ($data['oktmo'] ?? null)) !== null) {
-            $entity->setOktmo(trim($value));
+            $entity->setOktmo(trim((string) $value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
@@ -456,15 +454,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
@@ -478,7 +476,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param NormativeDocsTypes $entity
      * @param array              $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillNormativeDocsTypesEntityWithData(NormativeDocsTypes $entity, array $data): void
     {
@@ -487,15 +485,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
     }
 
@@ -505,7 +503,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param ApartmentTypes $entity
      * @param array          $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillApartmentTypesEntityWithData(ApartmentTypes $entity, array $data): void
     {
@@ -514,31 +512,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -548,7 +546,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param OperationTypes $entity
      * @param array          $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillOperationTypesEntityWithData(OperationTypes $entity, array $data): void
     {
@@ -557,31 +555,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -591,7 +589,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Houses $entity
      * @param array  $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillHousesEntityWithData(Houses $entity, array $data): void
     {
@@ -604,7 +602,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -612,15 +610,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@HOUSENUM'] ?? ($data['housenum'] ?? null)) !== null) {
-            $entity->setHousenum(trim($value));
+            $entity->setHousenum(trim((string) $value));
         }
 
         if (($value = $data['@ADDNUM1'] ?? ($data['addnum1'] ?? null)) !== null) {
-            $entity->setAddnum1(trim($value));
+            $entity->setAddnum1(trim((string) $value));
         }
 
         if (($value = $data['@ADDNUM2'] ?? ($data['addnum2'] ?? null)) !== null) {
-            $entity->setAddnum2(trim($value));
+            $entity->setAddnum2(trim((string) $value));
         }
 
         if (($value = $data['@HOUSETYPE'] ?? ($data['housetype'] ?? null)) !== null) {
@@ -648,15 +646,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
@@ -674,7 +672,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param ChangeHistory $entity
      * @param array         $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillChangeHistoryEntityWithData(ChangeHistory $entity, array $data): void
     {
@@ -687,7 +685,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@ADROBJECTID'] ?? ($data['adrobjectid'] ?? null)) !== null) {
-            $entity->setAdrobjectid(trim($value));
+            $entity->setAdrobjectid(trim((string) $value));
         }
 
         if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
@@ -699,7 +697,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@CHANGEDATE'] ?? ($data['changedate'] ?? null)) !== null) {
-            $entity->setChangedate(new DateTimeImmutable(trim($value)));
+            $entity->setChangedate(new \DateTimeImmutable(trim((string) $value)));
         }
     }
 
@@ -709,7 +707,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param Apartments $entity
      * @param array      $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillApartmentsEntityWithData(Apartments $entity, array $data): void
     {
@@ -722,7 +720,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -730,7 +728,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($value));
+            $entity->setNumber(trim((string) $value));
         }
 
         if (($value = $data['@APARTTYPE'] ?? ($data['aparttype'] ?? null)) !== null) {
@@ -750,15 +748,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {
@@ -776,7 +774,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param HouseTypes $entity
      * @param array      $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillHouseTypesEntityWithData(HouseTypes $entity, array $data): void
     {
@@ -785,31 +783,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -819,7 +817,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param NormativeDocsKinds $entity
      * @param array              $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillNormativeDocsKindsEntityWithData(NormativeDocsKinds $entity, array $data): void
     {
@@ -828,7 +826,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
     }
 
@@ -838,7 +836,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param ParamTypes $entity
      * @param array      $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillParamTypesEntityWithData(ParamTypes $entity, array $data): void
     {
@@ -847,31 +845,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@CODE'] ?? ($data['code'] ?? null)) !== null) {
-            $entity->setCode(trim($value));
+            $entity->setCode(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -881,7 +879,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param RoomTypes $entity
      * @param array     $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillRoomTypesEntityWithData(RoomTypes $entity, array $data): void
     {
@@ -890,31 +888,31 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@DESC'] ?? ($data['desc'] ?? null)) !== null) {
-            $entity->setDesc(trim($value));
+            $entity->setDesc(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -924,7 +922,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param NormativeDocs $entity
      * @param array         $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillNormativeDocsEntityWithData(NormativeDocs $entity, array $data): void
     {
@@ -933,15 +931,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@DATE'] ?? ($data['date'] ?? null)) !== null) {
-            $entity->setDate(new DateTimeImmutable(trim($value)));
+            $entity->setDate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@NUMBER'] ?? ($data['number'] ?? null)) !== null) {
-            $entity->setNumber(trim($value));
+            $entity->setNumber(trim((string) $value));
         }
 
         if (($value = $data['@TYPE'] ?? ($data['type'] ?? null)) !== null) {
@@ -953,27 +951,27 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ORGNAME'] ?? ($data['orgname'] ?? null)) !== null) {
-            $entity->setOrgname(trim($value));
+            $entity->setOrgname(trim((string) $value));
         }
 
         if (($value = $data['@REGNUM'] ?? ($data['regnum'] ?? null)) !== null) {
-            $entity->setRegnum(trim($value));
+            $entity->setRegnum(trim((string) $value));
         }
 
         if (($value = $data['@REGDATE'] ?? ($data['regdate'] ?? null)) !== null) {
-            $entity->setRegdate(new DateTimeImmutable(trim($value)));
+            $entity->setRegdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ACCDATE'] ?? ($data['accdate'] ?? null)) !== null) {
-            $entity->setAccdate(new DateTimeImmutable(trim($value)));
+            $entity->setAccdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@COMMENT'] ?? ($data['comment'] ?? null)) !== null) {
-            $entity->setComment(trim($value));
+            $entity->setComment(trim((string) $value));
         }
     }
 
@@ -983,7 +981,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param ObjectLevels $entity
      * @param array        $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillObjectLevelsEntityWithData(ObjectLevels $entity, array $data): void
     {
@@ -992,27 +990,27 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@SHORTNAME'] ?? ($data['shortname'] ?? null)) !== null) {
-            $entity->setShortname(trim($value));
+            $entity->setShortname(trim((string) $value));
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
-            $entity->setIsactive(trim($value));
+            $entity->setIsactive(trim((string) $value));
         }
     }
 
@@ -1022,7 +1020,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param AdmHierarchy $entity
      * @param array        $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillAdmHierarchyEntityWithData(AdmHierarchy $entity, array $data): void
     {
@@ -1043,27 +1041,27 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@REGIONCODE'] ?? ($data['regioncode'] ?? null)) !== null) {
-            $entity->setRegioncode(trim($value));
+            $entity->setRegioncode(trim((string) $value));
         }
 
         if (($value = $data['@AREACODE'] ?? ($data['areacode'] ?? null)) !== null) {
-            $entity->setAreacode(trim($value));
+            $entity->setAreacode(trim((string) $value));
         }
 
         if (($value = $data['@CITYCODE'] ?? ($data['citycode'] ?? null)) !== null) {
-            $entity->setCitycode(trim($value));
+            $entity->setCitycode(trim((string) $value));
         }
 
         if (($value = $data['@PLACECODE'] ?? ($data['placecode'] ?? null)) !== null) {
-            $entity->setPlacecode(trim($value));
+            $entity->setPlacecode(trim((string) $value));
         }
 
         if (($value = $data['@PLANCODE'] ?? ($data['plancode'] ?? null)) !== null) {
-            $entity->setPlancode(trim($value));
+            $entity->setPlancode(trim((string) $value));
         }
 
         if (($value = $data['@STREETCODE'] ?? ($data['streetcode'] ?? null)) !== null) {
-            $entity->setStreetcode(trim($value));
+            $entity->setStreetcode(trim((string) $value));
         }
 
         if (($value = $data['@PREVID'] ?? ($data['previd'] ?? null)) !== null) {
@@ -1075,15 +1073,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
@@ -1097,7 +1095,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param AddrObjDivision $entity
      * @param array           $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillAddrObjDivisionEntityWithData(AddrObjDivision $entity, array $data): void
     {
@@ -1124,7 +1122,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param ReestrObjects $entity
      * @param array         $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillReestrObjectsEntityWithData(ReestrObjects $entity, array $data): void
     {
@@ -1133,7 +1131,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@CREATEDATE'] ?? ($data['createdate'] ?? null)) !== null) {
-            $entity->setCreatedate(new DateTimeImmutable(trim($value)));
+            $entity->setCreatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -1145,11 +1143,11 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@ISACTIVE'] ?? ($data['isactive'] ?? null)) !== null) {
@@ -1163,7 +1161,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
      * @param AddrObj $entity
      * @param array   $data
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function fillAddrObjEntityWithData(AddrObj $entity, array $data): void
     {
@@ -1176,7 +1174,7 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@OBJECTGUID'] ?? ($data['objectguid'] ?? null)) !== null) {
-            $entity->setObjectguid(trim($value));
+            $entity->setObjectguid(trim((string) $value));
         }
 
         if (($value = $data['@CHANGEID'] ?? ($data['changeid'] ?? null)) !== null) {
@@ -1184,15 +1182,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@NAME'] ?? ($data['name'] ?? null)) !== null) {
-            $entity->setName(trim($value));
+            $entity->setName(trim((string) $value));
         }
 
         if (($value = $data['@TYPENAME'] ?? ($data['typename'] ?? null)) !== null) {
-            $entity->setTypename(trim($value));
+            $entity->setTypename(trim((string) $value));
         }
 
         if (($value = $data['@LEVEL'] ?? ($data['level'] ?? null)) !== null) {
-            $entity->setLevel(trim($value));
+            $entity->setLevel(trim((string) $value));
         }
 
         if (($value = $data['@OPERTYPEID'] ?? ($data['opertypeid'] ?? null)) !== null) {
@@ -1208,15 +1206,15 @@ class CompiledFiasEntitiesDenormalizer implements DenormalizerInterface
         }
 
         if (($value = $data['@UPDATEDATE'] ?? ($data['updatedate'] ?? null)) !== null) {
-            $entity->setUpdatedate(new DateTimeImmutable(trim($value)));
+            $entity->setUpdatedate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@STARTDATE'] ?? ($data['startdate'] ?? null)) !== null) {
-            $entity->setStartdate(new DateTimeImmutable(trim($value)));
+            $entity->setStartdate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ENDDATE'] ?? ($data['enddate'] ?? null)) !== null) {
-            $entity->setEnddate(new DateTimeImmutable(trim($value)));
+            $entity->setEnddate(new \DateTimeImmutable(trim((string) $value)));
         }
 
         if (($value = $data['@ISACTUAL'] ?? ($data['isactual'] ?? null)) !== null) {

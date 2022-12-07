@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\QueryBuilder;
 
-use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 
 /**
@@ -35,13 +34,13 @@ class MapperQueryBuilder extends ArrayQueryBuilder
      *
      * @param string $property
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function isPropertyAllowed(string $property): void
     {
         if (!$this->mapper->hasProperty($property)) {
             $message = sprintf("There is no '%s' property in '%s' index.", $property, $this->mapper->getName());
-            throw new InvalidArgumentException($message);
+            throw new \InvalidArgumentException($message);
         }
     }
 }

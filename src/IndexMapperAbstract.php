@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic;
 
-use DateTimeInterface;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperException;
 use Liquetsoft\Fias\Elastic\QueryBuilder\MapperQueryBuilder;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
@@ -104,12 +103,12 @@ abstract class IndexMapperAbstract implements IndexMapperInterface
             return null;
         }
 
-        $type = $description['type'] ?? 'text';
+        $type = (string) ($description['type'] ?? 'text');
         if ($type === 'integer') {
             $convertedValue = (int) $value;
         } elseif ($type === 'text' || $type === 'keyword') {
             $convertedValue = (string) $value;
-        } elseif ($type === 'date' && $value instanceof DateTimeInterface) {
+        } elseif ($type === 'date' && $value instanceof \DateTimeInterface) {
             $convertedValue = $value->format('Y-m-d\TH:i:s');
         } else {
             throw new IndexMapperException(

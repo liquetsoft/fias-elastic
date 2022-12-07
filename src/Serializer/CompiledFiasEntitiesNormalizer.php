@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Serializer;
 
-use Exception;
 use Liquetsoft\Fias\Elastic\Entity\AddrObj;
 use Liquetsoft\Fias\Elastic\Entity\AddrObjDivision;
 use Liquetsoft\Fias\Elastic\Entity\AddrObjTypes;
@@ -66,7 +65,7 @@ class CompiledFiasEntitiesNormalizer implements NormalizerInterface
     /**
      * {@inheritDoc}
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function normalize($object, string $format = null, array $context = [])
     {
@@ -115,7 +114,7 @@ class CompiledFiasEntitiesNormalizer implements NormalizerInterface
         } elseif ($object instanceof AddrObj) {
             $data = $this->getDataFromAddrObjEntity($object);
         } else {
-            throw new Exception('Wrong entity object.');
+            throw new \Exception('Wrong entity object.');
         }
 
         return $data;

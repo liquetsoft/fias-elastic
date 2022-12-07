@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\ObjectLevelsIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по уровням адресных объектов'.
@@ -47,7 +45,7 @@ class ObjectLevelsIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->level = 'primary_value';
 
         $mapper = new ObjectLevelsIndexMapper();
@@ -57,13 +55,13 @@ class ObjectLevelsIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->level = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
         $entity->shortname = $this->createFakeData()->word;
-        $entity->updatedate = new DateTimeImmutable();
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
         $entity->isactive = $this->createFakeData()->word;
 
         $mapper = new ObjectLevelsIndexMapper();

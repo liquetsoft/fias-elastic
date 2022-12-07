@@ -11,7 +11,6 @@ use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
-use SplFileInfo;
 
 /**
  * Объект, который создает классы мапперов для индексов elasticsearch.
@@ -21,7 +20,7 @@ class MapperGenerator extends AbstractGenerator
     /**
      * {@inheritDoc}
      */
-    protected function generateClassByDescriptor(EntityDescriptor $descriptor, SplFileInfo $dir, string $namespace): void
+    protected function generateClassByDescriptor(EntityDescriptor $descriptor, \SplFileInfo $dir, string $namespace): void
     {
         $name = $this->unifyClassName($descriptor->getName()) . 'IndexMapper';
         $fullPath = "{$dir->getPathname()}/{$name}.php";

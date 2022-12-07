@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\Entity;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\Entity\Steads;
 use Liquetsoft\Fias\Elastic\Tests\EntityCase;
 
@@ -37,9 +36,9 @@ class SteadsTest extends EntityCase
             'opertypeid' => $this->createFakeData()->word,
             'previd' => $this->createFakeData()->numberBetween(1, 1000000),
             'nextid' => $this->createFakeData()->numberBetween(1, 1000000),
-            'updatedate' => new DateTimeImmutable(),
-            'startdate' => new DateTimeImmutable(),
-            'enddate' => new DateTimeImmutable(),
+            'updatedate' => new \DateTimeImmutable(),
+            'startdate' => new \DateTimeImmutable(),
+            'enddate' => new \DateTimeImmutable(),
             'isactual' => $this->createFakeData()->numberBetween(1, 1000000),
             'isactive' => $this->createFakeData()->numberBetween(1, 1000000),
         ];

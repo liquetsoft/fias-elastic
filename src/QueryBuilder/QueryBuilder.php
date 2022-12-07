@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\QueryBuilder;
 
-use InvalidArgumentException;
-
 /**
  * Интерфейс для объекта, который строит поисковые запросы для elasticsearch.
  */
@@ -23,7 +21,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function match(string $property, $value): QueryBuilder;
 
@@ -35,7 +33,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function term(string $property, $value): QueryBuilder;
 
@@ -46,7 +44,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function notExist(string $property): QueryBuilder;
 
@@ -57,7 +55,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function sortAsc(string $property): QueryBuilder;
 
@@ -68,7 +66,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function sortDesc(string $property): QueryBuilder;
 
@@ -80,7 +78,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function sort(string $property, string $order = QueryBuilder::SORT_ORDER_ASC): QueryBuilder;
 
@@ -109,7 +107,7 @@ interface QueryBuilder
      *
      * @return QueryBuilder
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function searchAfter(array $values): QueryBuilder;
 

@@ -8,7 +8,6 @@ use Elasticsearch\Client;
 use Liquetsoft\Fias\Elastic\ClientProvider\ClientProvider;
 use Liquetsoft\Fias\Elastic\Exception\IndexBuilderException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
-use Throwable;
 
 /**
  * Объект, который использует клиент elasticsearch и хранилище описания индексов для обновления описания индексов.
@@ -19,6 +18,9 @@ class BaseIndexBuilder implements IndexBuilder
 
     private ?Client $client = null;
 
+    /**
+     * @var array<string, mixed[]>|null
+     */
     private ?array $listOfIndicies = null;
 
     public function __construct(ClientProvider $clientProvider)
@@ -55,7 +57,7 @@ class BaseIndexBuilder implements IndexBuilder
                 );
             }
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -73,7 +75,7 @@ class BaseIndexBuilder implements IndexBuilder
                 ]
             );
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -91,7 +93,7 @@ class BaseIndexBuilder implements IndexBuilder
                 ]
             );
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -108,7 +110,7 @@ class BaseIndexBuilder implements IndexBuilder
                     'ignore_unavailable' => true,
                 ]
             );
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -126,7 +128,7 @@ class BaseIndexBuilder implements IndexBuilder
                 ]
             );
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -159,7 +161,7 @@ class BaseIndexBuilder implements IndexBuilder
                 ]
             );
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -176,7 +178,7 @@ class BaseIndexBuilder implements IndexBuilder
                 ]
             );
             $this->listOfIndicies = null;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new IndexBuilderException($e->getMessage(), 0, $e);
         }
     }
@@ -207,16 +209,18 @@ class BaseIndexBuilder implements IndexBuilder
     /**
      * Возвращает список всех индексов elasticsearch.
      *
-     * @return array
+     * @return array<string, mixed[]>
      */
     private function getListOfIndices(): array
     {
         if ($this->listOfIndicies === null) {
-            $this->listOfIndicies = $this->getClient()->indices()->get(
+            /** @var array<string, mixed[]> */
+            $list = $this->getClient()->indices()->get(
                 [
                     'index' => '_all',
                 ]
             );
+            $this->listOfIndicies = $list;
         }
 
         return $this->listOfIndicies;

@@ -10,7 +10,6 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Task\OpenElasticIndicesTask;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
 
 /**
  * Тест для операции, которая помечает индексы открытыми для записи.
@@ -22,7 +21,7 @@ class OpenElasticIndicesTaskTest extends BaseCase
     /**
      * Проверяет, что операция откроет все индексы.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRun(): void
     {

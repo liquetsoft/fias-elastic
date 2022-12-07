@@ -11,8 +11,6 @@ use Liquetsoft\Fias\Elastic\Exception\IndexBuilderException;
 use Liquetsoft\Fias\Elastic\IndexBuilder\BaseIndexBuilder;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use RuntimeException;
-use Throwable;
 
 /**
  * Тест для объекта, который строит индексы в elasticsearch.
@@ -24,7 +22,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект создаст индекс, если его не существует.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSaveNewIndex(): void
     {
@@ -58,7 +56,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект обновит существующий индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSaveExistedIndex(): void
     {
@@ -92,7 +90,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при сохранении.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSaveException(): void
     {
@@ -104,7 +102,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -115,7 +113,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект закроет индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testCloseIndex(): void
     {
@@ -148,7 +146,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при закрытии индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testCloseException(): void
     {
@@ -160,7 +158,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -171,7 +169,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект откроет индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testOpenIndex(): void
     {
@@ -204,7 +202,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при открытии индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testOpenException(): void
     {
@@ -216,7 +214,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -227,7 +225,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект обновит индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRefreshIndex(): void
     {
@@ -260,7 +258,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при обновлении индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRefreshException(): void
     {
@@ -272,7 +270,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -283,7 +281,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект удали индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testDeleteIndex(): void
     {
@@ -316,7 +314,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при удалении индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testDeleteIndexException(): void
     {
@@ -328,7 +326,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getMappingProperties')->willReturn($mapperMap);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -339,7 +337,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно получит статус заморозки индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testIsFrozen(): void
     {
@@ -376,7 +374,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно получит статус заморозки индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testIsNotFrozen(): void
     {
@@ -413,7 +411,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект правильно получит статус заморозки индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testIsFrozenException(): void
     {
@@ -440,7 +438,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект заморозит индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testFreezeIndex(): void
     {
@@ -469,7 +467,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при заморозке индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testFreezeIndexException(): void
     {
@@ -479,7 +477,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getName')->willReturn($mapperName);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 
@@ -490,7 +488,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект разморозит индекс.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testUnfreezeIndex(): void
     {
@@ -519,7 +517,7 @@ class BaseIndexBuilderTest extends BaseCase
     /**
      * Проверяет, что объект перехватит исключение при разморозке индекса.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testUnfreezeIndexException(): void
     {
@@ -529,7 +527,7 @@ class BaseIndexBuilderTest extends BaseCase
         $mapper->method('getName')->willReturn($mapperName);
 
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
-        $clientProvider->method('provide')->will($this->throwException(new RuntimeException()));
+        $clientProvider->method('provide')->will($this->throwException(new \RuntimeException()));
 
         $builder = new BaseIndexBuilder($clientProvider);
 

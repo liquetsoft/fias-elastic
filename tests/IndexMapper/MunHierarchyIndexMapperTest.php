@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\MunHierarchyIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по иерархии в муниципальном делении'.
@@ -51,7 +49,7 @@ class MunHierarchyIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new MunHierarchyIndexMapper();
@@ -61,7 +59,7 @@ class MunHierarchyIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->objectid = $this->createFakeData()->numberBetween(1, 100000);
         $entity->parentobjid = $this->createFakeData()->numberBetween(1, 100000);
@@ -69,9 +67,9 @@ class MunHierarchyIndexMapperTest extends BaseCase
         $entity->oktmo = $this->createFakeData()->word;
         $entity->previd = $this->createFakeData()->numberBetween(1, 100000);
         $entity->nextid = $this->createFakeData()->numberBetween(1, 100000);
-        $entity->updatedate = new DateTimeImmutable();
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->updatedate = new \DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
         $entity->isactive = $this->createFakeData()->numberBetween(1, 100000);
 
         $mapper = new MunHierarchyIndexMapper();

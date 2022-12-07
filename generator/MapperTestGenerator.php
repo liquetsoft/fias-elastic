@@ -10,7 +10,6 @@ use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
-use SplFileInfo;
 
 /**
  * Объект, который создает классы тестов для мапперов.
@@ -20,7 +19,7 @@ class MapperTestGenerator extends AbstractGenerator
     /**
      * {@inheritDoc}
      */
-    protected function generateClassByDescriptor(EntityDescriptor $descriptor, SplFileInfo $dir, string $namespace): void
+    protected function generateClassByDescriptor(EntityDescriptor $descriptor, \SplFileInfo $dir, string $namespace): void
     {
         $baseName = $this->unifyClassName($descriptor->getName()) . 'IndexMapper';
         $name = $baseName . 'Test';

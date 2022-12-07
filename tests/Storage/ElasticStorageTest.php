@@ -13,9 +13,7 @@ use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Storage\ElasticStorage;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
 use Liquetsoft\Fias\Elastic\Tests\Mock\ElasticStorageMock;
-use RuntimeException;
-use stdClass;
-use Throwable;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Тест для хранилища, которое записывает данные в elastic search.
@@ -27,21 +25,20 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище верно определяет, что может обрабатывать сущность.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSupports(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $provider = $this->createClientProviderMock();
-        $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
+        $registry = $this->createIndexMapperMock();
         $registry->method('hasMapperForObject')->willReturnCallback(
             function (object $toTest) use ($entity) {
                 return $toTest === $entity;
             }
         );
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -52,21 +49,20 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище верно определяет, что может обрабатывать тип сущности.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testSupportsClass(): void
     {
         $key = $this->createFakeData()->word;
         $provider = $this->createClientProviderMock();
-        $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
+        $registry = $this->createIndexMapperMock();
         $registry->method('hasMapperForKey')->willReturnCallback(
             function (string $toTest) use ($key) {
                 return $toTest === $key;
             }
         );
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -77,7 +73,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище добавляет сущность.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testInsert(): void
     {
@@ -117,8 +113,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
@@ -130,7 +125,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище добавляет сущность указанными партиями.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testInsertByOne(): void
     {
@@ -153,8 +148,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder, 1);
         $storage->start();
@@ -200,7 +194,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что замороженные индексы будут разморожены при вставке.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testInsertToFrozenIndex(): void
     {
@@ -240,8 +234,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->expects($this->once())->method('isFrozen')->willReturn(true);
+        $builder = $this->createIndexBuilderMock(true);
         $builder->expects($this->once())->method('unfreeze');
         $builder->expects($this->once())->method('freeze');
 
@@ -255,19 +248,18 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что исключение при добавлении документа будет перехвачено.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testInsertException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
-            $this->throwException(new RuntimeException())
+            $this->throwException(new \RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -280,7 +272,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище удаляет сущность.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testDelete(): void
     {
@@ -299,8 +291,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
@@ -311,19 +302,18 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что исключение при удалении документа будет перехвачено.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testDeleteException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
-            $this->throwException(new RuntimeException())
+            $this->throwException(new \RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -336,7 +326,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище обновляет сущность.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testUpsert(): void
     {
@@ -364,8 +354,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
@@ -376,19 +365,18 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что исключение при обновлении документа будет перехвачено.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testUpsertException(): void
     {
         $client = $this->createClientMock();
         $client->method('bulk')->will(
-            $this->throwException(new RuntimeException())
+            $this->throwException(new \RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -401,7 +389,7 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что хранилище очищает все данные по типу сущности.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testTruncate(): void
     {
@@ -422,8 +410,7 @@ class ElasticStorageTest extends BaseCase
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
         $storage->start();
@@ -434,19 +421,18 @@ class ElasticStorageTest extends BaseCase
     /**
      * Проверяет, что исключение при очистке хранилища будет перехвачено.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testTruncateException(): void
     {
         $client = $this->createClientMock();
         $client->method('deleteByQuery')->will(
-            $this->throwException(new RuntimeException())
+            $this->throwException(new \RuntimeException())
         );
         $provider = $this->createClientProviderMock($client);
         $registry = $this->createRegistryMock();
 
-        $builder = $this->getMockBuilder(IndexBuilder::class)->getMock();
-        $builder->method('isFrozen')->willReturn(false);
+        $builder = $this->createIndexBuilderMock();
 
         $storage = new ElasticStorage($provider, $registry, $builder);
 
@@ -461,7 +447,7 @@ class ElasticStorageTest extends BaseCase
      *
      * @param Client|null $client
      *
-     * @return ClientProvider
+     * @return ClientProvider&MockObject
      */
     private function createClientProviderMock(?Client $client = null): ClientProvider
     {
@@ -469,6 +455,7 @@ class ElasticStorageTest extends BaseCase
             $client = $this->createClientMock();
         }
 
+        /** @var ClientProvider&MockObject */
         $provider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $provider->method('provide')->willReturn($client);
 
@@ -476,24 +463,56 @@ class ElasticStorageTest extends BaseCase
     }
 
     /**
+     * Создает мок для маппера.
+     *
+     * @return IndexMapperRegistry&MockObject
+     */
+    private function createIndexMapperMock(): IndexMapperRegistry
+    {
+        /** @var IndexMapperRegistry&MockObject */
+        $mock = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
+
+        return $mock;
+    }
+
+    /**
+     * Создает мок для обработчика индексов.
+     *
+     * @return IndexBuilder&MockObject
+     */
+    private function createIndexBuilderMock(bool $isFrozen = false): IndexBuilder
+    {
+        /** @var IndexBuilder&MockObject */
+        $mock = $this->getMockBuilder(IndexBuilder::class)->getMock();
+
+        $mock->method('isFrozen')->willReturn($isFrozen);
+
+        return $mock;
+    }
+
+    /**
      * Создает мок для объекта клиента.
      *
-     * @return Client
+     * @return Client&MockObject
      */
     private function createClientMock(): Client
     {
-        return $this->getMockBuilder(Client::class)
+        /** @var Client&MockObject */
+        $mock = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        return $mock;
     }
 
     /**
      * Создает мок для объекта с описаниями индексов.
      *
-     * @return IndexMapperRegistry
+     * @return IndexMapperRegistry&MockObject
      */
     private function createRegistryMock(): IndexMapperRegistry
     {
+        /** @var IndexMapperInterface&MockObject */
         $mapper = $this->getMockBuilder(IndexMapperInterface::class)->getMock();
         $mapper->method('getName')->willReturn(
             'ElasticStorageMock'
@@ -518,11 +537,12 @@ class ElasticStorageTest extends BaseCase
             }
         );
 
+        /** @var IndexMapperRegistry&MockObject */
         $registry = $this->getMockBuilder(IndexMapperRegistry::class)->getMock();
         $registry->method('getMapperForObject')->willReturnCallback(
             function (object $toTest) use ($mapper) {
                 if (!($toTest instanceof ElasticStorageMock)) {
-                    throw new RuntimeException("Can't find mapper.");
+                    throw new \RuntimeException("Can't find mapper.");
                 }
 
                 return $mapper;
@@ -531,7 +551,7 @@ class ElasticStorageTest extends BaseCase
         $registry->method('getMapperForKey')->willReturnCallback(
             function (string $toTest) use ($mapper) {
                 if ($toTest !== 'ElasticStorageMock') {
-                    throw new RuntimeException("Can't find mapper.");
+                    throw new \RuntimeException("Can't find mapper.");
                 }
 
                 return $mapper;

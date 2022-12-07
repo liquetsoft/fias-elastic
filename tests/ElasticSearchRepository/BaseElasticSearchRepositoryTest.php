@@ -10,9 +10,7 @@ use Liquetsoft\Fias\Elastic\ElasticSearchRepository\BaseElasticSearchRepository;
 use Liquetsoft\Fias\Elastic\Exception\ElasticSearchRepositoryException;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Throwable;
 
 /**
  * Тест для репозитория elasticsearch.
@@ -24,7 +22,7 @@ class BaseElasticSearchRepositoryTest extends BaseCase
     /**
      * Проверяет, что репозтиторий правильно вернет один объект по условию.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testOne(): void
     {
@@ -57,7 +55,7 @@ class BaseElasticSearchRepositoryTest extends BaseCase
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->willReturn($client);
 
-        $object = new stdClass();
+        $object = new \stdClass();
 
         $denormalizer = $this->getMockBuilder(DenormalizerInterface::class)->getMock();
         $denormalizer->expects($this->once())
@@ -78,7 +76,7 @@ class BaseElasticSearchRepositoryTest extends BaseCase
     /**
      * Проверяет, что репозтиторий правильно вернет список объектов по условию.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testAll(): void
     {
@@ -114,8 +112,8 @@ class BaseElasticSearchRepositoryTest extends BaseCase
         $clientProvider = $this->getMockBuilder(ClientProvider::class)->getMock();
         $clientProvider->method('provide')->willReturn($client);
 
-        $object = new stdClass();
-        $object1 = new stdClass();
+        $object = new \stdClass();
+        $object1 = new \stdClass();
 
         $denormalizer = $this->getMockBuilder(DenormalizerInterface::class)->getMock();
         $denormalizer->method('denormalize')
@@ -136,7 +134,7 @@ class BaseElasticSearchRepositoryTest extends BaseCase
     /**
      * Проверяет, что репозтиторий выбросит исключение при неполном ответе от elasticsearch.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testEmptySourceException(): void
     {
@@ -172,7 +170,7 @@ class BaseElasticSearchRepositoryTest extends BaseCase
     /**
      * Проверяет, что репозтиторий выбросит исключение при неправильном ответе от denprmalizer.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testBrokenDenormalizeException(): void
     {

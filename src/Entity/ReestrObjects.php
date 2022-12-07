@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Entity;
 
-use DateTimeInterface;
-
 /**
  * Сведения об адресном элементе в части его идентификаторов.
  */
@@ -19,7 +17,7 @@ class ReestrObjects
     /**
      * Дата создания.
      */
-    protected ?DateTimeInterface $createdate = null;
+    protected ?\DateTimeInterface $createdate = null;
 
     /**
      * ID изменившей транзакции.
@@ -34,7 +32,7 @@ class ReestrObjects
     /**
      * Дата обновления.
      */
-    protected ?DateTimeInterface $updatedate = null;
+    protected ?\DateTimeInterface $updatedate = null;
 
     /**
      * GUID объекта.
@@ -58,14 +56,14 @@ class ReestrObjects
         return $this->objectid;
     }
 
-    public function setCreatedate(DateTimeInterface $createdate): self
+    public function setCreatedate(\DateTimeInterface $createdate): self
     {
         $this->createdate = $createdate;
 
         return $this;
     }
 
-    public function getCreatedate(): ?DateTimeInterface
+    public function getCreatedate(): ?\DateTimeInterface
     {
         return $this->createdate;
     }
@@ -94,14 +92,14 @@ class ReestrObjects
         return $this->levelid;
     }
 
-    public function setUpdatedate(DateTimeInterface $updatedate): self
+    public function setUpdatedate(\DateTimeInterface $updatedate): self
     {
         $this->updatedate = $updatedate;
 
         return $this;
     }
 
-    public function getUpdatedate(): ?DateTimeInterface
+    public function getUpdatedate(): ?\DateTimeInterface
     {
         return $this->updatedate;
     }

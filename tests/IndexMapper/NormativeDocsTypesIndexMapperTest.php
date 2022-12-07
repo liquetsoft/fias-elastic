@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\Tests\IndexMapper;
 
-use DateTimeImmutable;
 use Liquetsoft\Fias\Elastic\IndexMapper\NormativeDocsTypesIndexMapper;
 use Liquetsoft\Fias\Elastic\QueryBuilder\QueryBuilder;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use stdClass;
 
 /**
  * Тест для описания индекса сущности 'Сведения по типам нормативных документов'.
@@ -44,7 +42,7 @@ class NormativeDocsTypesIndexMapperTest extends BaseCase
 
     public function testExtractPrimaryFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = 'primary_value';
 
         $mapper = new NormativeDocsTypesIndexMapper();
@@ -54,11 +52,11 @@ class NormativeDocsTypesIndexMapperTest extends BaseCase
 
     public function testExtractDataFromEntity(): void
     {
-        $entity = new stdClass();
+        $entity = new \stdClass();
         $entity->id = $this->createFakeData()->numberBetween(1, 100000);
         $entity->name = $this->createFakeData()->word;
-        $entity->startdate = new DateTimeImmutable();
-        $entity->enddate = new DateTimeImmutable();
+        $entity->startdate = new \DateTimeImmutable();
+        $entity->enddate = new \DateTimeImmutable();
 
         $mapper = new NormativeDocsTypesIndexMapper();
         $dataForElastic = $mapper->extractDataFromEntity($entity);

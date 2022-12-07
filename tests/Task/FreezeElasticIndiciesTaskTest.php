@@ -10,7 +10,6 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Task\FreezeElasticIndiciesTask;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
 
 /**
  * Тест для операции, которая помечает индексы заморожеными.
@@ -22,7 +21,7 @@ class FreezeElasticIndiciesTaskTest extends BaseCase
     /**
      * Проверяет, что операция заморозит все индексы.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRun(): void
     {

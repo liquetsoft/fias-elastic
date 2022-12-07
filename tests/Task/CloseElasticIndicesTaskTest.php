@@ -10,7 +10,6 @@ use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 use Liquetsoft\Fias\Elastic\IndexMapperRegistry\IndexMapperRegistry;
 use Liquetsoft\Fias\Elastic\Task\CloseElasticIndicesTask;
 use Liquetsoft\Fias\Elastic\Tests\BaseCase;
-use Throwable;
 
 /**
  * Тест для операции, которая помечает индексы закрытыми для записи.
@@ -22,7 +21,7 @@ class CloseElasticIndicesTaskTest extends BaseCase
     /**
      * Проверяет, что операция закроет все индексы.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function testRun(): void
     {

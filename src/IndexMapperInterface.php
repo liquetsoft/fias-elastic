@@ -22,7 +22,7 @@ interface IndexMapperInterface
     /**
      * Возвращает описание индекса.
      *
-     * @return array
+     * @return array<string, mixed[]>
      */
     public function getMappingProperties(): array;
 

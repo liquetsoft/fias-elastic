@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Liquetsoft\Fias\Elastic\IndexMapperRegistry;
 
-use InvalidArgumentException;
 use Liquetsoft\Fias\Elastic\Exception\IndexMapperRegistryException;
 use Liquetsoft\Fias\Elastic\IndexMapperInterface;
 
@@ -22,8 +21,8 @@ class ArrayIndexMapperRegistry implements IndexMapperRegistry
     {
         foreach ($indexMappers as $key => $indexMapper) {
             if (!($indexMapper instanceof IndexMapperInterface)) {
-                throw new InvalidArgumentException(
-                    sprintf("Item with key '%s' must implements '%s'.", $key, IndexMapperInterface::class)
+                throw new \InvalidArgumentException(
+                    sprintf("Item must implements '%s'.", IndexMapperInterface::class)
                 );
             }
             $this->indexMappers[$this->unifyKey($key)] = $indexMapper;

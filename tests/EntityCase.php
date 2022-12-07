@@ -45,7 +45,7 @@ abstract class EntityCase extends BaseCase
             } else {
                 list($property, $input, $output) = $test;
             }
-            $this->assertAccessorsCase($property, $input, $output);
+            $this->assertAccessorsCase((string) $property, $input, $output);
         }
     }
 
